@@ -2,11 +2,13 @@ from sklearn.metrics import precision_recall_fscore_support
 import numpy as np
 from sklearn.metrics import accuracy_score
 from sklearn import metrics
+import tensorflow as tf
 
 
 def prec_rec_f1score(y_true,x_test,model):
     y_hat= model.predict(x_test)
-    y_pred=(np.greater_equal(y_hat,0.51)).astype(int)
+    y_pred=tf.argmax(y_hat,1)
+    y_true=tf.argmax(y_true,1)
 
     pr_re_f1score_perclass= precision_recall_fscore_support(y_true, y_pred, average=None)
     accuracy= accuracy_score(y_true,y_pred)
@@ -19,7 +21,7 @@ def prec_rec_f1score(y_true,x_test,model):
     f1score_fake= pr_re_f1score_perclass[2][0]
 
     # AUC
-    fpr, tpr, thresholds = metrics.roc_curve(y_true, y_hat, pos_label=None)
+    fpr, tpr, thresholds = metrics.roc_curve(y_true, y_pred, pos_label=None)
     AUC= metrics.auc(fpr, tpr)
 
     metrices_name=['accuracy','precision_true','precision_fake','recall_true','recall_fake','f1score_true','f1score_fake', 'AUC']

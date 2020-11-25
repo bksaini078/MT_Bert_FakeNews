@@ -17,7 +17,7 @@ def instant_noise(x_train, y_train, x_unlabel, n_ratio) :
         ratio_noise = x_unlabel[:noise]
 
         # creating -1 label for noise data
-        y_unlabel = np.full ( (np.shape ( ratio_noise )[0], 1), -1 )
+        y_unlabel = np.full ( (np.shape ( ratio_noise )[0], 2), -1 )
 
         # adding noise in train data
         x = np.append ( x_train, ratio_noise, axis=0 )

@@ -11,7 +11,8 @@ def BiLstmModel(maxlen, vocab_size):
 #   x = Dropout(0.2)(x)
 #   x =Dense(64,activation='relu')(x)
   x =Dense(64)(x)
-  x =Dense(1, activation='sigmoid')(x)
+  x = Dense(32)(x)
+  x =Dense(2, activation='sigmoid')(x)
   return Model(inputs,x)
 
 def BiLstmModel_attention(maxlen, vocab_size):
@@ -22,5 +23,6 @@ def BiLstmModel_attention(maxlen, vocab_size):
   x = tf.keras.layers.Attention()([x,x])
   x= Flatten()(x)
   x = Dense(64)(x)
-  x = Dense(1, activation='sigmoid')(x)
+  x = Dense(32)(x)
+  x = Dense(2, activation='sigmoid')(x)
   return Model(inputs,x)
