@@ -27,6 +27,23 @@ Install libraries in requirements.txt:
 pip3 install -r requirements.txt
 ```
 
+| Parameter | Description | Default value|
+|-----------|-------------|--------------|
+|--lr | learning rate| 0.0001|
+|--epochs | epochs| 10|
+|--batch_size | Batch size | 64|
+|--maxlen | Lenght of article for tokens | 100|
+|--meanteacher | Meanteacher(1) or supervised(0) |0| 
+|--method | Attention or BERT | Attn|
+|--unlabel | All or Mix | All|
+|--data | fakehealth or politifact or gossipcop | fakehealth|
+|--ratio | Used in overall cost | 0.5|
+|--alpha | EMA alpha value| 0.99|
+|--noise_ratio |unlabel data noise ratio |0.2|
+
+
+
+
 ## Contributors
 Ipek Baris
 
