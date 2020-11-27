@@ -10,7 +10,7 @@ def train_supervised(args,epochs, batch_size, lr, x_train, y_train, x_val, y_val
         model_supervised = BiLstmModel(maxlen, vocab_size)
     elif args.method=='Attn':
         model_supervised= BiLstmModel_attention(maxlen, vocab_size)
-        model_supervised.summary()
+        # model_supervised.summary()
 
     model_supervised.compile(optimizer= tf.keras.optimizers.Adam(learning_rate= lr ) ,loss= 'binary_crossentropy', metrics=['accuracy' ])
     print ('Training supervised Model... ')

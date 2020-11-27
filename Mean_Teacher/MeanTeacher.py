@@ -64,7 +64,7 @@ def MeanTeacher(args, epochs, batch_size, alpha, lr, ratio, noise_ratio, x_train
     i = 0
     print('Train Mean teacher Model...')
     # teacher.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr),loss=tf.keras.losses.BinaryCrossentropy(),metrics=['accuracy'])
-    teacher.fit(x_train, y_train, batch_size=batch_size, epochs=1)
+    # teacher.fit(x_train, y_train, batch_size=batch_size, epochs=1)
 
     acc_t = 0
     # false positive rate and true positive rate
@@ -127,32 +127,31 @@ def MeanTeacher(args, epochs, batch_size, alpha, lr, ratio, noise_ratio, x_train
         train_metrics.reset_states()
 
         # Run a validation loop at the end of each epoch.
-        print('*******STUDENT*************')
-        prec_rec_f1score(y_val, x_val, student)
+        # print('*******STUDENT*************')
+        # prec_rec_f1score(y_val, x_val, student)
         print('*******TEACHER*************')
         prec_rec_f1score(y_val, x_val, teacher)
 
-        if epoch >= 10 and epoch % 5 == 0:
-            print('---------------------------STUDENT--------------------------')
-            test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score(
-                y_test, x_test, student)
-            report_writing(args,'Student', lr, batch_size, epoch, alpha, ratio, train_acc.numpy(),
-                           test_accuracy, precision_true, precision_fake, recall_true, recall_fake,
-                           f1score_true, f1score_fake, AUC, 'BiLSTM-'+args.method+'-MT-'+args.unlabel)
-            print('-----------------------------------------------------------------')
+        if  epoch %1 == 0:
+            # print('---------------------------STUDENT--------------------------')
+            # test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score(
+            #     y_test, x_test, student)
+            # report_writing(args,'Student', lr, batch_size, epoch, alpha, ratio, train_acc.numpy(),
+            #                test_accuracy, precision_true, precision_fake, recall_true, recall_fake,
+            #                f1score_true, f1score_fake, AUC, 'BiLSTM-'+args.method+'-MT-'+args.unlabel)
+            print('------------------------WITH TEST DATA-----------------------------------------')
 
             print('---------------------------TEACHER---------------------------------')
 
             test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score(
                 y_test, x_test, teacher)
-            report_writing(args,'Teacher', lr, batch_size, epoch, alpha, ratio, train_acc.numpy(),
-                           test_accuracy, precision_true, precision_fake, recall_true, recall_fake,
-                           f1score_true, f1score_fake, AUC, 'BiLSTM-'+args.method+'-MT-'+args.unlabel)
 
-            print('-----------------------------------------------------------------')
+
+            print('*'*80)
         # if epoch >= 10 and epoch% 5==0 :
         #     teacher.save(path+'/model/MT_unlabel_'+str(epoch))
-
+    report_writing(args,'Teacher', lr, batch_size, epoch, alpha, ratio, train_acc.numpy(),test_accuracy, 
+    precision_true, precision_fake, recall_true, recall_fake,f1score_true, f1score_fake, AUC, 'BiLSTM-'+args.method+'-MT-'+args.unlabel)
     tf.keras.backend.clear_session()
     return 
 

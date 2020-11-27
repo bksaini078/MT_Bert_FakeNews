@@ -20,7 +20,7 @@ if __name__ == '__main__':
     parser.add_argument('--maxlen', default=200, type=int)
     parser.add_argument('--meanteacher', default=0, type=int)
     parser.add_argument('--method', default='Attn', type=str)
-    parser.add_argument('--unlabel', default='Mix', type=str)
+    parser.add_argument('--unlabel', default='All', type=str)
     parser.add_argument('--data', default='fakehealth', type=str)
     #for mean teacher 
     parser.add_argument('--ratio', default=0.5, type=float)
@@ -28,6 +28,7 @@ if __name__ == '__main__':
     parser.add_argument('--noise_ratio', type=float, default=0.2)
     args = parser.parse_args()
     path= 'Data/Processed/'+args.data+'/'
+    print(args)
 
     for i in range(5):
         x_train = np.load(path + 'train_' + str(i) + '_x.npy', allow_pickle=True)
@@ -46,6 +47,7 @@ if __name__ == '__main__':
         print('train data size:', np.shape(x_train))
         print('train data True/Fake count:', np.count_nonzero(y_train), len(y_train) - np.count_nonzero(y_train))
         print('val data size:', np.shape(x_val))
+        print('val data True/Fake count:', np.count_nonzero(y_val), len(y_val) - np.count_nonzero(y_val))
 
         print('test data size:', np.shape(x_test))
         print('test data True/Fake count:', np.count_nonzero(y_test), len(y_test) - np.count_nonzero(y_test))
@@ -63,8 +65,6 @@ if __name__ == '__main__':
             x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization(comp_article,x_train, x_val, x_test, x_unlabel,args.maxlen)
         # train_supervised(epochs, batch_size, lr,x_train, y_train, x_test, y_test,maxlen,vocab_size)
         # calling model according to inputs
-        print(args.meanteacher )
-        print(type(args.meanteacher) )
         if (args.meanteacher == 0):
             train_supervised(args,args.epochs, args.batch_size, args.lr, x_train, y_train, x_val, y_val, x_test, y_test, args.maxlen, vocab_size)
         elif (args.meanteacher == 1):

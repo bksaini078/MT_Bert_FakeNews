@@ -14,6 +14,7 @@ def report_writing(args,Model,lr,Batch_Size, Epoch,Alpha,Ratio, train_accuracy,t
     elif args.meanteacher==1:
         report_name='BiLSTM-'+args.method+'-MT-'+args.unlabel+'.csv'
     my_file = Path('Reports/'+args.data+'/' + report_name)
+    print(my_file)
     if my_file.exists():
         report_df.to_csv(my_file,mode='a', header= False , index = False)
     else:
