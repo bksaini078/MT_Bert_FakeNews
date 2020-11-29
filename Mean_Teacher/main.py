@@ -55,19 +55,21 @@ if __name__ == '__main__':
         y_val = to_categorical ( y_val )
         y_test = to_categorical ( y_test )
 
-        if args.method =='BERT':
+        if args.method =='BERT'and args.model!= 2:
             x_train, vocab_size, tokenizer = bert_tokenization(x_train, args.maxlen)
             x_val, _, _ = bert_tokenization(x_val, args.maxlen)
             x_test, _, _ = bert_tokenization(x_test, args.maxlen)
             x_unlabel, _, _ = bert_tokenization( x_unlabel, args.maxlen)
-        elif args.method=='Attn' and args.model != 2:
+        elif args.method=='Attn' and args.model!= 2:
             comp_article= complete_article(path)
             x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization\
                 (comp_article,x_train, x_val, x_test, x_unlabel,args.maxlen)
         elif args.model==2:
             comp_article= complete_article(path)
+            # print('model 2')
             x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization_emb\
                 (comp_article,x_train, x_val, x_test, x_unlabel,args.maxlen)
+            print(np.shape(x_train))
         else:
             print('No correct model or method is selected')
 
@@ -79,7 +81,7 @@ if __name__ == '__main__':
             MeanTeacher(args, args.epochs, args.batch_size, args.alpha, args.lr, args.ratio, args.noise_ratio,
                         x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.maxlen)
         elif (args.model == 2) :
-            training_pi(args.epochs, x_train,y_train, x_val, y_val, x_test, y_test, x_unlabel,args.lr,args.batch_size)
+            training_pi(args,args.epochs, x_train,y_train, x_val, y_val, x_test, y_test, x_unlabel,args.lr,args.batch_size)
 
         else :
             print("No Mean teacher for given argument")

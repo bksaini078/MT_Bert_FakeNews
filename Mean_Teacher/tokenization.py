@@ -1,6 +1,7 @@
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing import sequence
 import numpy as np
+import tensorflow as tf
 
 def complete_article(path):
     full_article_t=[]
