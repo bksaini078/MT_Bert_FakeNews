@@ -130,12 +130,12 @@ def MeanTeacher(args, epochs, batch_size, alpha, lr, ratio, noise_ratio, x_train
         # print('*******STUDENT*************')
         # prec_rec_f1score(y_val, x_val, student)
         print('*******TEACHER*************')
-        prec_rec_f1score(y_val, x_val, teacher)
+        prec_rec_f1score(args,y_val, x_val, teacher)
 
         if  epoch %1 == 0:
             # print('---------------------------STUDENT--------------------------')
             # test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score(
-            #     y_test, x_test, student)
+            #     args,y_test, x_test, student)
             # report_writing(args,'Student', lr, batch_size, epoch, alpha, ratio, train_acc.numpy(),
             #                test_accuracy, precision_true, precision_fake, recall_true, recall_fake,
             #                f1score_true, f1score_fake, AUC, 'BiLSTM-'+args.method+'-MT-'+args.unlabel)
@@ -144,7 +144,7 @@ def MeanTeacher(args, epochs, batch_size, alpha, lr, ratio, noise_ratio, x_train
             print('---------------------------TEACHER---------------------------------')
 
             test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score(
-                y_test, x_test, teacher)
+                args,y_test, x_test, teacher)
 
 
             print('*'*80)

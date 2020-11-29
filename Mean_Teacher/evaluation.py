@@ -5,8 +5,14 @@ from sklearn import metrics
 import tensorflow as tf
 
 
-def prec_rec_f1score(y_true,x_test,model):
-    y_hat= model.predict(x_test)
+def prec_rec_f1score(args,y_true,x_test,model):
+
+    if args.model==2:
+        z_labeled, z_unlabeled = model.predict(x_test)
+        # added this one to take average decision.
+        y_hat = tf.keras.layers.Average () ( [z_labeled, z_unlabeled] )
+    else:
+        y_hat= model.predict(x_test)
     y_pred=tf.argmax(y_hat,1)
     y_true=tf.argmax(y_true,1)
 
