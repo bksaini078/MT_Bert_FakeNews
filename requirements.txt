@@ -2,3 +2,4 @@ tensorflow==2.4.0
 transformers==4.0.1
 keras== 2.4.3
 clean_text==0.3.0
+tf_nightly == 2.4.0

@@ -1,8 +1,12 @@
 import numpy as np
+import tensorflow as tf
 from cleantext import clean
 from keras.utils import to_categorical
+from tensorflow import keras
+from tensorflow.keras import layers
 from tqdm import tqdm
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, TFAutoModel
+from transformers.modeling_tf_utils import get_initializer
 
 
 def clean_helper(text):
@@ -26,23 +30,27 @@ def clean_helper(text):
 
 
 class NewsExample:
-    def __init__(self, title, content, max_len, tokenizer):
+    def __init__(self, title, content, label, max_len, tokenizer):
         self.title = title
         self.content = content
         self.tokenizer = tokenizer
         self.max_len = max_len
+        self.label = label
         self.skip = False
+        self.label2id = {'fake': 0, 'true': 1}
 
     def preprocess(self):
         title = self.title
         content = self.content
         tokenizer = self.tokenizer
         max_len = self.max_len
+        self.label = self.label2id[self.label]
 
-        # Clean context, answer and question
-        # TODO
+        # Clean content and title
+        content = clean_helper(content)
+        title = clean_helper(title)
 
-        # Tokenize title
+        # Tokenize title and content by adding SEP
         tokenized_text = tokenizer(title, content, add_special_tokens=True,
                                    max_length=max_len,
                                    padding='max_length',
@@ -56,7 +64,8 @@ class NewsExample:
 def create_news_examples(data, max_len, tokenizer):
     news_exps = []
     for idx, row in tqdm(data.iterrows(), total=len(data)):
-        news_exp = NewsExample(title=row["title"], content=row["content"], max_len=max_len, tokenizer=tokenizer)
+        news_exp = NewsExample(title=row["title"], content=row["content"], label=row["label"], max_len=max_len,
+                               tokenizer=tokenizer)
         news_exp.preprocess()
         news_exps.append(news_exp)
     return news_exps
@@ -66,6 +75,7 @@ def create_inputs_targets(news_exps):
     dataset_dict = {
         "input_ids": [],
         "attention_mask": [],
+        "label": []
     }
     for item in news_exps:
         if item.skip == False:
@@ -78,7 +88,7 @@ def create_inputs_targets(news_exps):
         dataset_dict["input_ids"],
         dataset_dict["attention_mask"],
     ]
-    y = to_categorical(dataset_dict["labels"])
+    y = to_categorical(dataset_dict["label"])
     return x, y
 
 
@@ -87,8 +97,38 @@ class BERT:
         self.pretrained_model = args.pretrained_model
         self.max_len = args.max_len
         self.tokenizer = AutoTokenizer.from_pretrained(self.pretrained_model)
+        self.dropout = tf.keras.layers.Dropout(args.dropout)
+        self.classifier = tf.keras.layers.Dense(2, kernel_initializer=get_initializer(),
+                                                name="classifier"
+                                                )  # 2 labels classifier
+
+    def create_model(self):
+        encoder = TFAutoModel.from_pretrained(self.pretrained_model)
+
+        input_ids = layers.Input(shape=(self.max_len,), dtype=tf.int32)
+        attention_mask = layers.Input(shape=(self.max_len), dtype=tf.int32)
+
+        outputs = encoder(input_ids, attention_mask=attention_mask)[1]
+        pooled_output = self.dropout(outputs, training=True)
+        logits = self.classifier(pooled_output)
+
+        model = keras.Model(inputs=(input_ids, attention_mask),
+                            outputs=[logits])
+        optimizer = keras.optimizers.Adam(lr=2e-5)
+        model.compile(optimizer=optimizer, loss='binary_crossentropy')
+        return model
 
     def train(self, train_data):
         train_data = create_news_examples(train_data, self.max_len, self.tokenizer)
         x_train, y_train = create_inputs_targets(train_data)
-        print(f"{len(x_train)} training points created.")
+        num_gpu = len(tf.config.experimental.list_physical_devices('GPU'))
+
+        if num_gpu > 0:
+            with tf.device('/GPU:0'):
+                model = self.create_model()
+        else:
+            model = self.create_model()
+
+        print(model.summary())
+
+        model.fit(x_train, y_train, epochs=3, verbose=2, batch_size=2)

@@ -34,6 +34,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_folder', type=str)
     parser.add_argument('--model_output_folder', type=str)
     parser.add_argument('--max_len', type=int)
+    parser.add_argument('--dropout', type=float)
     parser.add_argument('--do_train', action='store_true')
 
     args = parser.parse_args()
