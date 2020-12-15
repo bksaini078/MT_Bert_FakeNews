@@ -114,8 +114,8 @@ class BERT:
 
         model = keras.Model(inputs=(input_ids, attention_mask),
                             outputs=[logits])
-        optimizer = keras.optimizers.Adam(lr=2e-5)
-        model.compile(optimizer=optimizer, loss='binary_crossentropy')
+        optimizer = keras.optimizers.Adam(lr=2e-5, clipvalue=1)
+        model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
         return model
 
     def train(self, train_data):
@@ -124,11 +124,13 @@ class BERT:
         num_gpu = len(tf.config.experimental.list_physical_devices('GPU'))
 
         if num_gpu > 0:
+            print("GPU is found")
             with tf.device('/GPU:0'):
                 model = self.create_model()
         else:
+            print("Training with CPU")
             model = self.create_model()
 
         print(model.summary())
 
-        model.fit(x_train, y_train, epochs=3, verbose=2, batch_size=2)
+        model.fit(x_train, y_train, epochs=3, verbose=1, batch_size=2)
