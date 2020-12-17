@@ -8,6 +8,8 @@ from tqdm import tqdm
 from transformers import AutoTokenizer, TFAutoModel
 from transformers.modeling_tf_utils import get_initializer
 
+from logger import logger
+
 
 def clean_helper(text):
     return clean(text,
@@ -60,6 +62,10 @@ class NewsExample:
         self.input_ids = tokenized_text['input_ids']
         self.attention_mask = tokenized_text['attention_mask']
 
+    @staticmethod
+    def convert_label2id(label):
+        return 'fake' if int(label) == 0 else 'true'
+
 
 def create_news_examples(data, max_len, tokenizer):
     news_exps = []
@@ -101,6 +107,11 @@ class BERT:
         self.classifier = tf.keras.layers.Dense(2, kernel_initializer=get_initializer(),
                                                 name="classifier"
                                                 )  # 2 labels classifier
+        self.epochs = args.epochs
+        self.batch_size = args.batch_size
+        self.lr = args.lr
+        self.model = None
+        self.softmax_layer = tf.keras.layers.Softmax()
 
     def create_model(self):
         encoder = TFAutoModel.from_pretrained(self.pretrained_model)
@@ -114,7 +125,7 @@ class BERT:
 
         model = keras.Model(inputs=(input_ids, attention_mask),
                             outputs=[logits])
-        optimizer = keras.optimizers.Adam(lr=2e-5, clipvalue=1)
+        optimizer = keras.optimizers.Adam(lr=self.lr, clipvalue=1)
         model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
         return model
 
@@ -124,13 +135,40 @@ class BERT:
         num_gpu = len(tf.config.experimental.list_physical_devices('GPU'))
 
         if num_gpu > 0:
-            print("GPU is found")
+            logger.info("GPU is found")
             with tf.device('/GPU:0'):
-                model = self.create_model()
+                self.model = self.create_model()
         else:
-            print("Training with CPU")
-            model = self.create_model()
+            logger.info("Training with CPU")
+            self.model = self.create_model()
 
-        print(model.summary())
+        logger.info("=======Model Summary======")
+        logger.info(self.model.summary())
 
-        model.fit(x_train, y_train, epochs=3, verbose=1, batch_size=2)
+        self.model.fit(x_train, y_train, epochs=self.epochs, verbose=1, batch_size=self.batch_size)
+
+    def predict(self, test_data):
+        test_data = create_news_examples(test_data, self.max_len, self.tokenizer)
+        x_test, y_test = create_inputs_targets(test_data)
+        predictions = self.model.predict(x_test, batch_size=self.batch_size)
+
+        probs = self.softmax_layer(predictions)
+        labels = np.argmax(probs, axis=1)
+        labels = [NewsExample.convert_label2id(label.item()) for label in labels]
+
+        return {'probs': probs,
+                'labels': labels}
+
+    def save_weights(self, fname):
+        self.model.save_weights(fname)
+
+    def load_weights(self, fname):
+        num_gpu = len(tf.config.experimental.list_physical_devices('GPU'))
+        if num_gpu > 0:
+            logger.info("GPU is found")
+            with tf.device('/GPU:0'):
+                self.model = self.create_model()
+        else:
+            logger.info("Training with CPU")
+            self.model = self.create_model()
+        self.model.load_weights(fname)
