@@ -6,7 +6,7 @@ from Supervised import train_supervised
 from keras.utils import to_categorical
 import numpy as np
 import tensorflow as tf
-from train_pi_model import training_pi
+from train_pi_model import train_Pimodel
 
 
 if __name__ == '__main__':
@@ -18,10 +18,12 @@ if __name__ == '__main__':
     parser.add_argument('--lr', default=0.0001, type=float)
     parser.add_argument('--epochs', default=1, type=int)
     parser.add_argument('--batch_size', default=64, type=int)
-    parser.add_argument('--maxlen', default=200, type=int)
+    parser.add_argument('--maxlen', default=600, type=int)
+    # Model 0 Supervised 1 Mean teacher 2 Pi Model
     parser.add_argument('--model', default=0, type=int)
+    # attention mechanism , BERT
     parser.add_argument('--method', default='Attn', type=str)
-    parser.add_argument('--unlabel', default='All', type=str)
+    # parser.add_argument('--unlabel', default='All', type=str)
     parser.add_argument('--data', default='fakehealth', type=str)
     #for mean teacher 
     parser.add_argument('--ratio', default=0.5, type=float)
@@ -40,11 +42,12 @@ if __name__ == '__main__':
 
         x_test = np.load(path + 'test_x.npy', allow_pickle=True)
         y_test = np.load(path + 'test_y.npy', allow_pickle=True)
+        x_unlabel = np.load ( path + 'unlabeled_x.npy', allow_pickle=True )
 
-        if args.unlabel=='Mix' :
-            x_unlabel = np.load(path + 'unlabeled_' + 'mix' + '_x.npy', allow_pickle=True)
-        elif args.unlabel=='All':
-            x_unlabel = np.load(path + 'unlabeled_' + 'all' + '_x.npy', allow_pickle=True)
+        # if args.unlabel=='Mix' :
+        #     x_unlabel = np.load(path + 'unlabeled_' + 'mix' + '_x.npy', allow_pickle=True)
+        # elif args.unlabel=='All':
+        #     x_unlabel = np.load(path + 'unlabeled_' + 'all' + '_x.npy', allow_pickle=True)
         print('train data size:', np.shape(x_train))
         print('train data True/Fake count:', np.count_nonzero(y_train), len(y_train) - np.count_nonzero(y_train))
         print('val data size:', np.shape(x_val))
@@ -64,12 +67,12 @@ if __name__ == '__main__':
             comp_article= complete_article(path)
             x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization\
                 (comp_article,x_train, x_val, x_test, x_unlabel,args.maxlen)
-        elif args.model==2:
-            comp_article= complete_article(path)
-            x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization_emb\
-                (comp_article,x_train, x_val, x_test, x_unlabel,args.maxlen)
+        # elif args.model==2:
+        #     comp_article= complete_article(path)
+        #     x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization_emb\
+        #         (comp_article,x_train, x_val, x_test, x_unlabel,args.maxlen)
         else:
-            print('No correct model or method is selected')
+            print('No correct model or method selected')
 
         # train_supervised(epochs, batch_size, lr,x_train, y_train, x_test, y_test,maxlen,vocab_size)
         # calling model according to inputs
@@ -79,7 +82,7 @@ if __name__ == '__main__':
             MeanTeacher(args, args.epochs, args.batch_size, args.alpha, args.lr, args.ratio, args.noise_ratio,
                         x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.maxlen)
         elif (args.model == 2) :
-            training_pi(args.epochs, x_train,y_train, x_val, y_val, x_test, y_test, x_unlabel,args.lr,args.batch_size)
+            train_Pimodel(args.epochs, x_train,y_train, x_val, y_val, x_test, y_test, x_unlabel,args.lr,args.batch_size)
 
         else :
             print("No Mean teacher for given argument")

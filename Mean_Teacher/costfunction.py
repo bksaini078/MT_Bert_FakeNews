@@ -41,8 +41,7 @@ def EMA(student_model, teacher_model, alpha) :
     teacher_weights = teacher_model.get_weights ()
 
     # length must be equal otherwise it will not work
-    assert len ( student_weights ) == len (
-        teacher_weights ), 'length of student and teachers weights are not equal Please check. \n Student: {}, \n Teacher:{}'.format (
+    assert len ( student_weights ) == len (teacher_weights ), 'length of student and teachers weights are not equal Please check. \n Student: {}, \n Teacher:{}'.format (
         len ( student_weights ), len ( teacher_weights ) )
 
     new_layers = []
