@@ -19,6 +19,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', default=1, type=int)
     parser.add_argument('--batch_size', default=64, type=int)
     parser.add_argument('--maxlen', default=200, type=int)
+    #Model is 
     parser.add_argument('--model', default=0, type=int)
     parser.add_argument('--method', default='Attn', type=str)
     parser.add_argument('--unlabel', default='All', type=str)
