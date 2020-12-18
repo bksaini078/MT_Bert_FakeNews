@@ -1,5 +1,5 @@
 from sklearn.metrics import precision_recall_fscore_support
-import numpy as np
+
 from sklearn.metrics import accuracy_score
 from sklearn import metrics
 import tensorflow as tf

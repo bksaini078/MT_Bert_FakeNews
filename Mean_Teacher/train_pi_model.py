@@ -1,15 +1,7 @@
 import tensorflow as tf
-import tensorflow.keras as tfk
-from tensorflow.keras.layers import Input, Embedding, LSTM, Dense, Lambda
-from tensorflow.keras.models import Model
+
 import numpy as np
-from tensorflow import keras
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.layers import *
-import tensorflow.keras.backend as K
-from tensorflow.keras import regularizers
+
 #this is to enable eager execution
 tf.compat.v1.enable_eager_execution()
 
