@@ -17,25 +17,31 @@ MODELS = {
 
 
 def run(args):
-    data_dir = Path(args.data_folder) / args.data
+    data_folder = Path(args.data_folder)
+    data_dir = data_folder / args.data
     model_output_dir = Path(args.model_output_folder)
     model_output_dir.mkdir(parents=True, exist_ok=True)
     ensure_reproducibility(args.seed)
     model = MODELS[args.model](args)
 
+    test_fname = data_dir / 'test.tsv'
+    test_data = pd.read_csv(test_fname, sep='\t')
+
+    model_name = f'{model_output_dir}/{args.pretrained_model}_seed_{args.seed}_portion_{data_folder.name}_{data_dir.name}.model'
+    results_name = f'{model_output_dir}/{args.pretrained_model}_seed_{args.seed}_portion_{data_folder.name}_{data_dir.name}_results.tsv'
     if args.do_train:
         train_fname = data_dir / 'train.tsv'
         train_data = pd.read_csv(train_fname, sep='\t')
-        model.train(train_data=train_data)
-        model.save_weights(f'{model_output_dir}/{args.model}.h5')
+        model.train(train_data=train_data, test_data=test_data)
+        model.save_weights(model_name)
+        logger.info(f"Model saved to {model_name}")
 
-    model.load_weights(f'{model_output_dir}/{args.model}.h5')
-    test_fname = data_dir / 'test.tsv'
-    test_data = pd.read_csv(test_fname, sep='\t')
+    model.load_weights(model_name)
+    logger.info(f"Model loaded from {model_name}")
     results = model.predict(test_data)
     logger.info("=======Test Results======")
     logger.info(classification_report(y_true=test_data['label'], y_pred=results['labels'], digits=4))
-    pd.DataFrame(results).to_csv(f'{model_output_dir}/{args.model}.results.tsv')
+    pd.DataFrame(results['labels']).to_csv(results_name)
 
 
 def ensure_reproducibility(random_seed):
@@ -46,8 +52,8 @@ def ensure_reproducibility(random_seed):
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--model', type=str, choices=['bert'])
-    parser.add_argument('--pretrained_model', type=str, choices=['bert-base-uncased'])
-    parser.add_argument('--data', type=str, choices=['fakehealth'])
+    parser.add_argument('--pretrained_model', type=str, choices=['bert-base-uncased', 'bert-base-cased'])
+    parser.add_argument('--data', type=str, choices=['fakehealth', 'gossipcop'])
     parser.add_argument('--data_folder', type=str)
     parser.add_argument('--model_output_folder', type=str)
     parser.add_argument('--max_len', type=int)

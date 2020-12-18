@@ -6,7 +6,6 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tqdm import tqdm
 from transformers import AutoTokenizer, TFAutoModel
-from transformers.modeling_tf_utils import get_initializer
 
 from logger import logger
 
@@ -58,9 +57,11 @@ class NewsExample:
                                    padding='max_length',
                                    truncation=True,
                                    return_attention_mask=True,
+                                   return_token_type_ids=True
                                    )
         self.input_ids = tokenized_text['input_ids']
         self.attention_mask = tokenized_text['attention_mask']
+        self.token_type_ids = tokenized_text['token_type_ids']
 
     @staticmethod
     def convert_label2id(label):
@@ -81,6 +82,7 @@ def create_inputs_targets(news_exps):
     dataset_dict = {
         "input_ids": [],
         "attention_mask": [],
+        "token_type_ids": [],
         "label": []
     }
     for item in news_exps:
@@ -93,6 +95,7 @@ def create_inputs_targets(news_exps):
     x = [
         dataset_dict["input_ids"],
         dataset_dict["attention_mask"],
+        dataset_dict["token_type_ids"]
     ]
     y = to_categorical(dataset_dict["label"])
     return x, y
@@ -104,7 +107,7 @@ class BERT:
         self.max_len = args.max_len
         self.tokenizer = AutoTokenizer.from_pretrained(self.pretrained_model)
         self.dropout = tf.keras.layers.Dropout(args.dropout)
-        self.classifier = tf.keras.layers.Dense(2, kernel_initializer=get_initializer(),
+        self.classifier = tf.keras.layers.Dense(2, activation='softmax',
                                                 name="classifier"
                                                 )  # 2 labels classifier
         self.epochs = args.epochs
@@ -113,23 +116,25 @@ class BERT:
         self.model = None
         self.softmax_layer = tf.keras.layers.Softmax()
 
-    def create_model(self):
+    def create_model(self, training=True):
         encoder = TFAutoModel.from_pretrained(self.pretrained_model)
 
         input_ids = layers.Input(shape=(self.max_len,), dtype=tf.int32)
         attention_mask = layers.Input(shape=(self.max_len), dtype=tf.int32)
+        token_type_ids = layers.Input(shape=(self.max_len,), dtype=tf.int32)
 
-        outputs = encoder(input_ids, attention_mask=attention_mask)[1]
-        pooled_output = self.dropout(outputs, training=True)
+        doc_encoding = encoder(input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids)[0]
+        doc_encoding = tf.squeeze(doc_encoding[:, 0:1, :], axis=1)
+        pooled_output = self.dropout(doc_encoding, training=training)
         logits = self.classifier(pooled_output)
 
-        model = keras.Model(inputs=(input_ids, attention_mask),
+        model = keras.Model(inputs=(input_ids, attention_mask, token_type_ids),
                             outputs=[logits])
-        optimizer = keras.optimizers.Adam(lr=self.lr, clipvalue=1)
+        optimizer = keras.optimizers.Adam(lr=self.lr)
         model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
         return model
 
-    def train(self, train_data):
+    def train(self, train_data, test_data):
         train_data = create_news_examples(train_data, self.max_len, self.tokenizer)
         x_train, y_train = create_inputs_targets(train_data)
         num_gpu = len(tf.config.experimental.list_physical_devices('GPU'))
@@ -145,30 +150,26 @@ class BERT:
         logger.info("=======Model Summary======")
         logger.info(self.model.summary())
 
-        self.model.fit(x_train, y_train, epochs=self.epochs, verbose=1, batch_size=self.batch_size)
+        callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=2)
+        self.model.fit(x_train, y_train, epochs=self.epochs, verbose=1, batch_size=self.batch_size,
+                       validation_split=0.1, callbacks=[callback])
 
     def predict(self, test_data):
         test_data = create_news_examples(test_data, self.max_len, self.tokenizer)
         x_test, y_test = create_inputs_targets(test_data)
+        self.model.trainable = False
         predictions = self.model.predict(x_test, batch_size=self.batch_size)
 
-        probs = self.softmax_layer(predictions)
-        labels = np.argmax(probs, axis=1)
+        labels = np.argmax(predictions, axis=1)
         labels = [NewsExample.convert_label2id(label.item()) for label in labels]
 
-        return {'probs': probs,
+        return {'probs': predictions,
                 'labels': labels}
 
     def save_weights(self, fname):
         self.model.save_weights(fname)
+        del self.model
 
     def load_weights(self, fname):
-        num_gpu = len(tf.config.experimental.list_physical_devices('GPU'))
-        if num_gpu > 0:
-            logger.info("GPU is found")
-            with tf.device('/GPU:0'):
-                self.model = self.create_model()
-        else:
-            logger.info("Training with CPU")
-            self.model = self.create_model()
+        self.model = self.create_model(training=False)
         self.model.load_weights(fname)
