@@ -242,7 +242,13 @@ class PiModel(tf.keras.Model):
                                                         bias_initializer=tf.keras.initializers.constant(
                                                             0.1),
                                                         weight_norm=True, mean_only_batch_norm=True)
-
+        # self._dense_sup =tf.keras.layers.Dense(units=2, activation=tf.nn.softmax,
+        #                                              kernel_initializer=tf.keras.initializers.he_uniform(),
+        #                                              bias_initializer=tf.keras.initializers.constant(0.1))
+        # self._dense_unsup =tf.keras.layers.Dense(units=2, activation=tf.nn.softmax,
+        #                                              kernel_initializer=tf.keras.initializers.he_uniform(),
+        #                                              bias_initializer=tf.keras.initializers.constant(0.1))
+        
         self._dense_sup =Dense.Dense(units=2, activation=tf.nn.softmax,
                                                      kernel_initializer=tf.keras.initializers.he_uniform(),
                                                      bias_initializer=tf.keras.initializers.constant(

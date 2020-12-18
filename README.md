@@ -33,7 +33,7 @@ pip3 install -r requirements.txt
 |--epochs | epochs| 10|
 |--batch_size | Batch size | 64|
 |--maxlen | Lenght of article for tokens | 100|
-|--meanteacher | Meanteacher(1) or supervised(0) |0| 
+|--model | Meanteacher(1) or supervised(0) or Deep two step(2)|0| 
 |--method | Attention or BERT | Attn|
 |--unlabel | All or Mix | All|
 |--data | fakehealth or politifact or gossipcop | fakehealth|

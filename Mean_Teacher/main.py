@@ -18,8 +18,13 @@ if __name__ == '__main__':
     parser.add_argument('--lr', default=0.0001, type=float)
     parser.add_argument('--epochs', default=1, type=int)
     parser.add_argument('--batch_size', default=64, type=int)
+<<<<<<< HEAD
     parser.add_argument('--maxlen', default=600, type=int)
     # Model 0 Supervised 1 Mean teacher 2 Pi Model
+=======
+    parser.add_argument('--maxlen', default=200, type=int)
+    #Model is 
+>>>>>>> a111a2f77d44c52c0dadf2e832e4c9dfc2263b7c
     parser.add_argument('--model', default=0, type=int)
     # attention mechanism , BERT
     parser.add_argument('--method', default='Attn', type=str)
@@ -58,19 +63,28 @@ if __name__ == '__main__':
         y_val = to_categorical ( y_val )
         y_test = to_categorical ( y_test )
 
-        if args.method =='BERT':
+        if args.method =='BERT'and args.model!= 2:
             x_train, vocab_size, tokenizer = bert_tokenization(x_train, args.maxlen)
             x_val, _, _ = bert_tokenization(x_val, args.maxlen)
             x_test, _, _ = bert_tokenization(x_test, args.maxlen)
             x_unlabel, _, _ = bert_tokenization( x_unlabel, args.maxlen)
-        elif args.method=='Attn' and args.model != 2:
+        elif args.method=='Attn' and args.model!= 2:
             comp_article= complete_article(path)
             x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization\
                 (comp_article,x_train, x_val, x_test, x_unlabel,args.maxlen)
+<<<<<<< HEAD
         # elif args.model==2:
         #     comp_article= complete_article(path)
         #     x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization_emb\
         #         (comp_article,x_train, x_val, x_test, x_unlabel,args.maxlen)
+=======
+        elif args.model==2:
+            comp_article= complete_article(path)
+            # print('model 2')
+            x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization_emb\
+                (comp_article,x_train, x_val, x_test, x_unlabel,args.maxlen)
+            print(np.shape(x_train))
+>>>>>>> a111a2f77d44c52c0dadf2e832e4c9dfc2263b7c
         else:
             print('No correct model or method selected')
 
@@ -82,7 +96,11 @@ if __name__ == '__main__':
             MeanTeacher(args, args.epochs, args.batch_size, args.alpha, args.lr, args.ratio, args.noise_ratio,
                         x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.maxlen)
         elif (args.model == 2) :
+<<<<<<< HEAD
             train_Pimodel(args.epochs, x_train,y_train, x_val, y_val, x_test, y_test, x_unlabel,args.lr,args.batch_size)
+=======
+            training_pi(args,args.epochs, x_train,y_train, x_val, y_val, x_test, y_test, x_unlabel,args.lr,args.batch_size)
+>>>>>>> a111a2f77d44c52c0dadf2e832e4c9dfc2263b7c
 
         else :
             print("No Mean teacher for given argument")
