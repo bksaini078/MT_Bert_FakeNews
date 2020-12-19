@@ -14,7 +14,7 @@ from noise_creator import instant_noise
 from evaluation import prec_rec_f1score
 from pi_costfunction import pi_model_loss,ramp_down_function,ramp_up_function
 
-def train_Pimodel(args, epochs, batch_size, alpha, lr, ratio, x_train, y_train, x_val, y_val, x_test, y_test,
+def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val, x_test, y_test,
                       x_unlabel_tar, vocab_size, maxlen) :
     NUM_TRAIN_SAMPLES = np.shape ( x_train )[0]
     NUM_TEST_SAMPLES = np.shape ( x_test )[0]

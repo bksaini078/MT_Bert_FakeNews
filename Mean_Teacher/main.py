@@ -1,5 +1,5 @@
 import argparse
-from tokenization import tokenization,complete_article,tokenization_emb
+from tokenization import tokenization,complete_article
 from Bert_Tokenisation import bert_tokenization
 from MeanTeacher import MeanTeacher
 from Supervised import train_supervised
@@ -82,7 +82,7 @@ if __name__ == '__main__':
             MeanTeacher(args, args.epochs, args.batch_size, args.alpha, args.lr, args.ratio, args.noise_ratio,
                         x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.maxlen)
         elif (args.model == 2) :
-            train_Pimodel(args.epochs, x_train,y_train, x_val, y_val, x_test, y_test, x_unlabel,args.lr,args.batch_size)
+            train_Pimodel(args, args.epochs, args.batch_size,  args.lr, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.maxlen)
 
         else :
             print("No Mean teacher for given argument")

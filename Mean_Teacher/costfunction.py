@@ -6,19 +6,26 @@ def Classification_costs(logits, labels) :
     """ Commputing classification cost , after removing labels -1 of unlabelled data and then calculating
     the binary cross entropy .
     """
-    applicable = tf.not_equal ( labels, -1 )
+    # logits=tf.argmax(logits,1)
+    # print(logits)
+    # labels=tf.argmax(labels,1)
+    # print(np.shape(labels),np.shape( logits))
+    applicable = tf.not_equal(labels, -1)
 
     # Change -1s to zeros to make cross-entropy computable
-    labels = tf.where ( applicable, labels, tf.zeros_like ( labels ) )
+    labels = tf.where(applicable, labels, tf.zeros_like(labels))
 
     # This will now have incorrect values for unlabeled examples
-    per_sample = tf.keras.losses.binary_crossentropy ( labels, logits )
+    # per_sample = tf.keras.losses.binary_crossentropy( labels, logits )
+    # print(np.shape(labels),np.shape( logits))
+    per_sample= tf.keras.losses.categorical_crossentropy(labels, logits)
     # Retain costs only for labeled
-    per_sample = tf.where ( applicable, per_sample, tf.zeros_like ( per_sample ) )
+    # per_sample = tf.where(applicable, per_sample, tf.zeros_like(per_sample))
+    per_sample=tf.where(applicable[:,1], per_sample, tf.zeros_like(per_sample))
     # Take mean over all examples, not just labeled examples.
 
-    loss = tf.math.divide ( tf.reduce_mean ( tf.reduce_sum ( per_sample ) ), np.shape ( per_sample )[0] )
-
+    loss = tf.math.divide(tf.reduce_mean(tf.reduce_sum( per_sample ) ), np.shape ( per_sample )[0] )
+    
     return loss
 
 
@@ -29,9 +36,7 @@ def Overall_Cost(classification_cost, consistency_cost, ratio=0.5) :
 
 # function for consistency cost
 def Consistency_Cost(teacher_output, student_output) :
-     # MSE
-    sq_diff_layer = tf.reduce_mean ( tf.math.squared_difference ( teacher_output, student_output ) )
-    return sq_diff_layer
+    return tf.losses.mean_squared_error( teacher_output, student_output )
 
 
 def EMA(student_model, teacher_model, alpha) :
