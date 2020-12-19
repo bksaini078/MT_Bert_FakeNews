@@ -96,10 +96,108 @@
 #--seed 42 \
 #--do_train
 
+#python -m Mean_Teacher.clf.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/3' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 1 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.clf.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/4' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.clf.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/5' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.clf.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/6' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.clf.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/7' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.clf.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/8' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.clf.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/9' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+
 python -m Mean_Teacher.clf.main \
 --model bert \
 --data_folder 'Data/ExperimentFolds/3' \
---data gossipcop \
+--data politifact \
 --model_output_folder trained_models \
 --pretrained_model bert-base-cased \
 --max_len 512 \
@@ -113,7 +211,7 @@ python -m Mean_Teacher.clf.main \
 python -m Mean_Teacher.clf.main \
 --model bert \
 --data_folder 'Data/ExperimentFolds/4' \
---data gossipcop \
+--data politifact \
 --model_output_folder trained_models \
 --pretrained_model bert-base-cased \
 --max_len 512 \
@@ -127,7 +225,7 @@ python -m Mean_Teacher.clf.main \
 python -m Mean_Teacher.clf.main \
 --model bert \
 --data_folder 'Data/ExperimentFolds/5' \
---data gossipcop \
+--data politifact \
 --model_output_folder trained_models \
 --pretrained_model bert-base-cased \
 --max_len 512 \
@@ -141,7 +239,7 @@ python -m Mean_Teacher.clf.main \
 python -m Mean_Teacher.clf.main \
 --model bert \
 --data_folder 'Data/ExperimentFolds/6' \
---data gossipcop \
+--data politifact \
 --model_output_folder trained_models \
 --pretrained_model bert-base-cased \
 --max_len 512 \
@@ -155,7 +253,7 @@ python -m Mean_Teacher.clf.main \
 python -m Mean_Teacher.clf.main \
 --model bert \
 --data_folder 'Data/ExperimentFolds/7' \
---data gossipcop \
+--data politifact \
 --model_output_folder trained_models \
 --pretrained_model bert-base-cased \
 --max_len 512 \
@@ -169,7 +267,7 @@ python -m Mean_Teacher.clf.main \
 python -m Mean_Teacher.clf.main \
 --model bert \
 --data_folder 'Data/ExperimentFolds/8' \
---data gossipcop \
+--data politifact \
 --model_output_folder trained_models \
 --pretrained_model bert-base-cased \
 --max_len 512 \
@@ -183,7 +281,7 @@ python -m Mean_Teacher.clf.main \
 python -m Mean_Teacher.clf.main \
 --model bert \
 --data_folder 'Data/ExperimentFolds/9' \
---data gossipcop \
+--data politifact \
 --model_output_folder trained_models \
 --pretrained_model bert-base-cased \
 --max_len 512 \
