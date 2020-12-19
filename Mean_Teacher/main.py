@@ -1,5 +1,5 @@
 import argparse
-from tokenization import tokenization,complete_article
+from tokenization import tokenization
 from Bert_Tokenisation import bert_tokenization
 from MeanTeacher import MeanTeacher
 from Supervised import train_supervised
@@ -7,6 +7,7 @@ from keras.utils import to_categorical
 import numpy as np
 import tensorflow as tf
 from train_pi_model import train_Pimodel
+from sklearn.model_selection import train_test_split
 
 
 if __name__ == '__main__':
@@ -33,16 +34,29 @@ if __name__ == '__main__':
     path= 'Data/Processed/'+args.data+'/'
     print(args)
 
-    for i in range(5):
-        x_train = np.load(path + 'train_' + str(i) + '_x.npy', allow_pickle=True)
-        y_train = np.load(path + 'train_' + str(i) + '_y.npy', allow_pickle=True)
+    for i in range(1):
+        x_train= np.load(path+'train_x.npy', allow_pickle=True)
+        y_train= np.load(path+'train_y.npy', allow_pickle=True)
 
-        x_val = np.load(path + 'dev_' + str(i) + '_x.npy', allow_pickle=True)
-        y_val = np.load(path + 'dev_' + str(i) + '_y.npy', allow_pickle=True)
+        x_train, x_val, y_train, y_val = train_test_split(x_train,y_train, test_size=0.20, random_state=42)
+        print(np.shape(y_train))
+        x_test= np.load(path+'test_x.npy', allow_pickle=True)
 
-        x_test = np.load(path + 'test_x.npy', allow_pickle=True)
-        y_test = np.load(path + 'test_y.npy', allow_pickle=True)
-        x_unlabel = np.load ( path + 'unlabeled_x.npy', allow_pickle=True )
+        y_test= np.load(path+'test_y.npy', allow_pickle=True)
+        x_unlabel= np.load(path+'unlabel_x.npy', allow_pickle=True)
+        comp_article= np.hstack((x_train, x_val, x_test, x_unlabel))
+
+        # x_train = np.load(path + 'train_' + str(i) + '_x.npy', allow_pickle=True)
+        # y_train = np.load(path + 'train_' + str(i) + '_y.npy', allow_pickle=True)
+        # x_train = np.load(path + 'train_x.npy', allow_pickle=True)
+        # y_train = np.load(path + 'train_y.npy', allow_pickle=True)
+
+        # x_val = np.load(path + 'dev_' + str(i) + '_x.npy', allow_pickle=True)
+        # y_val = np.load(path + 'dev_' + str(i) + '_y.npy', allow_pickle=True)
+
+        # x_test = np.load(path + 'test_x.npy', allow_pickle=True)
+        # y_test = np.load(path + 'test_y.npy', allow_pickle=True)
+        # x_unlabel = np.load ( path + 'unlabeled_x.npy', allow_pickle=True )
 
         # if args.unlabel=='Mix' :
         #     x_unlabel = np.load(path + 'unlabeled_' + 'mix' + '_x.npy', allow_pickle=True)
@@ -63,8 +77,8 @@ if __name__ == '__main__':
             x_val, _, _ = bert_tokenization(x_val, args.maxlen)
             x_test, _, _ = bert_tokenization(x_test, args.maxlen)
             x_unlabel, _, _ = bert_tokenization( x_unlabel, args.maxlen)
-        elif args.method=='Attn' and args.model != 2:
-            comp_article= complete_article(path)
+        elif args.method=='Attn' :
+            # comp_article= complete_article(path)
             x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization\
                 (comp_article,x_train, x_val, x_test, x_unlabel,args.maxlen)
         # elif args.model==2:

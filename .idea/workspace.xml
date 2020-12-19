@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1cd9cd30-ffdc-479f-b70d-038c8be8de28" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mean_Teacher/costfunction.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/costfunction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mean_Teacher/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mean_Teacher/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mean_Teacher/train_pi_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/train_pi_model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,6 +184,10 @@
       <screen x="1280" y="32" width="1360" height="768" />
     </state>
     <state x="1693" y="201" key="#com.intellij.fileTypes.FileTypeChooser/1280.32.1360.768/0.0.1280.800@1280.32.1360.768" timestamp="1606261680589" />
+    <state x="405" y="182" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1608345909975">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="405" y="182" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1440.900@0.0.1440.900" timestamp="1608345909975" />
     <state x="1662" y="229" width="595" height="382" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1606253396710">
       <screen x="1280" y="32" width="1360" height="768" />
     </state>
