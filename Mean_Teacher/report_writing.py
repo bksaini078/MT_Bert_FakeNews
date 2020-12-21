@@ -9,13 +9,7 @@ def report_writing(args,Model,lr,Batch_Size, Epoch,Alpha,Ratio, train_accuracy,t
                                       'comment'])
     report_df = report_df.append({'Date' : x.strftime("%c"), 'Model' :Model,'Learning Rate':lr,'Batch_Size' : Batch_Size, 'Epoch': Epoch,'Alpha': Alpha,'Ratio': Ratio,'Train_Accuracy': train_accuracy,
                                   'Test_Accuracy': test_accuracy, 'Precision_True': precision_true,'Precision_Fake': precision_fake,'Recall_True': recall_true,'Recall_Fake': recall_fake,'F1_Score_True': f1score_true,'F1_Score_Fake': f1score_fake, 'AUC':AUC,'comment': comment}, ignore_index=True)  #my_file = Path(path+'/report_synonym_unlabelledDifference_0.99_max_len.csv')
-    if args.model==0:
-        report_name= 'BiLSTM-'+args.method+'.csv'
-    elif args.model==1:
-        report_name='BiLSTM-'+args.method+'-MT-'+args.unlabel+'.csv'
-    elif args.model==2:
-        report_name='Deep_pi.csv'
-    my_file = Path('Reports/'+args.data+'/' + report_name)
+    my_file = Path('Reports/'+args.data+'/' + args.model+'_'+args.method+'.csv')
     print(my_file)
     if my_file.exists():
         report_df.to_csv(my_file,mode='a', header= False , index = False)

@@ -10,8 +10,7 @@ from evaluation import prec_rec_f1score
 from pi_costfunction import pi_model_loss,ramp_down_function,ramp_up_function
 from clf.bert import  BERT
 
-def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val, x_test, y_test,
-                      x_unlabel_tar,vocab_size, max_len) :
+def train_Pimodel(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar,vocab_size, max_len) :
     NUM_TRAIN_SAMPLES = np.shape ( x_train )[0]
     NUM_TEST_SAMPLES = np.shape ( x_test )[0]
 
@@ -42,7 +41,6 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
         print('Either correct model name ')
 
     train_metrics = tf.keras.metrics.Accuracy ()
-
 
     print ( num_labeled_samples, NUM_TRAIN_SAMPLES )
     max_unsupervised_weight = 100 * num_labeled_samples * (NUM_TRAIN_SAMPLES)
@@ -95,16 +93,14 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
         
         # Run a validation loop at the end of each epoch.
         print ( '*******Pi_Model*************' )
-        prec_rec_f1score ( args,y_val, x_val, student )
+        prec_rec_f1score(args,y_val, x_val, student )
 
-        if epoch % 10 == 0 :
-            print ( '---------------------------Pi Model TEST--------------------------' )
-            test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score (args,
-                y_test, x_test, student )
-            #  report_writing(args,'Teacher', lr, batch_size, epoch, alpha, ratio, train_acc.numpy(),test_accuracy,
-            #  precision_true, precision_fake, recall_true, recall_fake,f1score_true, f1score_fake, AUC,
-            #  'BiLSTM-PI-')
-            print ( '-----------------------------------------------------------------' )
+        print ( '---------------------------Pi Model TEST--------------------------' )
+        test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score (args,
+            y_test, x_test, student )
+        report_writing(args,args.model+'_'+args.method, args.lr, args.batch_size, args.epochs, args.alpha, args.ratio, train_acc.numpy(),test_accuracy,
+                       precision_true, precision_fake, recall_true, recall_fake,f1score_true, f1score_fake, AUC, args.data)
+        print ( '-----------------------------------------------------------------' )
     tf.keras.backend.clear_session ()
     return student
 

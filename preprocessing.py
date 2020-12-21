@@ -63,13 +63,13 @@ def processing(args):
             np.save ( path_save + f + '_y.npy', tf.one_hot ( np.array ( df_1['label'].values ), 1 ) )
         else :
             print ( f )
-            df = pd.read_csv ( path + f, sep='\t', header='infer', usecols=["title", "text"] )
+            df = pd.read_csv ( path + f, sep='\t', header='infer', usecols=["title", "content", "label"] )
             df = df.reset_index ( drop=True )
-            df['Article'] = df['title'].str.cat ( df['text'], sep=" " )
-            df = df.drop ( ['title', 'text'], axis=1 )
+            df['content'] = df['title'].str.cat ( df['content'], sep=" " )
+            df = df.drop ( ['title'], axis=1 )
             df_1 = data_preprocessing ( df )
             f = f.split ( '.' )[0]
-            np.save ( path_save + f + '_x.npy', df_1['Article'] )
+            np.save ( path_save + f + '_x.npy', df_1['content'] )
     return
 if __name__ == '__main__':
     parser= argparse.ArgumentParser()

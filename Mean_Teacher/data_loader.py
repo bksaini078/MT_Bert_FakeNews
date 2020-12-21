@@ -7,7 +7,6 @@ from transformers import AutoTokenizer, TFAutoModel
 import pandas as pd
 
 def data_load(args,path):
-
     x_train = np.load ( path + 'train_x.npy', allow_pickle=True )
     y_train = np.load ( path + 'train_y.npy', allow_pickle=True )
     # this we need when we are not having seperate val data TODO

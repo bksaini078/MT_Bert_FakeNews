@@ -25,10 +25,10 @@ def tokenization(full_article_temp,x_train, x_val,  x_test, x_unlabel, max_len )
     x_val_token = tokenizer.texts_to_sequences(x_val)
     x_unlabel_token = tokenizer.texts_to_sequences(x_unlabel)
 
-    x_train_seq = sequence.pad_sequences(x_train_token, max_len=max_len,padding='post')
-    x_test_seq = sequence.pad_sequences(x_test_token, max_len=max_len,padding='post')
-    x_val_seq = sequence.pad_sequences(x_val_token, max_len=max_len,padding='post')
-    x_unlabel_tar= sequence.pad_sequences(x_unlabel_token, max_len=max_len,padding='post')
+    x_train_seq = sequence.pad_sequences(x_train_token, maxlen=max_len,padding='post')
+    x_test_seq = sequence.pad_sequences(x_test_token, maxlen=max_len,padding='post')
+    x_val_seq = sequence.pad_sequences(x_val_token, maxlen=max_len,padding='post')
+    x_unlabel_tar= sequence.pad_sequences(x_unlabel_token, maxlen=max_len,padding='post')
     # defining vocalbury size
     vocab_size = len(tokenizer.word_index) + 1
 

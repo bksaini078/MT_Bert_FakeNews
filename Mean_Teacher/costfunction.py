@@ -33,8 +33,8 @@ def Classification_costs(logits, labels) :
 # def Overall_Cost(classification_cost, consistency_cost, ratio=0.5) :
 #     return (ratio * classification_cost) + ((1 - ratio) * consistency_cost)
 def Overall_Cost(args,x_train,y_train,x_unlabel_tar, student, teacher, ratio=0.5):
-    train_metrics = tf.keras.metrics.BinaryAccuracy ( name='Binary_Accuracy' )
-    logits=student(x_train, training=True)
+    train_metrics = tf.keras.metrics.BinaryAccuracy( name='Binary_Accuracy' )
+    logits = student(x_train)
     classification_cost = Classification_costs(logits, y_train)
     tar_student = student(x_unlabel_tar )
     tar_teacher = teacher ( x_unlabel_tar )
