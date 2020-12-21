@@ -44,7 +44,7 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
     print ( num_labeled_samples, NUM_TRAIN_SAMPLES )
     max_unsupervised_weight = 100 * num_labeled_samples * (NUM_TRAIN_SAMPLES)
 
-    for epoch in range ( 1, args.epochs + 1 ) :
+    for epoch in range( 1, args.epochs + 1 ) :
         print ( *"*****************" )
         print ( 'Start of epoch %d' % (epoch,) )
         print ( *"*****************" )
@@ -69,6 +69,10 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
                 optimizer.apply_gradients ( zip ( grads, student.variables ))
                 # Run the forward pass of the layer
                 logits = student (x_batch_train, training=True )
+                train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
+                loss = tf.compat.v1.losses.softmax_cross_entropy ( y_batch_train, logits )
+                print ( 'epoch: {}, Train Accuracy :{}, Loss: {}'.format ( epoch, train_acc.numpy (), loss.numpy () ) )
+
         elif args.method=='Bert':
             for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
                 with tf.GradientTape () as tape :
@@ -78,13 +82,14 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
                 grads = tape.gradient( loss_value, student.variables )
                 optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, student.variables ) if grad is not None )
                 logits = student ( [inputs, attention, token_id], training=True )
+                train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
+                loss = tf.compat.v1.losses.softmax_cross_entropy ( y_batch_train, logits )
+                print ( 'epoch: {}, Train Accuracy :{}, Loss: {}'.format ( epoch, train_acc.numpy (), loss.numpy () ) )
+
 
         # calculating accuracy
         train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
-        loss = tf.compat.v1.losses.softmax_cross_entropy ( y_batch_train, logits )
-
-        print ( 'epoch: {}, Train Accuracy :{}, Loss: {}'.format ( epoch, train_acc.numpy (), loss.numpy () ) )
-
+        
         # Run a validation loop at the end of each epoch.
         print ( '*******Pi_Model*************' )
         prec_rec_f1score ( args,y_val, x_val, student )
