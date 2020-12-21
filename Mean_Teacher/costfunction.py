@@ -30,8 +30,18 @@ def Classification_costs(logits, labels) :
 
 
 # custom loss function
-def Overall_Cost(classification_cost, consistency_cost, ratio=0.5) :
-    return (ratio * classification_cost) + ((1 - ratio) * consistency_cost)
+# def Overall_Cost(classification_cost, consistency_cost, ratio=0.5) :
+#     return (ratio * classification_cost) + ((1 - ratio) * consistency_cost)
+def Overall_Cost(args,x_train,y_train,x_unlabel_tar, student, teacher, ratio=0.5):
+    train_metrics = tf.keras.metrics.BinaryAccuracy ( name='Binary_Accuracy' )
+    logits=student(x_train, training=True)
+    classification_cost = Classification_costs(logits, y_train)
+    tar_student = student(x_unlabel_tar )
+    tar_teacher = teacher ( x_unlabel_tar )
+    consistency_cost = Consistency_Cost( tar_teacher, tar_student)
+    logits_t= teacher(x_train)
+    train_acc = train_metrics ( tf.argmax ( y_train, 1 ), tf.argmax ( logits_t, 1 ) )
+    return (ratio * classification_cost) + ((1 - ratio) * consistency_cost), train_acc
 
 
 # function for consistency cost
@@ -42,8 +52,8 @@ def Consistency_Cost(teacher_output, student_output) :
 def EMA(student_model, teacher_model, alpha) :
 
     # taking weights
-    student_weights = student_model.get_weights ()
-    teacher_weights = teacher_model.get_weights ()
+    student_weights = student_model.get_weights()
+    teacher_weights = teacher_model.get_weights()
 
     # length must be equal otherwise it will not work
     assert len ( student_weights ) == len (teacher_weights ), 'length of student and teachers weights are not equal Please check. \n Student: {}, \n Teacher:{}'.format (

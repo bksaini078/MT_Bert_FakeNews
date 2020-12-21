@@ -32,7 +32,7 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
     train_dataset,tar_dataset= data_slices(args, x_train,y_train,x_unlabel_tar)
     # preparing the training dataset
     if args.method=='Attn':
-        student = BiLstmModel_attention ( max_len, vocab_size )
+        student = BiLstmModel_attention( max_len, vocab_size )
         student.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
     elif args.method=='Bert':
         model = BERT(args)
@@ -91,7 +91,7 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
 
 
         # calculating accuracy
-        train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
+        train_acc = train_metrics(tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ))
         
         # Run a validation loop at the end of each epoch.
         print ( '*******Pi_Model*************' )
