@@ -5,11 +5,11 @@ from model_arch import BiLstmModel_attention, BiLstmModel
 from noise_creator import instant_noise
 from evaluation import prec_rec_f1score
 
-def train_supervised(args,epochs, batch_size, lr, x_train, y_train, x_val, y_val ,x_test, y_test ,maxlen ,vocab_size ):
+def train_supervised(args,epochs, batch_size, lr, x_train, y_train, x_val, y_val ,x_test, y_test ,max_len ,vocab_size ):
     if args.method=='BERT':
-        model_supervised = BiLstmModel(maxlen, vocab_size)
+        model_supervised = BiLstmModel(max_len, vocab_size)
     elif args.method=='Attn':
-        model_supervised= BiLstmModel_attention(maxlen, vocab_size)
+        model_supervised= BiLstmModel_attention(max_len, vocab_size)
         # model_supervised.summary()
 
     model_supervised.compile(optimizer= tf.keras.optimizers.Adam(learning_rate= lr ) ,loss= 'binary_crossentropy', metrics=['accuracy' ])

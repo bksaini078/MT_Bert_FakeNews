@@ -14,7 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('--lr', default=0.0001, type=float)
     parser.add_argument('--epochs', default=1, type=int)
     parser.add_argument('--batch_size', default=64, type=int)
-    parser.add_argument('--maxlen', default=600, type=int)
+    parser.add_argument('--max_len', default=600, type=int)
     # Model 0 Supervised 1 Mean teacher 2 Pi Model
     parser.add_argument('--model', default=0, type=int)
     # attention mechanism , BERT
@@ -24,16 +24,16 @@ if __name__ == '__main__':
     parser.add_argument('--ratio', default=0.5, type=float)
     parser.add_argument('--alpha',  default=0.99,type=float)
     parser.add_argument('--noise_ratio', type=float, default=0.2)
-    parser.add_argument('--pretrained_model', type=str, choices=['bert-base-uncased', 'bert-base-cased'])
+    parser.add_argument('--pretrained_model',default= 'bert-base-uncased', type=str, choices=['bert-base-uncased', 'bert-base-cased'])
     parser.add_argument('--data', type=str, choices=['fakehealth', 'gossipcop','politifact'])
-    parser.add_argument ( '--dropout', type=float )
+    parser.add_argument ('--dropout',default=0.2, type=float )
 
     args = parser.parse_args()
     path= 'Data/Processed/'+args.data+'/'
     print(args)
 
     for i in range(1):
-        if args.method =='BERT':
+        if args.method =='Bert':
             x_train, y_train, x_val, y_val, x_test,y_test, x_unlabel = data_load_bert(args, path)
 
         elif args.method=='Attn' :
@@ -44,12 +44,12 @@ if __name__ == '__main__':
 
         # calling model according to inputs
         if (args.model == 0):
-            train_supervised(args,args.epochs, args.batch_size, args.lr, x_train, y_train, x_val, y_val, x_test, y_test, args.maxlen, vocab_size)
+            train_supervised(args,args.epochs, args.batch_size, args.lr, x_train, y_train, x_val, y_val, x_test, y_test, args.max_len, vocab_size)
         elif (args.model == 1):
             MeanTeacher(args, args.epochs, args.batch_size, args.alpha, args.lr, args.ratio, args.noise_ratio,
-                        x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.maxlen)
+                        x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.max_len)
         elif (args.model == 2) :
-            train_Pimodel(args, args.epochs, args.batch_size,  args.lr, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.maxlen)
+            train_Pimodel(args, args.epochs, args.batch_size,  args.lr, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, args.max_len)
 
         else :
             print("No Mean teacher for given argument")

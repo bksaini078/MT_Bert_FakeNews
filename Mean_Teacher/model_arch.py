@@ -2,11 +2,11 @@ import tensorflow as tf
 from  tensorflow.keras.layers  import *
 from tensorflow import keras
 from tensorflow.keras.models import Model
-from keras_self_attention import SeqSelfAttention
+# from keras_self_attention import SeqSelfAttention
 
-def BiLstmModel(maxlen, vocab_size):
+def BiLstmModel(max_len, vocab_size):
   tf.keras.backend.clear_session()
-  inputs = keras.Input(shape=(maxlen,))
+  inputs = keras.Input(shape=(max_len,))
   x =Embedding(vocab_size, 128, input_length=None)(inputs)
   x =Bidirectional(LSTM(128))(x)
   x= GaussianNoise(1)(x)
@@ -17,9 +17,9 @@ def BiLstmModel(maxlen, vocab_size):
   x =Dense(2, activation='sigmoid')(x)
   return Model(inputs,x)
 
-def BiLstmModel_attention(maxlen, vocab_size):
+def BiLstmModel_attention(max_len, vocab_size):
   tf.keras.backend.clear_session()
-  inputs = keras.Input(shape=(maxlen,))
+  inputs = keras.Input(shape=(max_len,))
   x = Embedding(vocab_size, 128, input_length=None)(inputs)
   x = Bidirectional(LSTM(128,return_sequences= True))(x)
   x = tf.keras.layers.Attention(use_scale=True)([x,x])

@@ -1,12 +1,13 @@
 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from Mean_Teacher.clf.bert import *
-from Mean_Teacher.tokenization import tokenization
+from clf.bert import *
+from tokenization import tokenization
 from transformers import AutoTokenizer, TFAutoModel
 import pandas as pd
 
 def data_load(args,path):
+
     x_train = np.load ( path + 'train_x.npy', allow_pickle=True )
     y_train = np.load ( path + 'train_y.npy', allow_pickle=True )
     # this we need when we are not having seperate val data TODO
@@ -23,7 +24,7 @@ def data_load(args,path):
     print ( 'test data True/Fake count:', np.count_nonzero ( y_test ), len ( y_test ) - np.count_nonzero ( y_test ) )
     comp_article = np.hstack ( (x_train, x_val, x_test, x_unlabel) )
     x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization \
-        (comp_article, x_train, x_val, x_test, x_unlabel, args.maxlen )
+        (comp_article, x_train, x_val, x_test, x_unlabel, args.max_len )
     y_train = to_categorical ( y_train )
     y_val = to_categorical ( y_val )
     y_test = to_categorical ( y_test )
@@ -31,6 +32,8 @@ def data_load(args,path):
 
 
 def data_load_bert(args, path):
+    #will change after some time 
+    path='Data/ExperimentsFolds/fakehealth/'
     train_data = pd.read_csv ( path + 'train.tsv', sep='\t' )
     test_data= pd.read_csv(path+'test.tsv',sep='\t')
     unlabel = pd.read_csv ( path + 'unlabel.tsv', sep='\t' )
@@ -40,21 +43,22 @@ def data_load_bert(args, path):
     train_data = train_data[:1000]
     tokenizer = AutoTokenizer.from_pretrained ( args.pretrained_model )
 
-    train_data = create_news_examples ( train_data[:100], args.maxlen, tokenizer )
+    train_data = create_news_examples ( train_data[:100], args.max_len, tokenizer )
     x_train, y_train = create_inputs_targets ( train_data )
-    val_data = create_news_examples ( val_data, args.maxlen, tokenizer )
+    val_data = create_news_examples ( val_data, args.max_len, tokenizer )
     x_val, y_val = create_inputs_targets ( val_data )
 
-    test_data = create_news_examples ( test_data, args.maxlen, tokenizer )
+    test_data = create_news_examples ( test_data, args.max_len, tokenizer )
     x_test, y_test = create_inputs_targets ( test_data )
 
     unlabel['label'] = np.full ( (len ( unlabel ), 1), 'fake' )# in case label column doesnot have fake label
-    x_unlabel = create_news_examples ( unlabel, args.maxlen, tokenizer )
+    x_unlabel = create_news_examples ( unlabel, args.max_len, tokenizer )
     x_unlabel, _ = create_inputs_targets ( x_unlabel )
 
     return x_train, y_train, x_val, y_val, x_test,y_test, x_unlabel
 
 def data_slices(args, x_train,y_train,x_unlabel_tar):
+
     if args.method=='Attn':
         train_dataset = tf.data.Dataset.from_tensor_slices ( (x_train, y_train) )
         train_dataset = train_dataset.shuffle ( buffer_size=1024 ).batch ( args.batch_size )

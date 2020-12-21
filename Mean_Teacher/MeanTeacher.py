@@ -11,7 +11,7 @@ from noise_creator import instant_noise
 from evaluation import prec_rec_f1score
 
 def MeanTeacher(args, epochs, batch_size, alpha, lr, ratio, noise_ratio, x_train, y_train, x_val, y_val, x_test, y_test,
-                      x_unlabel_tar, vocab_size, maxlen):
+                      x_unlabel_tar, vocab_size, max_len):
     # preparing the training dataset
     train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
     train_dataset = train_dataset.shuffle(buffer_size=1024).batch(batch_size)
@@ -34,23 +34,24 @@ def MeanTeacher(args, epochs, batch_size, alpha, lr, ratio, noise_ratio, x_train
 
     # Creating model
     if args.method== 'BERT':
-        student = BiLstmModel(maxlen, vocab_size)
+        student = BiLstmModel(max_len, vocab_size)
         # student.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='binary_crossentropy',
         #                 metrics=['accuracy'])
-        teacher = BiLstmModel(maxlen, vocab_size)
+        teacher = BiLstmModel(max_len, vocab_size)
         # teacher.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='binary_crossentropy',
         #                 metrics=['accuracy'])
     elif args.method=='Attn':
-        student = BiLstmModel_attention(maxlen, vocab_size)
+        student = BiLstmModel_attention(max_len, vocab_size)
         # student.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='binary_crossentropy',
                         # metrics=['accuracy'])
-        teacher = BiLstmModel_attention(maxlen, vocab_size)
+        teacher = BiLstmModel_attention(max_len, vocab_size)
         # teacher.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='binary_crossentropy',
         #                 metrics=['accuracy'])
 
 
     train_accuracy = []
     steps = []
+    i=0
     for epoch in range(1, epochs + 1):
         print(*"*****************")
         print('Start of epoch %d' % (epoch,))

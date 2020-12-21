@@ -2,11 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1cd9cd30-ffdc-479f-b70d-038c8be8de28" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Mean_Teacher/data_loader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/Bert_Tokenisation.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Mean_Teacher/MeanTeacher.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/MeanTeacher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/Supervised.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/Supervised.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/data_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/data_loader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Mean_Teacher/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/model_arch.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/model_arch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/report_writing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/report_writing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/tokenization.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/tokenization.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Mean_Teacher/train_pi_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/train_pi_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
