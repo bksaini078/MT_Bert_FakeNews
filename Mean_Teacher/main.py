@@ -35,6 +35,7 @@ if __name__ == '__main__':
     for i in range(1):
         if args.method =='Bert':
             x_train, y_train, x_val, y_val, x_test,y_test, x_unlabel = data_load_bert(args, path)
+            vocab_size=0
 
         elif args.method=='Attn' :
             x_train, y_train,x_val,y_val, x_test,y_test, x_unlabel, vocab_size = data_load(args,path)
@@ -49,7 +50,7 @@ if __name__ == '__main__':
             MeanTeacher(args, args.epochs, args.batch_size, args.alpha, args.lr, args.ratio, args.noise_ratio,
                         x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.max_len)
         elif (args.model == 2) :
-            train_Pimodel(args, args.epochs, args.batch_size,  args.lr, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, args.max_len)
+            train_Pimodel(args, args.epochs, args.batch_size,  args.lr, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel,vocab_size, args.max_len)
 
         else :
             print("No Mean teacher for given argument")

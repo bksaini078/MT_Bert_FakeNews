@@ -11,7 +11,7 @@ from pi_costfunction import pi_model_loss,ramp_down_function,ramp_up_function
 from clf.bert import  BERT
 
 def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val, x_test, y_test,
-                      x_unlabel_tar,  max_len) :
+                      x_unlabel_tar,vocab_size, max_len) :
     NUM_TRAIN_SAMPLES = np.shape ( x_train )[0]
     NUM_TEST_SAMPLES = np.shape ( x_test )[0]
 
@@ -22,11 +22,18 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
     initial_beta1 = 0.9
     final_beta1 = 0.5
     x_unlabel_tar = x_unlabel_tar[:NUM_TRAIN_SAMPLES]
+
+
+    learning_rate = tf.Variable ( max_learning_rate )  # max learning rate
+    beta_1 = tf.Variable ( initial_beta1 )
+    optimizer = tf.keras.optimizers.Adam ( learning_rate=learning_rate, beta_1=beta_1, beta_2=0.999 )
+    # optimizer=tf.keras.optimizers.Adam(learning_rate=lr)
     
     train_dataset,tar_dataset= data_slices(args, x_train,y_train,x_unlabel_tar)
     # preparing the training dataset
     if args.method=='Attn':
         student = BiLstmModel_attention ( max_len, vocab_size )
+        student.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
     elif args.method=='Bert':
         model = BERT(args)
         student = model.create_model()
@@ -36,10 +43,6 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
 
     train_metrics = tf.keras.metrics.Accuracy ()
 
-    learning_rate = tf.Variable ( max_learning_rate )  # max learning rate
-    beta_1 = tf.Variable ( initial_beta1 )
-    optimizer = tf.keras.optimizers.Adam ( learning_rate=learning_rate, beta_1=beta_1, beta_2=0.999 )
-    # optimizer=tf.keras.optimizers.Adam(learning_rate=lr)
 
     print ( num_labeled_samples, NUM_TRAIN_SAMPLES )
     max_unsupervised_weight = 100 * num_labeled_samples * (NUM_TRAIN_SAMPLES)
@@ -63,7 +66,7 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
         if args.method=='Attn':
             for step, (x_batch_train, y_batch_train) in enumerate ( train_dataset ):
                 with tf.GradientTape () as tape :
-                    x_batch_unlabel = iterator_unlabel.get_next ()
+                    x_batch_unlabel = iterator_unlabel.get_next()
                     loss_value = pi_model_loss( x_batch_train, y_batch_train, x_batch_unlabel, student,unsupervised_weight )
                 grads = tape.gradient( loss_value, student.variables )
                 optimizer.apply_gradients ( zip ( grads, student.variables ))
@@ -77,7 +80,7 @@ def train_Pimodel(args, epochs, batch_size,  lr,  x_train, y_train, x_val, y_val
             for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
                 with tf.GradientTape () as tape :
                     inp, att, to_id = iterator_unlabel.get_next()
-                    loss_value = pi_model_loss ( [inputs, attention, token_id], y_batch_train, [inp, att, to_id],
+                    loss_value = pi_model_loss([inputs, attention, token_id], y_batch_train, [inp, att, to_id],
                                                  student, unsupervised_weight )
                 grads = tape.gradient( loss_value, student.variables )
                 optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, student.variables ) if grad is not None )

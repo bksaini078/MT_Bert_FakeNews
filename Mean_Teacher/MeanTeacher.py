@@ -9,44 +9,37 @@ from report_writing import report_writing
 from model_arch import BiLstmModel_attention, BiLstmModel
 from noise_creator import instant_noise
 from evaluation import prec_rec_f1score
+from data_loader import data_slices
+from clf.bert import BERT
 
 def MeanTeacher(args, epochs, batch_size, alpha, lr, ratio, noise_ratio, x_train, y_train, x_val, y_val, x_test, y_test,
                       x_unlabel_tar, vocab_size, max_len):
-    # preparing the training dataset
-    train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
-    train_dataset = train_dataset.shuffle(buffer_size=1024).batch(batch_size)
-    print(lr)
     initial_beta1 = 0.9
     final_beta1 = 0.5
     max_learning_rate=0.003
+    # preparing the training dataset
+    train_dataset, tar_dataset = data_slices( args, x_train, y_train, x_unlabel_tar )
     learning_rate = tf.Variable(max_learning_rate) #max learning rate
     beta_1 = tf.Variable(initial_beta1)
     # optimizer= tf.keras.optimizers.Adam(learning_rate= learning_rate, beta_1=beta_1,beta_2=0.999) 
-
-    # preparing the target dataset
-    tar_dataset = tf.data.Dataset.from_tensor_slices(x_unlabel_tar)
-    tar_dataset = tar_dataset.shuffle(buffer_size=1024).batch(batch_size)
-
     # declaring optimiser
     optimizer = tf.keras.optimizers.Adam(learning_rate=lr)  # trying changing learning rate , sometimes it gives good result
     train_metrics = tf.keras.metrics.BinaryAccuracy(name='Binary_Accuracy')
 
-
     # Creating model
-    if args.method== 'BERT':
-        student = BiLstmModel(max_len, vocab_size)
-        # student.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='binary_crossentropy',
-        #                 metrics=['accuracy'])
-        teacher = BiLstmModel(max_len, vocab_size)
-        # teacher.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='binary_crossentropy',
-        #                 metrics=['accuracy'])
-    elif args.method=='Attn':
-        student = BiLstmModel_attention(max_len, vocab_size)
-        # student.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='binary_crossentropy',
-                        # metrics=['accuracy'])
-        teacher = BiLstmModel_attention(max_len, vocab_size)
-        # teacher.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss='binary_crossentropy',
-        #                 metrics=['accuracy'])
+    if args.method=='Attn':
+        student = BiLstmModel_attention ( max_len, vocab_size )
+        student.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
+        teacher = BiLstmModel_attention ( max_len, vocab_size )
+        teacher.compile ( optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'] )
+    elif args.method=='Bert':
+        models = BERT(args)
+        student = models.create_model()
+        modelt = BERT(args)
+        teacher = modelt.create_model()
+           
+    else:
+        print('Either correct model name ')
 
 
     train_accuracy = []
