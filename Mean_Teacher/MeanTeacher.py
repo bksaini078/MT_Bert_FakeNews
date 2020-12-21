@@ -30,8 +30,7 @@ def MeanTeacher(args, epochs, batch_size, alpha, lr, ratio, noise_ratio, x_train
     # declaring optimiser
     optimizer = tf.keras.optimizers.Adam(learning_rate=lr)  # trying changing learning rate , sometimes it gives good result
     train_metrics = tf.keras.metrics.BinaryAccuracy(name='Binary_Accuracy')
-    val_acc_metric = tf.keras.metrics.BinaryAccuracy(name="Binary_Acc")
-    teacher_acc_metric = tf.keras.metrics.BinaryAccuracy(name="Binary_Acc_teacher")
+
 
     # Creating model
     if args.method== 'BERT':
@@ -50,22 +49,8 @@ def MeanTeacher(args, epochs, batch_size, alpha, lr, ratio, noise_ratio, x_train
         #                 metrics=['accuracy'])
 
 
-    # collecting costs
-
     train_accuracy = []
     steps = []
-
-   # this I am doing to get all steps details in epoch
-    i = 0
-    print('Train Mean teacher Model...')
-    # teacher.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr),loss=tf.keras.losses.CategoricalCrossentropy(),metrics=['accuracy'])
-    # teacher.fit(x_train, y_train, batch_size=batch_size, epochs=1)
-
-    acc_t = 0
-    # false positive rate and true positive rate
-    fpr = []
-    tpr = []
-    # x_unlabel_tar= tf.convert_to_tensor(x_unlabel_tar)
     for epoch in range(1, epochs + 1):
         print(*"*****************")
         print('Start of epoch %d' % (epoch,))
