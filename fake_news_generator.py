@@ -7,7 +7,7 @@ def generate_fake_news(args):
     generator = pipeline('text-generation', model='gpt2')
     path = f'{args.data_folder}/{args.data}/'
     path_save = f'{args.processed_output_folder}/{args.data}/'
-    path_save.mkdir ( parents=True, exist_ok=True )
+    # path_save.mkdir ( parents=True, exist_ok=True )
     df = pd.read_csv( path + 'train.tsv', sep='\t', header='infer', usecols=['content', 'title', 'label'])
     df = df.drop_duplicates()
     df = df.dropna()

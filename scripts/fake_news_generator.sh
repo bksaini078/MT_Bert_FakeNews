@@ -32,6 +32,7 @@ python3 -m fake_news_generator \
 --data_folder Data/ExperimentFolds/9 \
 --data fakehealth \
 --processed_output_folder Data/ExperimentFolds/9
+
 ###########gissipcop#######
 
 python3 -m fake_news_generator \

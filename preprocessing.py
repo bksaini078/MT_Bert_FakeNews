@@ -5,6 +5,8 @@ import numpy as np
 import tensorflow as tf
 import re
 import argparse
+from pathlib import Path
+from Mean_Teacher.clf.bert import clean_helper
 
 def preprocess_text(sen):
     # Removing html tags
@@ -36,7 +38,8 @@ def data_preprocessing(data):
    #cleaning data
     article= list(data['content'].values )
     for i in range(len(data)):
-        data_1.loc[i,'content']= preprocess_text(article[i])
+        # clean_text = clean_helper( article[i] )
+        data_1.loc[i,'content']= clean_helper(clean_text)
 
     #converting into np arrray and hot one encoding
     # np.array(y_train)

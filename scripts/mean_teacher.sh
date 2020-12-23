@@ -169,9 +169,352 @@ python3 -m Mean_Teacher.main \
 --alpha 0.99 \
 --ratio 0.5
 
+#####GOSSIPCOP####
+echo 'gossipcop'
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/3 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/4 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/6 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/7 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/8 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/9 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
 
 
+# bert
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/3 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
 
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/4 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/6 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/7 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/8 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/9 \
+--data gossipcop \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data gossipcop \
+--alpha 0.99 \
+--ratio 0.5
+
+
+#####GOSSIPCOP####
+echo 'politifact'
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/3 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/4 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/6 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/7 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/8 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Attn \
+--data_folder Data/ExperimentsFolds/9 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+
+# bert
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/3 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/4 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/6 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/7 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/8 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
+
+python3 -m Mean_Teacher.main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentsFolds/9 \
+--data politifact \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--data politifact \
+--alpha 0.99 \
+--ratio 0.5
 
 
 
