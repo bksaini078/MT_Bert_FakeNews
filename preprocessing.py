@@ -39,7 +39,7 @@ def data_preprocessing(data):
     article= list(data['content'].values )
     for i in range(len(data)):
         # clean_text = clean_helper( article[i] )
-        data_1.loc[i,'content']= clean_helper(clean_text)
+        data_1.loc[i,'content']= clean_helper(article[i])
 
     #converting into np arrray and hot one encoding
     # np.array(y_train)
