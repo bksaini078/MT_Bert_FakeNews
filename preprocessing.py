@@ -46,8 +46,11 @@ def data_preprocessing(data):
     return data_1
 def processing(args):
     path = f'{args.data_folder}/{args.data}/'
-    path_save = Path(f'{args.processed_output_folder}/{args.data}/')
+    # path_save = Path(f'{args.processed_output_folder}/{args.data}/')
+    path_save = Path(join(args.processed_output_folder,args.data))
+    print(path_save)
     path_save.mkdir(parents=True, exist_ok=True)
+    path_save= f'{args.processed_output_folder}/{args.data}/'
     onlyfiles = [f for f in listdir ( path ) if isfile ( join ( path, f ) )]
 
     for f in onlyfiles :
@@ -73,7 +76,7 @@ def processing(args):
             df = df.drop ( ['title'], axis=1 )
             df_1 = data_preprocessing ( df )
             f = f.split ( '.' )[0]
-            np.save ( path_save + f + '_x.npy', df_1['content'] )
+            np.save (f'{path_save}{f}_x.npy', df_1['content'] )
     return
 if __name__ == '__main__':
     parser= argparse.ArgumentParser()
