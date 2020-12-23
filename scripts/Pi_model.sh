@@ -1,4 +1,4 @@
-#make sure by using fake_news_generate the unlabel data for each fold, if already done then move forward
+#make sure by using fake_news_generate the unlabel data and preprocessing the code for each fold, if already done then move forward
 python3 -m Mean_Teacher.main \
 --model PI \
 --method Attn \
