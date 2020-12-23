@@ -62,14 +62,14 @@ def processing(args):
             df = pd.read_csv ( path + f, sep='\t', header='infer', usecols=["title", "content", "label"] )
             df = df.reset_index ( drop=True )
             df['content'] = df['content'].str.cat ( df['title'], sep="SEP" )
-            df = df.drop ( ['title'], axis=1 )
-            df_1 = data_preprocessing ( df )
-            f = f.split ( '.' )[0]
-            df_1.replace ( to_replace=['fake', 'true'], value=[0, 1], inplace=True )
+            df = df.drop(['title'], axis=1 )
+            df_1 = data_preprocessing( df )
+            f = f.split('.' )[0]
+            df_1.replace(to_replace=['fake', 'true'], value=[0, 1], inplace=True )
             np.save ( path_save + f + '_x.npy', df_1['content'] )
             np.save ( path_save + f + '_y.npy', tf.one_hot ( np.array ( df_1['label'].values ), 1 ) )
         else :
-            print ( f )
+            print(f)
             df = pd.read_csv ( path + f, sep='\t', header='infer', usecols=["title", "content", "label"] )
             df = df.reset_index ( drop=True )
             df['content'] = df['title'].str.cat ( df['content'], sep="SEP" )

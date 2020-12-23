@@ -40,13 +40,13 @@ def Overall_Cost(args,x_train,y_train,x_unlabel_tar, student, teacher, ratio=0.5
     tar_teacher = teacher ( x_unlabel_tar )
     consistency_cost = Consistency_Cost( tar_teacher, tar_student)
     logits_t= teacher(x_train)
-    train_acc = train_metrics ( tf.argmax ( y_train, 1 ), tf.argmax ( logits_t, 1 ) )
+    train_acc = train_metrics(tf.argmax ( y_train, 1 ), tf.argmax ( logits_t, 1 ) )
     return (ratio * classification_cost) + ((1 - ratio) * consistency_cost), train_acc
 
 
 # function for consistency cost
 def Consistency_Cost(teacher_output, student_output) :
-    return tf.losses.mean_squared_error( teacher_output, student_output )
+    return tf.losses.mean_squared_error(tf.argmax ( teacher_output, 1 ), tf.argmax ( student_output, 1 ) )
 
 
 def EMA(student_model, teacher_model, alpha) :

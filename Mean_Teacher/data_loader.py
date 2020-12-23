@@ -6,7 +6,7 @@ from Mean_Teacher.tokenization import tokenization
 from transformers import AutoTokenizer, TFAutoModel
 import pandas as pd
 
-def data_load(args,path):
+def data_load(args,fold,path):
     x_train = np.load ( path + 'train_x.npy', allow_pickle=True )
     y_train = np.load ( path + 'train_y.npy', allow_pickle=True )
     # this we need when we are not having seperate val data TODO
@@ -30,7 +30,7 @@ def data_load(args,path):
     return x_train, y_train,x_val,y_val, x_test,y_test, x_unlabel, vocab_size
 
 
-def data_load_bert(args, path):
+def data_load_bert(args,fold, path):
     #will change after some time 
     # path='Data/ExperimentsFolds/fakehealth/'
     train_data = pd.read_csv ( path + 'train.tsv', sep='\t' )

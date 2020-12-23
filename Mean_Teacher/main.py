@@ -36,18 +36,17 @@ if __name__ == '__main__':
     path = f'{data_folder}/{args.data}/'
 
     print(args)
+    if args.method == 'Bert' :
+        x_train, y_train, x_val, y_val, x_test, y_test, x_unlabel = data_load_bert ( args, path )
+        vocab_size = 0
+
+    elif args.method == 'Attn' :
+        x_train, y_train, x_val, y_val, x_test, y_test, x_unlabel, vocab_size = data_load ( args, path )
+
+    else :
+        print ( 'No correct model or method selected' )
 
     for fold in range(1):
-
-        if args.method =='Bert':
-            x_train, y_train, x_val, y_val, x_test,y_test, x_unlabel = data_load_bert(args,fold, path)
-            vocab_size=0
-
-        elif args.method=='Attn' :
-            x_train, y_train,x_val,y_val, x_test,y_test, x_unlabel, vocab_size = data_load(args,fold,path)
-
-        else:
-            print('No correct model or method selected')
 
         if (args.model=='MT'):
             MeanTeacher(args, fold,x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.max_len)
