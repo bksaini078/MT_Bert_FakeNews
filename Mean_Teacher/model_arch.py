@@ -22,6 +22,8 @@ def BiLstmModel_attention(max_len, vocab_size):
   inputs = keras.Input(shape=(max_len,))
   x = Embedding(vocab_size, 128, input_length=None)(inputs)
   x = Bidirectional(LSTM(128,return_sequences= True))(x)
+  x= GaussianNoise(1)(x)
+  x = Dropout(0.2)(x)
   x = tf.keras.layers.Attention(use_scale=True)([x,x])
 #   x=SeqSelfAttention(attention_activation='sigmoid')(x)
   x= Flatten()(x)

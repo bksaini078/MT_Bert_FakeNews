@@ -1,8 +1,8 @@
 import argparse
-from MeanTeacher import MeanTeacher
-from Supervised import train_supervised
-from train_pi_model import train_Pimodel
-from data_loader import *
+from Mean_Teacher.MeanTeacher import MeanTeacher
+from Mean_Teacher.Supervised import train_supervised
+from Mean_Teacher.train_pi_model import train_Pimodel
+from Mean_Teacher.data_loader import *
 from pathlib import Path
 
 
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     data_folder = Path(args.data_folder)
-    path = data_folder / args.data
+    path = f'{data_folder}/{args.data}/'
 
     print(args)
 

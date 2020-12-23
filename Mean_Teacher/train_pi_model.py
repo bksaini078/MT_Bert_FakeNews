@@ -2,13 +2,13 @@ import tensorflow as tf
 import numpy as np
 #this is to enable eager execution
 tf.compat.v1.enable_eager_execution()
-from report_writing import report_writing
-from model_arch import BiLstmModel_attention, BiLstmModel
-from data_loader import data_slices
+from Mean_Teacher.report_writing import report_writing
+from Mean_Teacher.model_arch import BiLstmModel_attention, BiLstmModel
+from Mean_Teacher.data_loader import data_slices
 
-from evaluation import prec_rec_f1score
-from pi_costfunction import pi_model_loss,ramp_down_function,ramp_up_function
-from clf.bert import  BERT
+from Mean_Teacher.evaluation import prec_rec_f1score
+from Mean_Teacher.pi_costfunction import pi_model_loss,ramp_down_function,ramp_up_function
+from Mean_Teacher.clf.bert import  BERT
 
 def train_Pimodel(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar,vocab_size, max_len) :
     NUM_TRAIN_SAMPLES = np.shape ( x_train )[0]
@@ -23,10 +23,10 @@ def train_Pimodel(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel
     x_unlabel_tar = x_unlabel_tar[:NUM_TRAIN_SAMPLES]
 
 
-    learning_rate = tf.Variable ( max_learning_rate )  # max learning rate
+    learning_rate = tf.Variable(args.lr)  # max learning rate
     beta_1 = tf.Variable ( initial_beta1 )
-    optimizer = tf.keras.optimizers.Adam ( learning_rate=learning_rate, beta_1=beta_1, beta_2=0.999 )
-    # optimizer=tf.keras.optimizers.Adam(learning_rate=lr)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate, beta_1=beta_1, beta_2=0.999 )
+    # optimizer=tf.keras.optimizers.Adam(learning_rate=args.lr)
     
     train_dataset,tar_dataset= data_slices(args, x_train,y_train,x_unlabel_tar)
     # preparing the training dataset
@@ -57,6 +57,7 @@ def train_Pimodel(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel
             unsupervised_weight = max_unsupervised_weight * rampup_value
 
         learning_rate.assign ( rampup_value * rampdown_value * max_learning_rate )
+        print(f'Learning rate: {learning_rate}')
 
         beta_1.assign ( rampdown_value * initial_beta1 + (1.0 - rampdown_value) * final_beta1 )
         # iteration over batches
@@ -70,9 +71,6 @@ def train_Pimodel(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel
                 optimizer.apply_gradients ( zip ( grads, student.variables ))
                 # Run the forward pass of the layer
                 logits = student (x_batch_train, training=True )
-                train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
-                loss = tf.compat.v1.losses.softmax_cross_entropy ( y_batch_train, logits )
-                print ( 'epoch: {}, Train Accuracy :{}, Loss: {}'.format ( epoch, train_acc.numpy (), loss.numpy () ) )
 
         elif args.method=='Bert':
             for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
@@ -80,12 +78,12 @@ def train_Pimodel(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel
                     inp, att, to_id = iterator_unlabel.get_next()
                     loss_value = pi_model_loss([inputs, attention, token_id], y_batch_train, [inp, att, to_id],
                                                  student, unsupervised_weight )
-                grads = tape.gradient( loss_value, student.variables )
+                grads = tape.gradient(loss_value, student.variables )
                 optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, student.variables ) if grad is not None )
                 logits = student ( [inputs, attention, token_id], training=True )
-                train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
-                loss = tf.compat.v1.losses.softmax_cross_entropy ( y_batch_train, logits )
-                print ( 'epoch: {}, Train Accuracy :{}, Loss: {}'.format ( epoch, train_acc.numpy (), loss.numpy () ) )
+            train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
+            loss = tf.keras.losses.categorical_crossentropy(y_batch_train, logits)
+            print('epoch: {}, Train Accuracy :{}, Loss: {}'.format(epoch, train_acc.numpy(), loss.numpy()))
 
 
         # calculating accuracy
@@ -95,12 +93,11 @@ def train_Pimodel(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel
         print ( '*******Pi_Model*************' )
         prec_rec_f1score(args,y_val, x_val, student )
 
-        print ( '---------------------------Pi Model TEST--------------------------' )
-        test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score (args,
-            y_test, x_test, student )
-        report_writing(args,args.model+'_'+args.method, args.lr, args.batch_size, args.epochs, args.alpha, args.ratio, train_acc.numpy(),test_accuracy,
-                       precision_true, precision_fake, recall_true, recall_fake,f1score_true, f1score_fake, AUC, args.data)
-        print ( '-----------------------------------------------------------------' )
+    print ( '---------------------------Pi Model TEST--------------------------' )
+    test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score (args,y_test, x_test, student )
+    report_writing(args,args.model+'_'+args.method, args.lr, args.batch_size, args.epochs, args.alpha, args.ratio, train_acc.numpy(),test_accuracy,
+    precision_true, precision_fake, recall_true, recall_fake,f1score_true, f1score_fake, AUC, args.data)
+    print ( '-----------------------------------------------------------------' )
     tf.keras.backend.clear_session ()
     return student
 

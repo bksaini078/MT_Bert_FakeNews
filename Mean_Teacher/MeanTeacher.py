@@ -1,20 +1,20 @@
 import tensorflow as tf 
 tf.compat.v1.enable_eager_execution()
-from costfunction import Overall_Cost,EMA
-from report_writing import report_writing
-from model_arch import BiLstmModel_attention
-from noise_creator import instant_noise
-from evaluation import prec_rec_f1score
-from data_loader import data_slices
-from clf.bert import BERT
+from Mean_Teacher.costfunction import Overall_Cost,EMA
+from Mean_Teacher.report_writing import report_writing
+from Mean_Teacher.model_arch import BiLstmModel_attention
+from Mean_Teacher.noise_creator import instant_noise
+from Mean_Teacher.evaluation import prec_rec_f1score
+from Mean_Teacher.data_loader import data_slices
+from Mean_Teacher.clf.bert import BERT
 from pathlib import Path
 
-# def Training_MT_bert(args, train_dataset,tar_dataset, student, teacher):
+
 def MeanTeacher(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar, vocab_size, max_len):
     # preparing the training dataset
     train_dataset, tar_dataset = data_slices( args, x_train, y_train, x_unlabel_tar )
     # declaring optimiser
-    optimizer = tf.keras.optimizers.Adam(learning_rate=lr)  # trying changing learning rate , sometimes it gives good result
+    optimizer = tf.keras.optimizers.Adam(learning_rate=args.lr)  # trying changing learning rate , sometimes it gives good result
 
     # Creating model
     if args.method=='Attn':
@@ -70,7 +70,7 @@ def MeanTeacher(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_t
     test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score(args,y_test, x_test, teacher)
     print('*'*80)
     # if epoch >= 10 and epoch% 5==0 :
-    teacher.save(Path(args.model_output_folder)+'/'+args.model+'_'+args.method+'_'+args.data)
+    teacher.save(f'{args.model_output_folder}/{args.data}/{args.model}_{args.method}_{args.alpha}_{args.pretrained_model}')
     report_writing(args,args.model+'_'+args.method+'_Teacher', args.lr, args.batch_size, args.epochs, args.alpha, args.ratio, train_acc.numpy(),test_accuracy,
                    precision_true, precision_fake, recall_true, recall_fake,f1score_true, f1score_fake, AUC, args.data)
     tf.keras.backend.clear_session()

@@ -1,9 +1,9 @@
 import tensorflow as tf
 
-from report_writing import report_writing
-from model_arch import BiLstmModel_attention, BiLstmModel
-from noise_creator import instant_noise
-from evaluation import prec_rec_f1score
+from Mean_Teacher.report_writing import report_writing
+from Mean_Teacher.model_arch import BiLstmModel_attention, BiLstmModel
+from Mean_Teacher.noise_creator import instant_noise
+from Mean_Teacher.evaluation import prec_rec_f1score
 
 def train_supervised(args,epochs, batch_size, lr, x_train, y_train, x_val, y_val ,x_test, y_test ,max_len ,vocab_size ):
     if args.method=='BERT':

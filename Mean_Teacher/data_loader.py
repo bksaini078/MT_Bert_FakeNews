@@ -1,8 +1,8 @@
 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from clf.bert import *
-from tokenization import tokenization
+from Mean_Teacher.clf.bert import *
+from Mean_Teacher.tokenization import tokenization
 from transformers import AutoTokenizer, TFAutoModel
 import pandas as pd
 
@@ -10,7 +10,7 @@ def data_load(args,path):
     x_train = np.load ( path + 'train_x.npy', allow_pickle=True )
     y_train = np.load ( path + 'train_y.npy', allow_pickle=True )
     # this we need when we are not having seperate val data TODO
-    x_train, x_val, y_train, y_val = train_test_split( x_train, y_train, test_size=0.20, random_state=42 )
+    x_train, x_val, y_train, y_val = train_test_split( x_train, y_train, test_size=0.1, random_state=42 )
     x_test = np.load ( path + 'test_x.npy', allow_pickle=True )
     y_test = np.load ( path + 'test_y.npy', allow_pickle=True )
     x_unlabel = np.load ( path + 'unlabel_x.npy', allow_pickle=True )
@@ -32,17 +32,16 @@ def data_load(args,path):
 
 def data_load_bert(args, path):
     #will change after some time 
-    path='Data/ExperimentsFolds/fakehealth/'
+    # path='Data/ExperimentsFolds/fakehealth/'
     train_data = pd.read_csv ( path + 'train.tsv', sep='\t' )
     test_data= pd.read_csv(path+'test.tsv',sep='\t')
     unlabel = pd.read_csv ( path + 'unlabel.tsv', sep='\t' )
 
     # splitting val data TODO: Need to change in in future
-    val_data = train_data[1001 :1394]
-    train_data = train_data[:1000]
+    train_data, val_data = train_test_split ( train_data, test_size=0.1, random_state=42 )
     tokenizer = AutoTokenizer.from_pretrained ( args.pretrained_model )
 
-    train_data = create_news_examples ( train_data[:100], args.max_len, tokenizer )
+    train_data = create_news_examples ( train_data, args.max_len, tokenizer )
     x_train, y_train = create_inputs_targets ( train_data )
     val_data = create_news_examples ( val_data, args.max_len, tokenizer )
     x_val, y_val = create_inputs_targets ( val_data )
