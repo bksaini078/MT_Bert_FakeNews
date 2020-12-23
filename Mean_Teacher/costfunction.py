@@ -32,7 +32,7 @@ def Classification_costs(logits, labels) :
 # custom loss function
 # def Overall_Cost(classification_cost, consistency_cost, ratio=0.5) :
 #     return (ratio * classification_cost) + ((1 - ratio) * consistency_cost)
-def Overall_Cost(args,x_train,y_train,x_unlabel_tar, student, teacher, ratio=0.5):
+def Overall_Cost(args,x_train,y_train,x_unlabel_tar, student, teacher):
     train_metrics = tf.keras.metrics.BinaryAccuracy( name='Binary_Accuracy' )
     logits = student(x_train)
     classification_cost = Classification_costs(logits, y_train)
@@ -41,12 +41,12 @@ def Overall_Cost(args,x_train,y_train,x_unlabel_tar, student, teacher, ratio=0.5
     consistency_cost = Consistency_Cost( tar_teacher, tar_student)
     logits_t= teacher(x_train)
     train_acc = train_metrics(tf.argmax ( y_train, 1 ), tf.argmax ( logits_t, 1 ) )
-    return (ratio * classification_cost) + ((1 - ratio) * consistency_cost), train_acc
+    return (args.ratio * classification_cost) + ((1 - args.ratio) * consistency_cost), train_acc
 
 
 # function for consistency cost
 def Consistency_Cost(teacher_output, student_output) :
-    return tf.losses.mean_squared_error(tf.argmax ( teacher_output, 1 ), tf.argmax ( student_output, 1 ) )
+    return tf.losses.mean_squared_error(teacher_output, student_output )
 
 
 def EMA(student_model, teacher_model, alpha) :

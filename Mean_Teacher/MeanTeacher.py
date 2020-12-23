@@ -43,7 +43,7 @@ def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unla
                     x_batch_unlabel = iterator_unlabel.get_next()
                     '''this is one method of adding -1 label using unlable data'''
                     # x_train_n, y_train_n = instant_noise(x_batch_train, y_batch_train, x_batch_unlabel, noise_ratio)
-                    overall_cost, train_acc = Overall_Cost(args,x_batch_train,y_batch_train,x_batch_unlabel, student, teacher, args.ratio)
+                    overall_cost, train_acc = Overall_Cost(args,x_batch_train,y_batch_train,x_batch_unlabel, student, teacher)
                 grads = tape.gradient(overall_cost, student.trainable_weights)
                 optimizer.apply_gradients(zip(grads, student.trainable_weights))
                 teacher = EMA(student, teacher, alpha=args.alpha)
@@ -52,7 +52,7 @@ def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unla
                 with tf.GradientTape () as tape :
                     inp, att, to_id = iterator_unlabel.get_next ()
                     overall_cost, train_acc = Overall_Cost(args,[inputs, attention, token_id], y_batch_train, [inp, att, to_id],
-                                                 student, teacher, args.ratio)
+                                                 student, teacher)
                 grads = tape.gradient(overall_cost, student.trainable_weights )
                 optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, student.trainable_weights ) if grad is not None )
                 teacher = EMA(student, teacher, alpha=args.alpha)
