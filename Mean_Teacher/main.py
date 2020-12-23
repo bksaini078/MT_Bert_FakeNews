@@ -37,21 +37,22 @@ if __name__ == '__main__':
 
     print(args)
 
-    for i in range(1):
+    for fold in range(1):
+
         if args.method =='Bert':
-            x_train, y_train, x_val, y_val, x_test,y_test, x_unlabel = data_load_bert(args, path)
+            x_train, y_train, x_val, y_val, x_test,y_test, x_unlabel = data_load_bert(args,fold, path)
             vocab_size=0
 
         elif args.method=='Attn' :
-            x_train, y_train,x_val,y_val, x_test,y_test, x_unlabel, vocab_size = data_load(args,path)
+            x_train, y_train,x_val,y_val, x_test,y_test, x_unlabel, vocab_size = data_load(args,fold,path)
 
         else:
             print('No correct model or method selected')
 
         if (args.model=='MT'):
-            MeanTeacher(args, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.max_len)
+            MeanTeacher(args, fold,x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size, args.max_len)
         elif (args.model=='PI') :
-            train_Pimodel(args, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel,vocab_size, args.max_len)
+            train_Pimodel(args, fold, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel,vocab_size, args.max_len)
         else :
             print("No Mean teacher for given argument")
 

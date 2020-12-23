@@ -10,7 +10,7 @@ from Mean_Teacher.clf.bert import BERT
 from pathlib import Path
 
 
-def MeanTeacher(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar, vocab_size, max_len):
+def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar, vocab_size, max_len):
     # preparing the training dataset
     train_dataset, tar_dataset = data_slices( args, x_train, y_train, x_unlabel_tar )
     # declaring optimiser
@@ -70,8 +70,8 @@ def MeanTeacher(args, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_t
     test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score(args,y_test, x_test, teacher)
     print('*'*80)
     # if epoch >= 10 and epoch% 5==0 :
-    teacher.save(f'{args.model_output_folder}/{args.data}/{args.model}_{args.method}_{args.alpha}_{args.pretrained_model}')
-    report_writing(args,args.model+'_'+args.method+'_Teacher', args.lr, args.batch_size, args.epochs, args.alpha, args.ratio, train_acc.numpy(),test_accuracy,
+    teacher.save(f'{args.model_output_folder}/{args.data}/{args.model}_{args.method}_{args.alpha}_{args.pretrained_model}_fold-{fold}')
+    report_writing(args,fold,args.model+'_'+args.method+'_Teacher', args.lr, args.batch_size, args.epochs, args.alpha, args.ratio, train_acc.numpy(),test_accuracy,
                    precision_true, precision_fake, recall_true, recall_fake,f1score_true, f1score_fake, AUC, args.data)
     tf.keras.backend.clear_session()
     return 
