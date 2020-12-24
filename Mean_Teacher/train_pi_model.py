@@ -82,7 +82,7 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
                 logits = pi_model ( [inputs, attention, token_id], training=True )
             train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
             loss = tf.keras.losses.categorical_crossentropy(y_batch_train, logits)
-            print('epoch: {}, Train Accuracy :{}, Loss: {}'.format(epoch, train_acc.numpy(), loss.numpy()))
+            print('\repoch: {}, Train Accuracy :{}, Loss: {}'.format(epoch, train_acc.numpy(), loss.numpy()))
 
 
         # calculating accuracy
