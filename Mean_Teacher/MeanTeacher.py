@@ -44,7 +44,7 @@ def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unla
                 grads = tape.gradient(overall_cost, student.trainable_weights)
                 optimizer.apply_gradients(zip(grads, student.trainable_weights))
                 teacher = EMA(student, teacher, alpha=args.alpha)
-                logits_t = teacher([inputs, attention, token_id])
+                logits_t = teacher(x_batch_train)
                 train_acc = train_metrics(tf.argmax( y_train, 1), tf.argmax ( logits_t, 1 ))
                 print(train_acc)
         elif args.method=='Bert':
