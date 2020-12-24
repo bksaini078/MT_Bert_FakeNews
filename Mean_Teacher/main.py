@@ -16,12 +16,8 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', default=1, type=int)
     parser.add_argument('--batch_size', default=64, type=int)
     parser.add_argument('--max_len', default=600, type=int)
-    # Model 0 Supervised 1 Mean teacher 2 Pi Model
     parser.add_argument('--model', default='MT', type=str, choices=['MT','PI'])
-    # attention mechanism , BERT
     parser.add_argument('--method', default='Attn', type=str,choices=['Attn', 'Bert'])
-    # parser.add_argument('--unlabel', default='All', type=str)
-    #for mean teacher
     parser.add_argument('--ratio', default=0.5, type=float)
     parser.add_argument('--alpha',  default=0.99,type=float)
     parser.add_argument('--noise_ratio', type=float, default=0.2)
