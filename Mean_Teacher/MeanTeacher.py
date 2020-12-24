@@ -72,9 +72,9 @@ def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unla
     test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score(args,y_test, x_test, teacher)
     print('*'*80)
     # if epoch >= 10 and epoch% 5==0 :
-    teacher.save(f'{args.model_output_folder}/{args.data}/{args.model}_{args.method}_{args.alpha}_{args.pretrained_model}_fold-{fold}')
+    # teacher.save(f'{args.model_output_folder}/{args.data}/{args.model}_{args.method}_{args.alpha}_{args.pretrained_model}_fold-{fold}')
     report_writing(args,fold,args.model+'_'+args.method+'_Teacher', args.lr, args.batch_size, args.epochs, args.alpha, args.ratio, train_acc.numpy(),test_accuracy,
-                   precision_true, precision_fake, recall_true, recall_fake,f1score_true, f1score_fake, AUC, args.data)
+                   precision_true, precision_fake, recall_true, recall_fake,f1score_true, f1score_fake, AUC)
     tf.keras.backend.clear_session()
     return 
 
