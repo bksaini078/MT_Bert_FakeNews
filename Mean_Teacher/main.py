@@ -34,6 +34,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     data_folder = Path(args.data_folder)
     path = f'{data_folder}/{args.data}/'
+    path_report = Path('Reports/'+test_split_number+'/'+args.data+'/')
+    path_report.mkdir(parents=True, exist_ok=True)
 
     print(args)
     print ( path )

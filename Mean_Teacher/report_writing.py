@@ -5,7 +5,7 @@ from pathlib import Path
 def report_writing(args,fold,Model,lr,Batch_Size, Epoch,Alpha,Ratio, train_accuracy,test_accuracy,precision_true,precision_fake,recall_true,recall_fake,f1score_true,f1score_fake,AUC):
     x = datetime.datetime.now()
     test_split_number = args.data_folder.split ( '/' )[-1]
-    path_save = Path('Reports/'+'Reports/'+test_split_number+'/'+args.data+'/')
+    path_save = Path('Reports/'+test_split_number+'/'+args.data+'/')
     path_save.mkdir(parents=True, exist_ok=True)
     report_df = pd.DataFrame(columns=['Date', 'Model','Learning Rate','Batch_Size', 'Epoch','Alpha','Ratio','Train_Accuracy',
                                       'Test_Accuracy', 'Precision_True','Precision_Fake','Recall_True','Recall_Fake','F1_Score_True','F1_Score_Fake','AUC',
