@@ -36,6 +36,7 @@ if __name__ == '__main__':
     path = f'{data_folder}/{args.data}/'
 
     print(args)
+    print ( path )
 
 
     for fold in range(1):
