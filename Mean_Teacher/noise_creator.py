@@ -1,5 +1,19 @@
 import numpy as np
 
+def unison_shuffled(x1,x2,x3,y ):
+    assert len(x1)==len(y)== len(x2)
+    p = np.random.permutation(len(x1))
+    return [x1[p],x2[p],x3[p]], y[p]
+
+def instant_noise_bert(x_train,y_train,x_unlabel, noise_ratio):
+    noise= int(noise_ratio*len(x_train[0]))
+    y_train_n = np.full((noise,2), -1)
+    x0= np.append(x_train[0],x_unlabel[0][:noise], axis=0)
+    x1= np.append(x_train[1],x_unlabel[1][:noise],axis=0)
+    x2= np.append(x_train[2],x_unlabel[2][:noise],axis=0)
+    y = np.append(y_train, y_train_n,axis=0)
+    # now unison permutation
+    return unison_shuffled(x0,x1,x2,y)
 
 def instant_noise(x_train, y_train, x_unlabel, n_ratio) :
     '''this function introduce noise in the training data for mean teacher model ,

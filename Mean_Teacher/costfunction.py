@@ -1,6 +1,7 @@
 # declaring loss function
 import tensorflow as tf
 import numpy as np
+from Mean_Teacher.noise_creator import instant_noise, instant_noise_bert
 # ref:https://github.com/CuriousAI/mean-teacher/tree/master/tensorflow/mean_teacher  updated according to our need .
 def Classification_costs(logits, labels) :
     """ Commputing classification cost , after removing labels -1 of unlabelled data and then calculating
@@ -33,19 +34,28 @@ def Classification_costs(logits, labels) :
 # def Overall_Cost(classification_cost, consistency_cost, ratio=0.5) :
 #     return (ratio * classification_cost) + ((1 - ratio) * consistency_cost)
 def Overall_Cost(args,x_train,y_train,x_unlabel_tar, student, teacher):
-    train_metrics = tf.keras.metrics.BinaryAccuracy( name='Binary_Accuracy' )
-    logits = student(x_train)
-    classification_cost = Classification_costs(logits, y_train)
-    tar_student = student(x_unlabel_tar )
-    tar_teacher = teacher ( x_unlabel_tar )
-    consistency_cost = Consistency_Cost( tar_teacher, tar_student)
-    logits_t= teacher(x_train)
-    train_acc = train_metrics(tf.argmax ( y_train, 1 ), tf.argmax ( logits_t, 1 ) )
-    return (args.ratio * classification_cost) + ((1 - args.ratio) * consistency_cost), train_acc
+
+    if args.method=='Attn':
+        x_train_n, y_train_n = instant_noise ( x_train, y_train, x_unlabel_tar, args.noise_ratio )
+        x_train_n1, _ = instant_noise ( x_train, y_train, x_unlabel_tar, args.noise_ratio )
+
+    elif args.method=='Bert':
+        x_train_n, y_train_n = instant_noise_bert(x_train, y_train,x_unlabel_tar, args.noise_ratio )
+        x_train_n1, _ = instant_noise_bert(x_train, y_train, x_unlabel_tar, args.noise_ratio )
+
+    logits = student(x_train_n)
+    classification_cost = Classification_costs ( logits, y_train )
+
+    tar_student = student(x_train_n1)
+    tar_teacher = teacher(x_train_n1)
+    consistency_cost = Consistency_Cost( tar_student, tar_teacher)
+
+    return (args.ratio * classification_cost) + ((1 - args.ratio) * consistency_cost)
 
 
 # function for consistency cost
-def Consistency_Cost(teacher_output, student_output) :
+def Consistency_Cost(student_output, teacher_output) :
+
     return tf.losses.mean_squared_error(teacher_output, student_output )
 
 
