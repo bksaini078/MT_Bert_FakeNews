@@ -26,7 +26,7 @@ if __name__ == '__main__':
     parser.add_argument('--alpha',  default=0.99,type=float)
     parser.add_argument('--noise_ratio', type=float, default=0.2)
     parser.add_argument('--pretrained_model',default= 'bert-base-uncased', type=str, choices=['bert-base-uncased', 'bert-base-cased'])
-    parser.add_argument('--data', type=str, choices=['fakehealth', 'gossipcop','politifact'])
+    parser.add_argument('--data', default= 'fakehealth',type=str, choices=['fakehealth', 'gossipcop','politifact'])
     parser.add_argument ('--dropout',default=0.2, type=float )
     parser.add_argument('--data_folder', type=str)
     parser.add_argument('--model_output_folder', type=str)
