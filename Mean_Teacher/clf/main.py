@@ -37,14 +37,12 @@ def run(args):
         model.train(train_data=train_data, test_data=test_data)
         model.save_weights(model_name)
         logger.info(f"Model saved to {model_name}")
-
     model.load_weights(model_name)
     logger.info(f"Model loaded from {model_name}")
     results = model.predict(test_data)
-
-
     logger.info("=======Test Results======")
     logger.info(classification_report(y_true=test_data['label'], y_pred=results['labels'], digits=4))
+
     pd.DataFrame(results['labels']).to_csv(results_name)
 
 
