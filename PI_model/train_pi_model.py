@@ -12,6 +12,7 @@ from BERT.bert import  BERT
 from PI_model.pi_model import PiModel
 
 def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar,vocab_size) :
+    x_unlabel_tar = x_unlabel_tar[:len ( x_train )]
     NUM_TRAIN_SAMPLES = len(x_train)+len(x_unlabel_tar)
     NUM_TEST_SAMPLES = np.shape(x_test)[0]
 
@@ -21,6 +22,7 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
     max_learning_rate = 0.003
     initial_beta1 = 0.9
     final_beta1 = 0.5
+
 
     learning_rate = tf.Variable(max_learning_rate)  # max learning rate
     beta_1 = tf.Variable ( initial_beta1 )
@@ -66,7 +68,7 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
         # iteration over batches
         iterator_unlabel = iter(tar_dataset)
         if args.method=='Attn' or args.model=='PI_baseline':
-            for step, (x_batch_train, y_batch_train) in enumerate ( train_dataset ):
+            for step, (x_batch_train, y_batch_train) in enumerate( train_dataset ):
                 with tf.GradientTape () as tape :
                     x_batch_unlabel = iterator_unlabel.get_next()
                     loss_value = pi_model_loss( x_batch_train, y_batch_train, x_batch_unlabel, pi_model,unsupervised_weight )

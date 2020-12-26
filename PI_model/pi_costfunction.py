@@ -1,8 +1,8 @@
 import tensorflow as tf
 import math
+import numpy as np
 
-def pi_model_loss(X_train_labeled, y_train_labeled, X_train_unlabeled,
-                  pi_model, unsupervised_weight):
+def pi_model_loss(X_train_labeled, y_train_labeled, X_train_unlabeled,pi_model, unsupervised_weight):
     """ Gets the Loss Value for SSL Pi Model
     Arguments:
         X_train_labeled {tensor} -- train images
@@ -15,6 +15,8 @@ def pi_model_loss(X_train_labeled, y_train_labeled, X_train_unlabeled,
     """
     z_labeled = pi_model(X_train_labeled)
     z_labeled_i = pi_model(X_train_labeled)
+
+    print('unlabel_size:', np.shape(X_train_unlabeled))
 
     z_unlabeled = pi_model(X_train_unlabeled)
     z_unlabeled_i = pi_model(X_train_unlabeled)
