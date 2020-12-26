@@ -62,7 +62,7 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
         else :
             unsupervised_weight = max_unsupervised_weight * rampup_value
 
-        # learning_rate.assign(rampup_value * rampdown_value * max_learning_rate )
+        learning_rate.assign(rampup_value * rampdown_value * max_learning_rate )
         print(f'Learning rate: {learning_rate}')
         beta_1.assign(rampdown_value * initial_beta1 + (1.0 - rampdown_value) * final_beta1 )
         # iteration over batches
