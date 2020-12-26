@@ -1,4 +1,4 @@
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/3' \
 #--data fakehealth \
@@ -12,7 +12,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/4' \
 #--data fakehealth \
@@ -26,7 +26,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/5' \
 #--data fakehealth \
@@ -40,7 +40,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/6' \
 #--data fakehealth \
@@ -54,7 +54,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/7' \
 #--data fakehealth \
@@ -68,7 +68,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/8' \
 #--data fakehealth \
@@ -82,7 +82,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/9' \
 #--data fakehealth \
@@ -96,7 +96,7 @@
 #--seed 42 \
 #--do_train
 
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/3' \
 #--data gossipcop \
@@ -110,7 +110,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/4' \
 #--data gossipcop \
@@ -124,7 +124,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/5' \
 #--data gossipcop \
@@ -138,7 +138,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/6' \
 #--data gossipcop \
@@ -152,7 +152,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/7' \
 #--data gossipcop \
@@ -166,7 +166,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/8' \
 #--data gossipcop \
@@ -180,7 +180,7 @@
 #--seed 42 \
 #--do_train
 #
-#python -m Mean_Teacher.clf.main \
+#python -m Mean_Teacher.BERT.main \
 #--model bert \
 #--data_folder 'Data/ExperimentFolds/9' \
 #--data gossipcop \

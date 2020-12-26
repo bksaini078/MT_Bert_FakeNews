@@ -3,14 +3,15 @@ import numpy as np
 #this is to enable eager execution
 tf.compat.v1.enable_eager_execution()
 from Mean_Teacher.report_writing import report_writing
-from Mean_Teacher.model_arch import BiLstmModel_attention, BiLstmModel
+from Mean_Teacher.model_arch import BiLstmModel_attention
 from Mean_Teacher.data_loader import data_slices
 
 from Mean_Teacher.evaluation import prec_rec_f1score
-from Mean_Teacher.pi_costfunction import pi_model_loss,ramp_down_function,ramp_up_function
-from Mean_Teacher.clf.bert import  BERT
+from PI_model.pi_costfunction import pi_model_loss,ramp_down_function,ramp_up_function
+from BERT.bert import  BERT
+from PI_model.pi_model import PiModel
 
-def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar,vocab_size, max_len) :
+def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar,vocab_size) :
     NUM_TRAIN_SAMPLES = len(x_train)+len(x_unlabel_tar)
     NUM_TEST_SAMPLES = np.shape(x_test)[0]
 
@@ -28,15 +29,20 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
     
     train_dataset,tar_dataset= data_slices(args, x_train,y_train,x_unlabel_tar)
     # preparing the training dataset
-    if args.method=='Attn':
-        pi_model = BiLstmModel_attention( max_len, vocab_size )
+    if args.method=='Attn' and args.model!='PI_baseline':
+        pi_model = BiLstmModel_attention( args.max_len, vocab_size )
         pi_model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
-    elif args.method=='Bert':
+    elif args.method=='Bert' and args.model!='PI_baseline':
         model = BERT(args)
         pi_model = model.create_model()
         pi_model.summary ()
+    elif args.model=='PI_baseline':
+        pi_model= PiModel(args, vocab_size)
+        pi_model.compile ( optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'] )
+
+
     else:
-        print('Either correct model name ')
+        print('Either correct method and model name ')
 
     train_metrics = tf.keras.metrics.Accuracy ()
 
@@ -59,17 +65,17 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
         beta_1.assign(rampdown_value * initial_beta1 + (1.0 - rampdown_value) * final_beta1 )
         # iteration over batches
         iterator_unlabel = iter(tar_dataset)
-        if args.method=='Attn':
+        if args.method=='Attn' or args.model=='PI_baseline':
             for step, (x_batch_train, y_batch_train) in enumerate ( train_dataset ):
                 with tf.GradientTape () as tape :
                     x_batch_unlabel = iterator_unlabel.get_next()
                     loss_value = pi_model_loss( x_batch_train, y_batch_train, x_batch_unlabel, pi_model,unsupervised_weight )
                 grads = tape.gradient( loss_value, pi_model.variables )
-                optimizer.apply_gradients ( zip ( grads, pi_model.variables ))
+                optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, pi_model.variables ) if grad is not None )
                 # Run the forward pass of the layer
                 logits = pi_model (x_batch_train, training=True )
 
-        elif args.method=='Bert':
+        elif args.method=='Bert' and args:
             for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
                 with tf.GradientTape () as tape :
                     inp, att, to_id = iterator_unlabel.get_next()
@@ -81,8 +87,6 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
             train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
             loss = tf.keras.losses.categorical_crossentropy(y_batch_train, logits)
             print('\repoch: {}, Train Accuracy :{}, Loss: {}'.format(epoch, train_acc.numpy(), loss.numpy()))
-
-
         # calculating accuracy
         train_acc = train_metrics(tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ))
         

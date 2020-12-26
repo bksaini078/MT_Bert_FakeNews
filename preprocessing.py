@@ -6,7 +6,7 @@ import tensorflow as tf
 import re
 import argparse
 from pathlib import Path
-from Mean_Teacher.clf.bert import clean_helper
+from BERT.bert import clean_helper
 
 def preprocess_text(sen):
     # Removing html tags

@@ -5,11 +5,10 @@ from Mean_Teacher.report_writing import report_writing
 from Mean_Teacher.model_arch import BiLstmModel_attention
 from Mean_Teacher.evaluation import prec_rec_f1score
 from Mean_Teacher.data_loader import data_slices
-from Mean_Teacher.clf.bert import BERT
-from pathlib import Path
+from BERT.bert import BERT
 
 
-def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar, vocab_size, max_len):
+def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar, vocab_size):
     # preparing the training dataset
     train_dataset, tar_dataset = data_slices( args, x_train, y_train, x_unlabel_tar )
     # declaring optimiser
@@ -17,9 +16,9 @@ def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unla
 
     # Creating model
     if args.method=='Attn':
-        student = BiLstmModel_attention(max_len, vocab_size)
+        student = BiLstmModel_attention(args.max_len, vocab_size)
         student.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
-        teacher = BiLstmModel_attention ( max_len, vocab_size )
+        teacher = BiLstmModel_attention ( args.max_len, vocab_size )
         teacher.compile ( optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'] )
     elif args.method=='Bert':
         models = BERT(args)

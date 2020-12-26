@@ -1,9 +1,7 @@
-
-import numpy as np
 from sklearn.model_selection import train_test_split
-from Mean_Teacher.clf.bert import *
+from BERT.bert import *
 from Mean_Teacher.tokenization import tokenization
-from transformers import AutoTokenizer, TFAutoModel
+from transformers import AutoTokenizer
 import pandas as pd
 
 def data_load(args,fold,path):

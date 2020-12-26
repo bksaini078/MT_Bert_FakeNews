@@ -5,10 +5,8 @@ import pandas as pd
 import tensorflow as tf
 from numpy.random import seed
 from sklearn.metrics import classification_report
-from Mean_Teacher.report_writing import report_writing
-from Mean_Teacher.evaluation import prec_rec_f1score
 
-from Mean_Teacher.clf.bert import BERT
+from BERT.bert import BERT
 from logger import logger
 
 MODELS = {
