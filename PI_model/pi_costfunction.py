@@ -16,7 +16,7 @@ def pi_model_loss(X_train_labeled, y_train_labeled, X_train_unlabeled,pi_model, 
     z_labeled = pi_model(X_train_labeled)
     z_labeled_i = pi_model(X_train_labeled)
 
-    print('unlabel_size:', np.shape(X_train_unlabeled))
+    # print('unlabel_size:', np.shape(X_train_unlabeled))
 
     z_unlabeled = pi_model(X_train_unlabeled)
     z_unlabeled_i = pi_model(X_train_unlabeled)
