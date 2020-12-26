@@ -1,5 +1,5 @@
 #make sure by using fake_news_generate the unlabel data for each fold, if already done then move forward
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/3 \
@@ -13,7 +13,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/4 \
@@ -27,7 +27,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/6 \
@@ -41,7 +41,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/7 \
@@ -55,7 +55,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/8 \
@@ -69,7 +69,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/9 \
@@ -85,7 +85,7 @@ python3 -m Mean_Teacher.main \
 
 
 # bert
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/3 \
@@ -99,7 +99,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/4 \
@@ -113,7 +113,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/6 \
@@ -127,7 +127,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/7 \
@@ -141,7 +141,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/8 \
@@ -155,7 +155,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/9 \
@@ -172,7 +172,7 @@ python3 -m Mean_Teacher.main \
 #####GOSSIPCOP####
 echo 'gossipcop'
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/3 \
@@ -185,7 +185,7 @@ python3 -m Mean_Teacher.main \
 --data gossipcop \
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/4 \
@@ -199,7 +199,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/6 \
@@ -213,7 +213,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/7 \
@@ -227,7 +227,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/8 \
@@ -241,7 +241,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/9 \
@@ -257,7 +257,7 @@ python3 -m Mean_Teacher.main \
 
 
 # bert
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/3 \
@@ -271,7 +271,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/4 \
@@ -285,7 +285,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/6 \
@@ -299,7 +299,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/7 \
@@ -313,7 +313,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/8 \
@@ -327,7 +327,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/9 \
@@ -345,7 +345,7 @@ python3 -m Mean_Teacher.main \
 #####GOSSIPCOP####
 echo 'politifact'
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/3 \
@@ -359,7 +359,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/4 \
@@ -373,7 +373,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/6 \
@@ -387,7 +387,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/7 \
@@ -401,7 +401,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/8 \
@@ -415,7 +415,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Attn \
 --data_folder Data/ExperimentFolds/9 \
@@ -431,7 +431,7 @@ python3 -m Mean_Teacher.main \
 
 
 # bert
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/3 \
@@ -445,7 +445,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/4 \
@@ -459,7 +459,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/6 \
@@ -473,7 +473,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/7 \
@@ -487,7 +487,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/8 \
@@ -501,7 +501,7 @@ python3 -m Mean_Teacher.main \
 
 
 
-python3 -m Mean_Teacher.main \
+python3 -m main\
 --model PI \
 --method Bert \
 --data_folder Data/ExperimentFolds/9 \
