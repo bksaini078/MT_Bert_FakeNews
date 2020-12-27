@@ -44,8 +44,9 @@ def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unla
                 optimizer.apply_gradients(zip(grads, student.trainable_weights))
                 teacher = EMA(student, teacher, alpha=args.alpha)
                 logits_t = teacher(x_batch_train)
-                train_acc = train_metrics(tf.argmax( y_batch_train, 1), tf.argmax ( logits_t, 1 ))
-                print(f'Train Accuracy:{train_acc.numpy()}')
+                if step%10 ==0:
+                    train_acc = train_metrics(tf.argmax( y_batch_train, 1), tf.argmax ( logits_t, 1 ))
+                    print(f'Train Accuracy:{train_acc.numpy()}')
         elif args.method=='Bert':
             for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
                 with tf.GradientTape () as tape :
@@ -56,8 +57,9 @@ def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unla
                 optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, student.trainable_weights ) if grad is not None )
                 teacher = EMA(student, teacher, alpha=args.alpha)
                 logits_t = teacher([inputs, attention, token_id] )
-                train_acc = train_metrics( tf.argmax ( y_batch_train, 1 ), tf.argmax(logits_t, 1))
-                print(f'\rTrain Accuracy:{train_acc.numpy()}')
+                if step%10 ==0:
+                    train_acc = train_metrics(tf.argmax( y_batch_train, 1), tf.argmax ( logits_t, 1 ))
+                    print(f'Train Accuracy:{train_acc.numpy()}')
         # Run a validation loop at the end of each epoch.
         print('*******STUDENT*************')
         prec_rec_f1score(args,y_val, x_val, student)

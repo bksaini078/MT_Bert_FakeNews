@@ -76,6 +76,11 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
                 optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, pi_model.variables ) if grad is not None )
                 # Run the forward pass of the layer
                 logits = pi_model (x_batch_train, training=True )
+                train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
+                loss = tf.keras.losses.categorical_crossentropy ( y_batch_train, logits )
+                if step % 10 == 0 :
+                    print ( '\repoch: {}, Train Accuracy :{}, Loss: {}'.format ( epoch, train_acc.numpy (),
+                                                                                 loss.numpy () ) )
 
         elif args.method=='Bert' and args:
             for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
@@ -87,10 +92,11 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
                 optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, pi_model.variables ) if grad is not None )
                 logits = pi_model ( [inputs, attention, token_id], training=True )
             train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
+
             loss = tf.keras.losses.categorical_crossentropy(y_batch_train, logits)
-            print('\repoch: {}, Train Accuracy :{}, Loss: {}'.format(epoch, train_acc.numpy(), loss.numpy()))
-        # calculating accuracy
-        train_acc = train_metrics(tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ))
+            if step %10 ==0:
+                print('\repoch: {}, Train Accuracy :{}, Loss: {}'.format(epoch, train_acc.numpy(), loss.numpy()))
+
         
         # Run a validation loop at the end of each epoch.
         print ( '*******Pi_Model*************' )
