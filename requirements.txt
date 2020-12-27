@@ -10,3 +10,5 @@ tensorflow-hub==0.10.0
 clean-text==0.3.0
 transformers
 logger
+sklearn
+
