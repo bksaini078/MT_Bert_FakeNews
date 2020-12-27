@@ -1,5 +1,5 @@
 #make sure by using fake_news_generate the unlabel data for each fold, if already done then move forward
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/3 \
@@ -13,7 +13,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/4 \
@@ -27,7 +27,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/6 \
@@ -41,7 +41,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/7 \
@@ -55,7 +55,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/8 \
@@ -69,7 +69,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/9 \
@@ -85,7 +85,7 @@ python3 -m main\
 
 
 # bert
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/3 \
@@ -99,7 +99,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/4 \
@@ -113,7 +113,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/6 \
@@ -127,7 +127,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/7 \
@@ -141,7 +141,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/8 \
@@ -155,7 +155,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/9 \
@@ -172,7 +172,7 @@ python3 -m main\
 #####GOSSIPCOP####
 echo 'gossipcop'
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/3 \
@@ -186,7 +186,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/4 \
@@ -200,7 +200,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/6 \
@@ -214,7 +214,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/7 \
@@ -228,7 +228,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/8 \
@@ -242,7 +242,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/9 \
@@ -258,7 +258,7 @@ python3 -m main\
 
 
 # bert
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/3 \
@@ -272,7 +272,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/4 \
@@ -286,7 +286,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/6 \
@@ -300,7 +300,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/7 \
@@ -314,7 +314,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/8 \
@@ -328,7 +328,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/9 \
@@ -346,7 +346,7 @@ python3 -m main\
 #####GOSSIPCOP####
 echo 'politifact'
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/3 \
@@ -360,7 +360,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/4 \
@@ -374,7 +374,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/6 \
@@ -388,7 +388,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/7 \
@@ -402,7 +402,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/8 \
@@ -416,7 +416,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Attn \
 --data_folder Data/ExperimentFolds/9 \
@@ -432,7 +432,7 @@ python3 -m main\
 
 
 # bert
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/3 \
@@ -446,7 +446,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/4 \
@@ -460,7 +460,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/6 \
@@ -474,7 +474,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/7 \
@@ -488,7 +488,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/8 \
@@ -502,7 +502,7 @@ python3 -m main\
 --alpha 0.99 \
 --ratio 0.5
 
-python3 -m main\
+python3 -m main \
 --model MT \
 --method Bert \
 --data_folder Data/ExperimentFolds/9 \
