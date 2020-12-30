@@ -15,7 +15,7 @@ For our paper, we use the following datasets:
 :warning: Please cite the papers of these studies if you use them. 
 
 Run the [bash code](scripts/data_processing.sh) in order to get experiment folds.
-Run the [bash code](scripts/fake_news_generator.sh) in order to get experiment folds.
+
 
 You are supposed to see the processed files in `Data` folder
 ![ddata_directory](images/folder_dir.png)
@@ -42,6 +42,21 @@ pip3 install -r requirements.txt
 |--alpha | EMA alpha value| 0.99|
 |--noise_ratio |unlabel data noise ratio |0.2|
 
+
+Command to generate the fake news:
+```console
+python3 -m fake_news_generator \
+--data_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--processed_output_folder Data/ExperimentFolds/3
+```
+Command for preprocessing the data:
+```console
+--data_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--processed_output_folder Data/Processed/3
+```
+
 Command to run Mean teacher with self attention:
 ```console
 python3 -m main \
@@ -54,7 +69,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 ```
@@ -70,14 +84,13 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 ```
 
 
 ## Contributors
-Ipek Baris
+Ipek Baris 
 
 Bhupender kumar Saini
 
