@@ -15,7 +15,7 @@ For our paper, we use the following datasets:
 :warning: Please cite the papers of these studies if you use them. 
 
 Run the [bash code](scripts/data_processing.sh) in order to get experiment folds.
-Run the [bash code](scripts/fake_news_generator.sh) in order to get experiment folds.
+
 
 You are supposed to see the processed files in `Data` folder
 ![ddata_directory](images/folder_dir.png)
