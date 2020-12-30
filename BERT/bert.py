@@ -76,7 +76,7 @@ def create_news_examples(data, max_len, tokenizer) :
                                  tokenizer=tokenizer )
         news_exp.preprocess ()
         news_exps.append ( news_exp )
-    
+
     return news_exps, tokenizer.vocab_size
 
 

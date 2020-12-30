@@ -2,14 +2,13 @@
 python3 -m main \
 --model MT \
 --method Attn \
---data_folder Data/Processed/3 \
+--data_folder Data/ExperimentFolds/3 \
 --data fakehealth \
 --model_output_folder trained_models \
 --epochs 3 \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -23,7 +22,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -37,7 +35,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -51,7 +48,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -65,7 +61,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -79,7 +74,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -95,7 +89,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -109,7 +102,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -123,7 +115,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -137,7 +128,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -151,7 +141,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -165,7 +154,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -182,7 +170,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -196,7 +183,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -210,7 +196,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -224,7 +209,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -238,7 +222,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -252,7 +235,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -268,7 +250,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -282,7 +263,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -296,7 +276,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -310,7 +289,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -324,7 +302,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -338,7 +315,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -356,7 +332,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -370,7 +345,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -384,7 +358,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -398,7 +371,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -412,7 +384,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -426,7 +397,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -442,7 +412,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -456,7 +425,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -470,7 +438,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -484,7 +451,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -498,7 +464,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
@@ -512,7 +477,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data politifact \
 --alpha 0.99 \
 --ratio 0.5
 
