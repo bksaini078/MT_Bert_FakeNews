@@ -69,7 +69,6 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data fakehealth \
 --alpha 0.99 \
 --ratio 0.5
 ```
@@ -85,14 +84,13 @@ python3 -m main \
 --lr 0.0001 \
 --batch_size 1 \
 --max_len 512 \
---data gossipcop \
 --alpha 0.99 \
 --ratio 0.5
 ```
 
 
 ## Contributors
-Ipek Baris
+Ipek Baris 
 
 Bhupender kumar Saini
 
