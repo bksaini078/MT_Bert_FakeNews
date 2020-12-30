@@ -90,7 +90,7 @@ def create_inputs_targets(news_exps) :
     for item in news_exps :
         if item.skip == False :
             for key in dataset_dict :
-                dataset_dict[key].append ( getattr ( item, key ) )
+                dataset_dict[key].append(getattr( item, key ) )
     for key in dataset_dict :
         dataset_dict[key] = np.array ( dataset_dict[key] )
 

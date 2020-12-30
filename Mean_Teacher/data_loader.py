@@ -49,7 +49,7 @@ def data_load(args,fold, path):
 
 
     tokenizer = AutoTokenizer.from_pretrained(args.pretrained_model)
-    if args.method=='Bert':
+    if args.method=='Attn':
         train_data,vocab_size = create_news_examples ( train_data, args.max_len, tokenizer )
         [x_train,_,_], y_train = create_inputs_targets ( train_data )
         val_data,_ = create_news_examples ( val_data, args.max_len, tokenizer )
@@ -59,7 +59,7 @@ def data_load(args,fold, path):
         [x_unlabel,_,_],_ = create_news_examples ( unlabel, args.max_len, tokenizer )
         x_unlabel, _ = create_inputs_targets ( x_unlabel )
 
-    elif args.method=='Attn':
+    elif args.method=='Bert':
         # need seperation from bert because we need only input ids
         train_data,vocab_size = create_news_examples ( train_data, args.max_len, tokenizer)
         x_train, y_train = create_inputs_targets ( train_data )
