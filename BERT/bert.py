@@ -39,6 +39,7 @@ class NewsExample:
         self.label = label
         self.skip = False
         self.label2id = {'fake': 0, 'true': 1}
+        # self.label2id = {0: 0, 1: 1}
 
     def preprocess(self):
         title = self.title

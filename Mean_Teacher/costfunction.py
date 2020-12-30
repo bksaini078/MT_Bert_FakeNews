@@ -40,8 +40,8 @@ def Overall_Cost(args,x_train,y_train,x_unlabel_tar, student, teacher):
         x_train_n1, _ = instant_noise ( x_train, y_train, x_unlabel_tar, args.noise_ratio )
 
     elif args.method=='Bert':
-        x_train_n, y_train_n = instant_noise_bert(x_train, y_train,x_unlabel_tar, args.noise_ratio )
-        x_train_n1, _ = instant_noise_bert(x_train, y_train, x_unlabel_tar, args.noise_ratio )
+        x_train_n, y_train_n = instant_noise_bert(x_train, y_train,x_unlabel_tar, args)
+        x_train_n1, _ = instant_noise_bert(x_train, y_train, x_unlabel_tar, args )
 
     logits = student(x_train_n)
     classification_cost = Classification_costs ( logits, y_train )

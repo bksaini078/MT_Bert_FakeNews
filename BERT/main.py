@@ -26,12 +26,14 @@ def run(args):
 
     test_fname = data_dir / 'test.tsv'
     test_data = pd.read_csv(test_fname, sep='\t')
+    # test_data=test_data[:30] 
 
     model_name = f'{model_output_dir}/{args.pretrained_model}_seed_{args.seed}_portion_{data_folder.name}_{data_dir.name}.model'
     results_name = f'{model_output_dir}/{args.pretrained_model}_seed_{args.seed}_portion_{data_folder.name}_{data_dir.name}_results.tsv'
     if args.do_train:
         train_fname = data_dir / 'train.tsv'
         train_data = pd.read_csv(train_fname, sep='\t')
+        # train_data= train_data[:200]
         model.train(train_data=train_data, test_data=test_data)
         model.save_weights(model_name)
         logger.info(f"Model saved to {model_name}")
@@ -53,7 +55,7 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--model', type=str, choices=['bert'])
     parser.add_argument('--pretrained_model', type=str, choices=['bert-base-uncased', 'bert-base-cased'])
-    parser.add_argument('--data', type=str, choices=['fakehealth', 'gossipcop'])
+    parser.add_argument('--data', type=str, choices=['fakehealth','Kaggle', 'gossipcop'])
     parser.add_argument('--data_folder', type=str)
     parser.add_argument('--model_output_folder', type=str)
     parser.add_argument('--max_len', type=int)

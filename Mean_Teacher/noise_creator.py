@@ -1,34 +1,42 @@
 import numpy as np
 
-def unison_shuffled(x1,x2,x3,y ):
-    assert len(x1)==len(y)== len(x2)
-    p = np.random.permutation(len(x1))
+def unison_shuffled(x1,x2,x3,y, args):
+    assert len(x1)==len(y)== len(x2)== len(x3)
+    p = np.random.permutation(args.batch_size)
     return [x1[p],x2[p],x3[p]], y[p]
 
-def instant_noise_bert(x_train,y_train,x_unlabel, noise_ratio):
-    noise= int(noise_ratio*len(x_train[0]))
+def instant_noise_bert(x_train,y_train,x_unlabel, args):
+    noise= int(args.noise_ratio*len(x_train[0]))
+    p = np.random.permutation(noise)
+
     y_train_n = np.full((noise,2), -1)
-    x0= np.append(x_train[0],x_unlabel[0][:noise], axis=0)
-    x1= np.append(x_train[1],x_unlabel[1][:noise],axis=0)
-    x2= np.append(x_train[2],x_unlabel[2][:noise],axis=0)
+    x0= np.append(x_train[0],x_unlabel[0][p], axis=0)
+    x1= np.append(x_train[1],x_unlabel[1][p],axis=0)
+    x2= np.append(x_train[2],x_unlabel[2][p],axis=0)
     y = np.append(y_train, y_train_n,axis=0)
     # now unison permutation
-    return unison_shuffled(x0,x1,x2,y)
+    return unison_shuffled(x0,x1,x2,y,args)
 
 def instant_noise(x_train, y_train, x_unlabel, n_ratio) :
     '''this function introduce noise in the training data for mean teacher model ,
     this function is used in calculating classification cost, user have to provide
     amount of noise, want to add(ratio) in train data and test train split ratio too'''
     # amount of noise need to add in x_train data
-    noise = int ( np.shape ( x_train )[0] * n_ratio )
+    noise = int(np.shape( x_train )[0] * n_ratio )
 
     # taking column of x_train, need it later
     x_column = np.shape ( x_train )[1]
+    # print(noise,int (np.shape( x_unlabel )[0]),np.shape( x_train )[0])
 
     if noise <= int ( np.shape ( x_unlabel )[0] ) :
 
         # taking number of noise from unlabel data
-        ratio_noise = x_unlabel[:noise]
+        # ratio_noise = x_unlabel[:noise]
+        
+        number_of_rows = x_unlabel.shape[0]
+        random_indices = np.random.choice(number_of_rows, size=noise, replace=False)
+        ratio_noise= x_unlabel[random_indices, :]
+
 
         # creating -1 label for noise data
         # y_unlabel = np.full ( (np.shape ( ratio_noise )[0], 1), -1 )

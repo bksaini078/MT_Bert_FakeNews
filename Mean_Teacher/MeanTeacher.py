@@ -10,7 +10,7 @@ from BERT.bert import BERT
 
 def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar, vocab_size):
     # preparing the training dataset
-    train_dataset, tar_dataset = data_slices( args, x_train, y_train, x_unlabel_tar )
+    train_dataset = data_slices( args, x_train, y_train )
     # declaring optimiser
     optimizer = tf.keras.optimizers.Adam(learning_rate=args.lr)  # trying changing learning rate , sometimes it gives good result
 
@@ -33,13 +33,13 @@ def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unla
         print('Start of epoch %d' % (epoch,))
         print(*"*****************")
         # iteration over batches
-        iterator_unlabel = iter ( tar_dataset )
+        # iterator_unlabel = iter ( tar_dataset )
         if args.method=='Attn':
             for step, (x_batch_train, y_batch_train) in enumerate(train_dataset):
                 with tf.GradientTape() as tape:
                     # adding instant noise
-                    x_batch_unlabel = iterator_unlabel.get_next()
-                    overall_cost = Overall_Cost(args,x_batch_train,y_batch_train,x_batch_unlabel, student, teacher)
+                    # x_batch_unlabel = iterator_unlabel.get_next()
+                    overall_cost = Overall_Cost(args,x_batch_train,y_batch_train,x_unlabel_tar, student, teacher)
                 grads = tape.gradient(overall_cost, student.trainable_weights)
                 optimizer.apply_gradients(zip(grads, student.trainable_weights))
                 teacher = EMA(student, teacher, alpha=args.alpha)
@@ -50,8 +50,8 @@ def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unla
         elif args.method=='Bert':
             for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
                 with tf.GradientTape () as tape :
-                    inp, att, to_id = iterator_unlabel.get_next ()
-                    overall_cost = Overall_Cost(args,[inputs, attention, token_id], y_batch_train, [inp, att, to_id],
+                    # inp, att, to_id = iterator_unlabel.get_next ()
+                    overall_cost = Overall_Cost(args,[inputs, attention, token_id], y_batch_train, x_unlabel_tar,
                                                  student, teacher)
                 grads = tape.gradient(overall_cost, student.trainable_weights )
                 optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, student.trainable_weights ) if grad is not None )
@@ -73,7 +73,7 @@ def MeanTeacher(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unla
     test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score(args,y_test, x_test, teacher)
     print('*'*80)
     # if epoch >= 10 and epoch% 5==0 :
-    # teacher.save(f'{args.model_output_folder}/{args.data}/{args.model}_{args.method}_{args.alpha}_{args.pretrained_model}_fold-{fold}')
+    teacher.save(f'{args.model_output_folder}/{args.data}/{args.model}_{args.method}_{args.alpha}_{args.pretrained_model}_fold-{fold}')
     report_writing(args,fold,args.model+'_'+args.method+'_Teacher', args.lr, args.batch_size, args.epochs, args.alpha, args.ratio, train_acc.numpy(),test_accuracy,
                    precision_true, precision_fake, recall_true, recall_fake,f1score_true, f1score_fake, AUC)
     tf.keras.backend.clear_session()
