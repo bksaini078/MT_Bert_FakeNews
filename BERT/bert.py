@@ -157,7 +157,7 @@ class BERT :
                          validation_split=0.1, callbacks=[callback] )
 
     def predict(self, test_data) :
-        test_data = create_news_examples ( test_data, self.max_len, self.tokenizer )
+        test_data,_ = create_news_examples ( test_data, self.max_len, self.tokenizer )
         x_test, y_test = create_inputs_targets ( test_data )
         self.model.trainable = False
         predictions = self.model.predict ( x_test, batch_size=self.batch_size )
