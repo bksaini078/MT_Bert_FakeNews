@@ -4,36 +4,6 @@ from Mean_Teacher.tokenization import tokenization
 from transformers import AutoTokenizer
 import pandas as pd
 
-def data_load_x(args,fold,path):
-    x_train = np.load ( path + 'train_x.npy', allow_pickle=True )
-    y_train = np.load ( path + 'train_y.npy', allow_pickle=True )
-    # x_train= x_train[:200]
-    # y_train=y_train[:200]
-    # this we need when we are not having seperate val data TODO
-    x_train, x_val, y_train, y_val = train_test_split( x_train, y_train, test_size=0.2, random_state=42 )
-    x_test = np.load ( path + 'test_x.npy', allow_pickle=True )
-    y_test = np.load ( path + 'test_y.npy', allow_pickle=True )
-
-    # x_test=x_test[:40]
-    # y_test=y_test[:40]
-    x_unlabel = np.load ( path + 'unlabel_x.npy', allow_pickle=True )
-    print ( 'train data size:', np.shape ( x_train ) )
-    print ( 'train data True/Fake count:', np.count_nonzero ( y_train ),
-            len ( y_train ) - np.count_nonzero ( y_train ) )
-    print ( 'val data size:', np.shape ( x_val ) )
-    print ( 'val data True/Fake count:', np.count_nonzero ( y_val ), len ( y_val ) - np.count_nonzero ( y_val ) )
-    print ( 'test data size:', np.shape ( x_test ) )
-    print ( 'test data True/Fake count:', np.count_nonzero ( y_test ), len ( y_test ) - np.count_nonzero ( y_test ) )
-    print ( 'unlabel data size:', np.shape ( x_test ) )
-    comp_article = np.hstack ( (x_train, x_val, x_test, x_unlabel) )
-    x_train, x_val, x_test, x_unlabel, vocab_size, tokenizer = tokenization \
-        (comp_article, x_train, x_val, x_test, x_unlabel, args.max_len )
-    y_train = to_categorical ( y_train )
-    y_val = to_categorical ( y_val )
-    y_test = to_categorical ( y_test )
-    return x_train, y_train,x_val,y_val, x_test,y_test, x_unlabel, vocab_size
-
-
 def data_load(args,fold, path):
     #will change after some time
     # path='Data/ExperimentsFolds/fakehealth/'
@@ -76,15 +46,12 @@ def data_slices(args, x_train,y_train):
     if args.method=='Attn':
         train_dataset = tf.data.Dataset.from_tensor_slices ( (x_train, y_train) )
         train_dataset = train_dataset.shuffle ( buffer_size=1024 ).batch ( args.batch_size )
-        # preparing the target dataset
-        # tar_dataset = tf.data.Dataset.from_tensor_slices (x_unlabel_tar )
-        # tar_dataset = tar_dataset.shuffle ( buffer_size=1024 ).batch ( args.batch_size )
+
         return train_dataset
     elif args.method=='Bert':
         train_dataset = tf.data.Dataset.from_tensor_slices ( (x_train[0], x_train[1], x_train[2], y_train) )
         train_dataset = train_dataset.shuffle ( buffer_size=1024 ).batch ( args.batch_size )
-        # tar_dataset = tf.data.Dataset.from_tensor_slices ( (x_unlabel_tar[0], x_unlabel_tar[1], x_unlabel_tar[2]) )
-        # tar_dataset = tar_dataset.shuffle ( buffer_size=1024 ).batch ( args.batch_size )
+
         return train_dataset
 
 
