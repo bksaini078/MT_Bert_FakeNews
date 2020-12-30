@@ -29,7 +29,7 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
     # optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate, beta_1=beta_1, beta_2=0.999 )
     optimizer=tf.keras.optimizers.Adam(learning_rate=args.lr)
     
-    train_dataset,tar_dataset= data_slices(args, x_train,y_train,x_unlabel_tar)
+    train_dataset= data_slices(args, x_train,y_train)
     # preparing the training dataset
     if args.method=='Attn' and args.model!='PI_baseline':
         pi_model = BiLstmModel_attention( args.max_len, vocab_size )
@@ -66,12 +66,12 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
         print(f'Learning rate: {learning_rate}')
         beta_1.assign(rampdown_value * initial_beta1 + (1.0 - rampdown_value) * final_beta1 )
         # iteration over batches
-        iterator_unlabel = iter(tar_dataset)
+        # iterator_unlabel = iter(tar_dataset)
         if args.method=='Attn' or args.model=='PI_baseline':
             for step, (x_batch_train, y_batch_train) in enumerate( train_dataset ):
                 with tf.GradientTape () as tape :
-                    x_batch_unlabel = iterator_unlabel.get_next()
-                    loss_value = pi_model_loss( x_batch_train, y_batch_train, x_batch_unlabel, pi_model,unsupervised_weight )
+                    # x_batch_unlabel = iterator_unlabel.get_next()
+                    loss_value = pi_model_loss( x_batch_train, y_batch_train, x_unlabel_tar, pi_model,unsupervised_weight )
                 grads = tape.gradient( loss_value, pi_model.variables )
                 optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, pi_model.variables ) if grad is not None )
                 # Run the forward pass of the layer
@@ -85,8 +85,8 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
         elif args.method=='Bert' and args:
             for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
                 with tf.GradientTape () as tape :
-                    inp, att, to_id = iterator_unlabel.get_next()
-                    loss_value = pi_model_loss([inputs, attention, token_id], y_batch_train, [inp, att, to_id],
+                    # inp, att, to_id = iterator_unlabel.get_next()
+                    loss_value = pi_model_loss([inputs, attention, token_id], y_batch_train,x_unlabel_tar,
                                                  pi_model, unsupervised_weight )
                 grads = tape.gradient(loss_value, pi_model.variables )
                 optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, pi_model.variables ) if grad is not None )
