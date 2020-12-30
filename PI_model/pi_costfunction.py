@@ -67,24 +67,27 @@ def ramp_up_function(epoch, epoch_with_max_rampup=2):
     if epoch < epoch_with_max_rampup:
         p = max(0.0, float(epoch)) / float(epoch_with_max_rampup)
         p = 1.0 - p
+        print ( 'p', p )
+        print('ramp_up_function:',math.exp(-p*p*5.0) )
         return math.exp(-p*p*5.0)
     else:
         return 1.0
 
 
 def ramp_down_function(epoch, num_epochs):
-    """ Ramps down the value of the learning rate and adam's beta
-        in the last 50 epochs according to the paper
-    Arguments:
+    """    Arguments:
         {int} current epoch
         {int} total epochs to train
     Returns:
         {float} -- rampup value
     """
-    epoch_with_max_rampdown = 2
+    epoch_with_max_rampdown = 1
+
 
     if epoch >= (num_epochs - epoch_with_max_rampdown):
         ep = (epoch - (num_epochs - epoch_with_max_rampdown)) * 0.5
+        print('ep',ep)
+        print ( 'ramp_down_function:', math.exp ( -(ep * ep) / epoch_with_max_rampdown ) )
         return math.exp(-(ep * ep) / epoch_with_max_rampdown)
     else:
         return 1.0

@@ -2,7 +2,7 @@
 python3 -m main \
 --model MT \
 --method Attn \
---data_folder Data/ExperimentFolds/3 \
+--data_folder Data/Processed/3 \
 --data fakehealth \
 --model_output_folder trained_models \
 --epochs 3 \

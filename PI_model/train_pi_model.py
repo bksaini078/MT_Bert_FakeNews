@@ -55,8 +55,8 @@ def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_un
         print ( *"*****************" )
         print ( 'Start of epoch %d' % (epoch,) )
         print ( *"*****************" )
-        rampdown_value = ramp_down_function ( epoch, args.epochs )
-        rampup_value = ramp_up_function ( epoch )
+        rampdown_value = ramp_down_function(epoch, args.epochs)
+        rampup_value = ramp_up_function(epoch)
         if epoch == 0 :
             unsupervised_weight = 0
         else :
