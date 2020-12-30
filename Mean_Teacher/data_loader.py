@@ -26,8 +26,8 @@ def data_load(args,fold, path):
         [x_val,_,_], y_val = create_inputs_targets ( val_data )
         test_data,_ = create_news_examples ( test_data, args.max_len, tokenizer )
         [x_test,_,_], y_test = create_inputs_targets ( test_data )
-        [x_unlabel,_,_],_ = create_news_examples ( unlabel, args.max_len, tokenizer )
-        x_unlabel, _ = create_inputs_targets ( x_unlabel )
+        x_unlabel,_ = create_news_examples ( unlabel, args.max_len, tokenizer )
+        [x_unlabel,_,_], _ = create_inputs_targets ( x_unlabel )
 
     elif args.method=='Bert':
         # need seperation from bert because we need only input ids
