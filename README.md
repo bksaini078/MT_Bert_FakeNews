@@ -42,6 +42,21 @@ pip3 install -r requirements.txt
 |--alpha | EMA alpha value| 0.99|
 |--noise_ratio |unlabel data noise ratio |0.2|
 
+
+Command to generate the fake news:
+```console
+python3 -m fake_news_generator \
+--data_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--processed_output_folder Data/ExperimentFolds/3
+```
+Command for preprocessing the data:
+```console
+--data_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--processed_output_folder Data/Processed/3
+```
+
 Command to run Mean teacher with self attention:
 ```console
 python3 -m main \
