@@ -99,7 +99,7 @@ def create_inputs_targets(news_exps) :
         dataset_dict["attention_mask"],
         dataset_dict["token_type_ids"]
     ]
-    y = to_categorical ( dataset_dict["label"] )
+    y = to_categorical(dataset_dict["label"])
     return x, y
 
 
@@ -119,17 +119,16 @@ class BERT :
         self.softmax_layer = tf.keras.layers.Softmax ()
 
     def create_model(self, training=True) :
-        encoder = TFAutoModel.from_pretrained ( self.pretrained_model )
+        encoder = TFAutoModel.from_pretrained ( self.pretrained_model)
 
-        input_ids = layers.Input ( shape=(self.max_len,), dtype=tf.int32 )
-        attention_mask = layers.Input ( shape=(self.max_len), dtype=tf.int32 )
-        token_type_ids = layers.Input ( shape=(self.max_len,), dtype=tf.int32 )
+        input_ids = layers.Input(shape=(self.max_len,), dtype=tf.int32 )
+        attention_mask = layers.Input(shape=(self.max_len), dtype=tf.int32 )
+        token_type_ids = layers.Input(shape=(self.max_len,), dtype=tf.int32 )
 
-        doc_encoding = encoder ( input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids )[0]
+        doc_encoding = encoder(input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids )[0]
         doc_encoding = tf.squeeze ( doc_encoding[:, 0 :1, :], axis=1 )
         pooled_output = self.dropout ( doc_encoding, training=training )
         logits = self.classifier ( pooled_output )
-
         model = keras.Model ( inputs=(input_ids, attention_mask, token_type_ids),
                               outputs=[logits] )
         optimizer = keras.optimizers.Adam ( lr=self.lr )

@@ -16,7 +16,7 @@ MODELS = {
 }
 
 
-def run(args):
+def train_bert(args):
     data_folder = Path(args.data_folder)
     data_dir = data_folder / args.data
     model_output_dir = Path(args.model_output_folder)
@@ -51,20 +51,20 @@ def ensure_reproducibility(random_seed):
     tf.random.set_seed(random_seed)
 
 
-if __name__ == '__main__':
-    parser = ArgumentParser()
-    parser.add_argument('--model', type=str, choices=['bert'])
-    parser.add_argument('--pretrained_model', type=str, choices=['bert-base-uncased', 'bert-base-cased'])
-    parser.add_argument('--data', type=str, choices=['fakehealth','Kaggle', 'gossipcop'])
-    parser.add_argument('--data_folder', type=str)
-    parser.add_argument('--model_output_folder', type=str)
-    parser.add_argument('--max_len', type=int)
-    parser.add_argument('--dropout', type=float)
-    parser.add_argument('--do_train', action='store_true')
-    parser.add_argument('--epochs', type=int)
-    parser.add_argument('--batch_size', type=int)
-    parser.add_argument('--lr', type=float)
-    parser.add_argument('--seed', type=int)
-
-    args = parser.parse_args()
-    run(args)
+# if __name__ == '__main__':
+#     parser = ArgumentParser()
+#     parser.add_argument('--model', type=str, choices=['bert'])
+#     parser.add_argument('--pretrained_model', type=str, choices=['bert-base-uncased', 'bert-base-cased'])
+#     parser.add_argument('--data', type=str, choices=['fakehealth','Kaggle', 'gossipcop'])
+#     parser.add_argument('--data_folder', type=str)
+#     parser.add_argument('--model_output_folder', type=str)
+#     parser.add_argument('--max_len', type=int)
+#     parser.add_argument('--dropout', type=float)
+#     parser.add_argument('--do_train', action='store_true')
+#     parser.add_argument('--epochs', type=int)
+#     parser.add_argument('--batch_size', type=int)
+#     parser.add_argument('--lr', type=float)
+#     parser.add_argument('--seed', type=int)
+#
+#     args = parser.parse_args()
+#     run(args)
