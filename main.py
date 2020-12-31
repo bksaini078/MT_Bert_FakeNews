@@ -12,8 +12,8 @@ if __name__ == '__main__':
     # k fold function calling 
     parser.add_argument('--lr', default=0.0001, type=float)
     parser.add_argument('--epochs', default=1, type=int)
-    parser.add_argument('--batch_size', default=64, type=int)
-    parser.add_argument('--max_len', default=600, type=int)
+    parser.add_argument('--batch_size', default=1, type=int)
+    parser.add_argument('--max_len', default=512, type=int)
     parser.add_argument('--model', default='MT', type=str, choices=['MT','PI','BERT'])
     parser.add_argument('--ratio', default=0.5, type=float)
     parser.add_argument('--alpha',  default=0.99,type=float)
