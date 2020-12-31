@@ -48,7 +48,7 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
         beta_1.assign(rampdown_value * initial_beta1 + (1.0 - rampdown_value) * final_beta1 )
         for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
             with tf.GradientTape () as tape :
-                loss_value = pi_model_loss([inputs, attention, token_id], y_batch_train,x_unlabel_tar,pi_model, unsupervised_weight )
+                loss_value = pi_model_loss(args,[inputs, attention, token_id], y_batch_train,x_unlabel_tar,pi_model, unsupervised_weight )
             grads = tape.gradient(loss_value, pi_model.variables )
             optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, pi_model.variables ) if grad is not None )
             logits = pi_model([inputs, attention, token_id], training=True )
