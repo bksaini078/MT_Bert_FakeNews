@@ -46,7 +46,7 @@ if __name__ == '__main__':
             MeanTeacher(args, fold,x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size)
         elif (args.model=='PI') :
             Pimodel(args, fold, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel,vocab_size)
-        elif args.model=='BERT':
+        elif args.model=='bert':
             train_bert(args)
 
         else :
