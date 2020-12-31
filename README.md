@@ -31,16 +31,21 @@ pip3 install -r requirements.txt
 | Parameter | Description | Default value|
 |-----------|-------------|--------------|
 |--lr | learning rate| 0.0001|
-|--epochs | epochs| 10|
-|--batch_size | Batch size | 64|
-|--maxlen | Lenght of article for tokens | 100|
-|--model | Meanteacher(1) or supervised(0) or Deep two step(2)|0| 
-|--method | Attention or BERT | Attn|
-|--unlabel | All or Mix | All|
-|--data | fakehealth or politifact or gossipcop | fakehealth|
-|--ratio | Used in overall cost | 0.5|
-|--alpha | EMA alpha value| 0.99|
-|--noise_ratio |unlabel data noise ratio |0.2|
+|--epochs | epochs| 1|
+|--batch_size | Batch size | 1|
+|--maxlen | Lenght of article for tokens | 512|
+|--model | Meanteacher(MT) or Bert or PI |MT| 
+|--data | fakehealth or politifact or gossipcop |fakehealth|
+|--pretrained_model|'bert-base-uncased', 'bert-base-cased'|bert-base-uncased|
+|--ratio | Used in overall cost for mean teacher | 0.5|
+|--alpha | EMA alpha value for mean teacher| 0.99|
+|--noise_ratio |unlabel data noise ratio for Mean teacher|0.2|
+|--dropout|drop out value |0.2|
+|--data_folder|folder location of data| |
+|--model_output_folder| model saving location| |
+|--do_train| only for BERT model |'store_true'|
+|--seed| | |
+
 
 
 Command to generate the fake news:
@@ -57,35 +62,51 @@ Command for preprocessing the data:
 --processed_output_folder Data/Processed/3
 ```
 
-Command to run Mean teacher with self attention:
+Example command to run only BERT model:
 ```console
-python3 -m main \
---model MT \
---method Attn \
---data_folder Data/Processed/3 \
---data fakehealth \
+python -m BERT.main \
+--model bert \
+--data_folder 'Data/ExperimentFolds/3' \
+--data politifact \
 --model_output_folder trained_models \
---epochs 3 \
---lr 0.0001 \
---batch_size 1 \
+--pretrained_model bert-base-cased \
 --max_len 512 \
---alpha 0.99 \
---ratio 0.5
+--dropout 0.1 \
+--epochs 1 \
+--batch_size 1 \
+--lr 2e-5 \
+--seed 42 \
+--do_train
 ```
+
 Command to run Mean teacher with BERT:
 ```console
 python3 -m main \
 --model MT \
---method Bert \
 --data_folder Data/ExperimentFolds/3 \
 --data fakehealth \
 --model_output_folder trained_models \
 --epochs 3 \
 --lr 0.0001 \
 --batch_size 1 \
+--dropout 0.1 \
 --max_len 512 \
 --alpha 0.99 \
---ratio 0.5
+--ratio 0.5 \
+--noise_ratio 0.9
+```
+Command to run Pi model with BERT:
+```console
+python3 -m main \
+--model PI \
+--data_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--model_output_folder trained_models \
+--epochs 3 \
+--dropout 0.1 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
 ```
 
 
