@@ -35,9 +35,7 @@ def Pimodel(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_unlabe
     unsupervised_weight = 0.2
     progbar = tf.keras.utils.Progbar ( len ( train_dataset ), stateful_metrics=['Accuracy', 'Overall_Loss'] )
     for epoch in range ( 1, args.epochs + 1 ) :
-
         tf.print ( 'epoch: %d' % (epoch,) )
-
         # rampdown_value = ramp_down_function(epoch, args.epochs)
         # rampup_value = ramp_up_function(epoch)
         # if epoch == 0 :
@@ -59,7 +57,7 @@ def Pimodel(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_unlabe
             progbar.add ( args.batch_size, values=[('Accuracy', train_acc), ('Overall_Loss', loss_value)] )
 
         # Run a validation loop at the end of each epoch.
-        y_vp = pi_model ( x_val )
+        y_vp = pi_model(x_val)
         val_acc = tf.keras.metrics.BinaryAccuracy ( tf.argmax ( y_val, 1 ), tf.argmax ( y_vp, 1 ) )
         tf.print ( 'val_acc:', val_acc )
 

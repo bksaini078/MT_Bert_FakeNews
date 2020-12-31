@@ -53,7 +53,7 @@ python3 -m main \
 --max_len 512 \
 --alpha 0.99 \
 --ratio 0.5 \
--- noise_ratio 0.9
+--noise_ratio 0.9
 
 python3 -m main \
 --model MT \
@@ -67,7 +67,7 @@ python3 -m main \
 --max_len 512 \
 --alpha 0.99 \
 --ratio 0.5 \
--- noise_ratio 0.9
+--noise_ratio 0.9
 
 python3 -m main \
 --model MT \
