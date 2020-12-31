@@ -92,7 +92,7 @@ python3 -m main \
 --max_len 512 \
 --alpha 0.99 \
 --ratio 0.5 \
--- noise_ratio 0.9
+--noise_ratio 0.9
 ```
 Command to run Pi model with BERT:
 ```console
