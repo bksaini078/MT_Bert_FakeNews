@@ -76,7 +76,8 @@ python -m BERT.main \
 --batch_size 1 \
 --lr 2e-5 \
 --seed 42 \
---do_train```
+--do_train
+```
 
 Command to run Mean teacher with BERT:
 ```console
