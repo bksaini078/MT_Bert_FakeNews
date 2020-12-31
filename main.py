@@ -14,7 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', default=1, type=int)
     parser.add_argument('--batch_size', default=1, type=int)
     parser.add_argument('--max_len', default=512, type=int)
-    parser.add_argument('--model', default='MT', type=str, choices=['MT','PI','BERT'])
+    parser.add_argument('--model', default='MT', type=str, choices=['MT','PI','bert'])
     parser.add_argument('--ratio', default=0.5, type=float)
     parser.add_argument('--alpha',  default=0.99,type=float)
     parser.add_argument('--noise_ratio', type=float, default=0.9)
