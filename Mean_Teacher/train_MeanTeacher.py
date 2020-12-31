@@ -17,7 +17,8 @@ def MeanTeacher(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_un
     student = BERT ( args ).create_model ()
     teacher = BERT ( args ).create_model ()
     train_metrics = tf.keras.metrics.BinaryAccuracy ( name='Binary_Accuracy' )
-    progbar = tf.keras.utils.Progbar ( len ( train_dataset ), stateful_metrics=['Accuracy', 'Loss'] )
+    val_metrics = tf.keras.metrics.BinaryAccuracy ( name='val_Accuracy' )
+    progbar = tf.keras.utils.Progbar ( len ( train_dataset ), stateful_metrics=['Accuracy', 'Loss','val_acc'] )
     for epoch in range ( 1, args.epochs + 1 ) :
         tf.print ( 'epoch %d' % (epoch,) )
         for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
@@ -35,8 +36,8 @@ def MeanTeacher(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_un
             x_val_t= [x_val[0][p],x_val[1][p],x_val[2][p]]
             y_val_t= y_val[p]
             y_v_p = teacher(x_val_t)
-            val_acc = tf.keras.metrics.BinaryAccuracy ( tf.argmax ( y_val_t, 1 ), tf.argmax ( y_v_p, 1 ) )
-            progbar.update(step,values=['val_acc',val_acc])
+            val_acc = val_metrics(tf.argmax( y_val_t, 1 ), tf.argmax( y_v_p.numpy(), 1))
+            progbar.update(step,values=[('val_acc',val_acc)])
 
     print ( '------------------------WITH TEST DATA-----------------------------------------' )
     test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score (

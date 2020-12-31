@@ -29,11 +29,13 @@ def Pimodel(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_unlabe
     train_dataset = data_slices ( args, x_train, y_train )
     pi_model = BERT(args).create_model()
     pi_model.summary ()
-    train_metrics = tf.keras.metrics.Accuracy ()
+    train_metrics = tf.keras.metrics.BinaryAccuracy ( name='Binary_Accuracy' )
+    val_metrics = tf.keras.metrics.BinaryAccuracy ( name='val_Accuracy' )
 
     # max_unsupervised_weight = 100 * num_labeled_samples * (NUM_TRAIN_SAMPLES)
     unsupervised_weight = 0.2
-    progbar = tf.keras.utils.Progbar ( len ( train_dataset ), stateful_metrics=['Accuracy', 'Overall_Loss'] )
+    progbar = tf.keras.utils.Progbar ( len ( train_dataset ), stateful_metrics=['Accuracy', 'Overall_Loss','val_acc'] )
+
     for epoch in range ( 1, args.epochs + 1 ) :
         tf.print ( 'epoch: %d' % (epoch,) )
         # rampdown_value = ramp_down_function(epoch, args.epochs)
@@ -55,7 +57,12 @@ def Pimodel(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_unlabe
             logits = pi_model ( [inputs, attention, token_id], training=True )
             train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
             progbar.add ( args.batch_size, values=[('Accuracy', train_acc), ('Overall_Loss', loss_value)] )
-
+            p = np.random.permutation(args.batch_size+6)
+            x_val_t= [x_val[0][p],x_val[1][p],x_val[2][p]]
+            y_val_t= y_val[p]
+            y_v_p = pi_model(x_val_t)
+            val_acc = val_metrics ( tf.argmax ( y_val_t, 1 ), tf.argmax ( y_v_p.numpy (), 1 ) )
+            progbar.update( step, values=[('val_acc', val_acc)] )
         # Run a validation loop at the end of each epoch.
         y_vp = pi_model(x_val)
         val_acc = tf.keras.metrics.BinaryAccuracy ( tf.argmax ( y_val, 1 ), tf.argmax ( y_vp, 1 ) )
