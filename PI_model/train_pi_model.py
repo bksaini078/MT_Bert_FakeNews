@@ -32,8 +32,8 @@ def Pimodel(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_unlabe
     train_metrics = tf.keras.metrics.BinaryAccuracy ( name='Binary_Accuracy' )
     val_metrics = tf.keras.metrics.BinaryAccuracy ( name='val_Accuracy' )
 
-    # max_unsupervised_weight = 100 * num_labeled_samples * (NUM_TRAIN_SAMPLES)
-    unsupervised_weight = 0.2
+    max_unsupervised_weight = 1
+
     progbar = tf.keras.utils.Progbar ( len ( train_dataset ), stateful_metrics=['Accuracy', 'Overall_Loss','val_acc'] )
 
     for epoch in range ( 1, args.epochs + 1 ) :
@@ -71,7 +71,7 @@ def Pimodel(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_unlabe
     print ( '---------------------------Pi Model TEST--------------------------' )
     test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score (
         args, y_test, x_test, pi_model )
-    report_writing ( args, fold, args.model + '_' + 'BERT', args.lr, args.batch_size, args.epochs, args.alpha,
+    report_writing ( args, fold, args.model + '_' + 'BERT_'+args.pretrained_model, args.lr, args.batch_size, args.epochs, args.alpha,
                      args.ratio, train_acc.numpy (), test_accuracy,
                      precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC )
     # pi_model.save (f'{args.model_output_folder}/{args.data}/{args.model}_BERT_{args.alpha}_{args.pretrained_model}_fold-{fold}')

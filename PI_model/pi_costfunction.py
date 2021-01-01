@@ -77,13 +77,24 @@ def ramp_down_function(epoch, num_epochs):
     Returns:
         {float} -- rampup value
     """
-    epoch_with_max_rampdown = 1
+    epoch_with_max_rampdown =1
 
 
     if epoch >= (num_epochs - epoch_with_max_rampdown):
-        ep = (epoch - (num_epochs - epoch_with_max_rampdown)) * 0.5
-        print('ep',ep)
+        ep = (epoch - (num_epochs - epoch_with_max_rampdown)) * 0.2
+        # print('ep',ep)
         print ( 'ramp_down_function:', math.exp ( -(ep * ep) / epoch_with_max_rampdown ) )
         return math.exp(-(ep * ep) / epoch_with_max_rampdown)
     else:
         return 1.0
+if __name__=='__main__':
+    # calculate steps
+    training_size= 100
+    batch_size = 1
+    steps= training_size/batch_size
+    epochs=5
+    max_supervised_weight= 100 * 2000*1000
+    for num_epochs in range(epochs):
+        print(ramp_down_function(epochs,num_epochs))
+
+

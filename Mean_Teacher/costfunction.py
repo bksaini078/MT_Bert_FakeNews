@@ -21,9 +21,9 @@ def Classification_costs(logits, labels) :
 def Overall_Cost(args,x_train,y_train,x_unlabel_tar, student, teacher):
 
     x_train_n, y_train_n = instant_noise_bert(x_train, y_train,x_unlabel_tar, args)
-    x_train_n1, _ = instant_noise_bert(x_train, y_train, x_unlabel_tar, args )
+    x_train_n1, _ = instant_noise_bert(x_train, y_train, x_unlabel_tar, args)
     logits = student(x_train_n)
-    classification_cost = Classification_costs ( logits, y_train )
+    classification_cost = Classification_costs(logits, y_train)
     tar_student = student(x_train_n1)
     tar_teacher = teacher(x_train_n1)
     consistency_cost = Consistency_Cost( tar_student, tar_teacher)
