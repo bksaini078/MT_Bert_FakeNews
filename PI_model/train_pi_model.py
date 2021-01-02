@@ -10,7 +10,7 @@ from PI_model.pi_costfunction import pi_model_loss,ramp_down_function,ramp_up_fu
 from PI_model.pi_model import PiModel
 
 def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar,vocab_size) :
-    x_unlabel_tar = x_unlabel_tar[:len ( x_train )]
+    x_unlabel_tar = x_unlabel_tar[0][:len ( x_train )]
     NUM_TRAIN_SAMPLES = len(x_train)+len(x_unlabel_tar)
     NUM_TEST_SAMPLES = np.shape(x_test)[0]
 
@@ -20,10 +20,8 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
     max_learning_rate = 0.003
     initial_beta1 = 0.9
     final_beta1 = 0.5
-
-
     learning_rate = tf.Variable(max_learning_rate)  # max learning rate
-    beta_1 = tf.Variable ( initial_beta1 )
+    beta_1 = tf.Variable(initial_beta1)
     optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate, beta_1=beta_1, beta_2=0.999 )
     train_dataset= data_slices(args, x_train,y_train)
     # preparing the training dataset
@@ -54,7 +52,7 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
         for step, (x_batch_train, y_batch_train) in enumerate( train_dataset ):
             with tf.GradientTape () as tape :
                 # x_batch_unlabel = iterator_unlabel.get_next()
-                loss_value,grads = pi_model_loss( x_batch_train, y_batch_train, x_unlabel_tar, pi_model,unsupervised_weight )
+                loss_value,grads = pi_model_loss( args,x_batch_train, y_batch_train, x_unlabel_tar, pi_model,unsupervised_weight )
             optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, pi_model.variables ) if grad is not None )
             # Run the forward pass of the layer
             logits = pi_model (x_batch_train, training=True )
