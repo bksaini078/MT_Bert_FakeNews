@@ -63,10 +63,6 @@ def Pimodel(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_unlabe
             y_v_p = pi_model(x_val_t)
             val_acc = val_metrics ( tf.argmax ( y_val_t, 1 ), tf.argmax ( y_v_p.numpy (), 1 ) )
             progbar.update( step, values=[('val_acc', val_acc)] )
-        # Run a validation loop at the end of each epoch.
-        y_vp = pi_model(x_val)
-        val_acc = tf.keras.metrics.BinaryAccuracy ( tf.argmax ( y_val, 1 ), tf.argmax ( y_vp, 1 ) )
-        tf.print ( 'val_acc:', val_acc )
 
     print ( '---------------------------Pi Model TEST--------------------------' )
     test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score (
