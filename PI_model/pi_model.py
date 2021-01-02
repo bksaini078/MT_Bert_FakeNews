@@ -183,25 +183,33 @@ class PiModel(tf.keras.Model):
 
         h1a = self._conv1a ( h, training )
         h1b = self._conv1b ( h1a, training )
-        h1b = h1b + h1a
         h1c = self._conv1c ( h1b, training )
-        h1c = h1c + h1b
         h1p = self._pool1 ( h1c )
         h1d = self._dropout1 ( h1p, training=training )
 
         h2a = self._conv2a ( h1d, training )
         h2b = self._conv2b ( h2a, training )
-        h2b = h2b + h2a
         h2c = self._conv2c ( h2b, training )
-        h2c = h2c + h2b
         h2p = self._pool2 ( h2c )
         h2d = self._dropout2 ( h2p, training=training )
 
-        h3a = self._conv3a ( h2d, training )
-        h3b = self._conv3b ( h3a, training )
-        h3c = self._conv3c ( h3b, training )
+        h3a_sup = self._conv3a_sup ( h2d, training )
+        h3b_sup = self._conv3b_sup ( h3a_sup, training )
+        h3c_sup = self._conv3c_sup ( h3b_sup, training )
 
-        # Average Pooling
-        hm = tf.reduce_mean ( h3c, reduction_indices=[1, 2] )
-        return self._dense(hm, training)
+        # Supervised Average Pooling
+        # hm_sup = tf.reduce_mean(h3c_sup, reduction_indices=[1, 2])
+        # dense_sup = self._dense(hm_sup, training)
 
+        h3a_unsup = self._conv3a_unsup ( h2d, training )
+        h3b_unsup = self._conv3b_unsup ( h3a_unsup, training )
+        h3c_unsup = self._conv3c_unsup ( h3b_unsup, training )
+
+        # Unsupervised Average Pooling
+        hm_unsup = tf.compat.v1.reduce_mean ( h3c_unsup, reduction_indices=[1, 2] )
+        dense_unsup = self._dense_sup ( hm_unsup, training )
+
+        # Supervised Average Pooling
+        hm_sup = tf.compat.v1.reduce_mean ( h3c_sup,reduction_indices=[1, 2])
+        dense_sup = self._dense_unsup ( hm_sup, training )
+        return dense_sup, dense_unsup

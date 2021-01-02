@@ -56,14 +56,16 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
             grads = tape.gradient ( loss_value, pi_model.variables )
             optimizer.apply_gradients((grad, var) for (grad, var) in zip ( grads, pi_model.variables ) if grad is not None )
             # Run the forward pass of the layer
-            logits = pi_model (x_batch_train, training=True )
+            logits_su,logits_usu = pi_model (x_batch_train, training=True )
+            logits= (logits_su+logits_usu)/2
             train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
             loss = tf.keras.losses.categorical_crossentropy(y_batch_train, logits)
             progbar.add ( args.batch_size, values=[('Accuracy', train_acc), ('Overall_Loss', loss_value)] )
             p = np.random.permutation ( args.batch_size)
             x_val_t= x_val[p]
             y_val_t=y_val[p]
-            y_v_p= pi_model(x_val_t)
+            y_v_p1,y_v_p2= pi_model(x_val_t)
+            y_v_p= (y_v_p1+y_v_p2)/2
             val_acc = val_metrics ( tf.argmax ( y_val_t, 1 ), tf.argmax ( y_v_p.numpy (), 1 ) )
             progbar.update ( step, values=[('val_acc', val_acc)] )
 

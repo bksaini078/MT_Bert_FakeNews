@@ -6,10 +6,14 @@ import tensorflow as tf
 
 
 def prec_rec_f1score(args,y_true,x_test,model):
+    if args.model =='PI':
+        y_hat1,y_hat2= model.predict(x_test)
+        y_hat=(y_hat1+y_hat2)/2
+        y_pred= tf.argmax(y_hat,1)
+    else:
+        y_hat= model.predict(x_test)
+        y_pred=tf.argmax(y_hat,1)
 
-    y_hat= model.predict(x_test)
-    # y_pred= y_hat
-    y_pred=tf.argmax(y_hat,1)
     y_true=tf.argmax(y_true,1)
 
     pr_re_f1score_perclass= precision_recall_fscore_support(y_true, y_pred, average=None)
