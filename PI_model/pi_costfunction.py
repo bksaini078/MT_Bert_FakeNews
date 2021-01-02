@@ -29,23 +29,6 @@ def pi_model_loss(args,X_train_labeled, y_train_labeled, X_train_unlabeled,pi_mo
             tf.losses.mean_squared_error(z_unlabeled, z_unlabeled_i))
 
 
-def pi_model_gradients(X_train_labeled, y_train_labeled, X_train_unlabeled,
-                       pi_model, unsupervised_weight):
-    """ Returns the loss and the gradients for eager Pi Model
-    Arguments:
-        X_train_labeled {tensor} -- train images
-        y_train_labeled {tensor} -- train labels
-        X_train_unlabeled {tensor} -- unlabeled train images
-        pi_model {tf.keras.Model} -- model to be trained
-        unsupervised_weight {float} -- weight
-    Returns:
-        {tensor} -- loss value
-        {tensor} -- gradients for each model variables
-    """
-    with tf.GradientTape() as tape:
-        loss_value = pi_model_loss(X_train_labeled, y_train_labeled, X_train_unlabeled,
-                                   pi_model, unsupervised_weight)
-    return loss_value, tape.gradient(loss_value, pi_model.variables)
 
 
 def ramp_up_function(epoch, epoch_with_max_rampup=80):
