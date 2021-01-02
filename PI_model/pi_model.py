@@ -206,10 +206,10 @@ class PiModel(tf.keras.Model):
         h3c_unsup = self._conv3c_unsup ( h3b_unsup, training )
 
         # Unsupervised Average Pooling
-        hm_unsup = tf.reduce_mean ( h3c_unsup )
+        hm_unsup = tf.compat.v1.reduce_mean ( h3c_unsup, reduction_indices=[1, 2] )
         dense_unsup = self._dense_sup ( hm_unsup, training )
 
         # Supervised Average Pooling
-        hm_sup = tf.reduce_mean ( h3c_sup)
+        hm_sup = tf.compat.v1.reduce_mean ( h3c_sup,reduction_indices=[1, 2])
         dense_sup = self._dense_unsup ( hm_sup, training )
         return dense_sup, dense_unsup
