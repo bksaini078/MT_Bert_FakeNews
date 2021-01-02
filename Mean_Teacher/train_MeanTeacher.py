@@ -20,7 +20,7 @@ def MeanTeacher(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_un
     val_metrics = tf.keras.metrics.BinaryAccuracy ( name='val_Accuracy' )
     progbar = tf.keras.utils.Progbar ( len ( train_dataset ), stateful_metrics=['Accuracy', 'Loss','val_acc'] )
     for epoch in range ( 1, args.epochs + 1 ) :
-        tf.print ( 'epoch %d' % (epoch,) )
+        tf.print ( '\nepoch %d' % (epoch,) )
         for step, (inputs, attention, token_id, y_batch_train) in enumerate ( train_dataset ) :
             with tf.GradientTape () as tape :
                 overall_cost = Overall_Cost ( args, [inputs, attention, token_id], y_batch_train, x_unlabel_tar,
@@ -39,7 +39,7 @@ def MeanTeacher(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_un
             val_acc = val_metrics(tf.argmax( y_val_t, 1 ), tf.argmax( y_v_p.numpy(), 1))
             progbar.update(step,values=[('val_acc',val_acc)])
 
-    tf.print("Testing data evaluation:")
+    tf.print("\nTesting data evaluation:")
     test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, AUC = prec_rec_f1score (
         args, y_test, x_test, teacher )
     teacher.save (f'{args.model_output_folder}/{args.data}/{args.model}_BERT_{args.alpha}_{args.pretrained_model}_fold-{fold}' )

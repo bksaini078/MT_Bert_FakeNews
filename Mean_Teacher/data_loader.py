@@ -9,7 +9,9 @@ def data_load(args,fold, path):
     train_data = pd.read_csv ( path + 'train.tsv', sep='\t' )
     test_data= pd.read_csv(path+'test.tsv',sep='\t')
     unlabel = pd.read_csv ( path + 'unlabel.tsv', sep='\t' )
-    unlabel['label'] = np.full ( (len ( unlabel ), 1), 'fake' )  # in case label column doesnot have fake label
+    # in case label column doesnot have fake label, because preprocessing need label column.
+    # but this column plays no role during training
+    unlabel['label'] = np.full ( (len ( unlabel ), 1), 'fake' )
     # splitting val data TODO: Need to change in in future
     train_data, val_data = train_test_split ( train_data, test_size=0.1, random_state=42 )
     tokenizer = AutoTokenizer.from_pretrained(args.pretrained_model)

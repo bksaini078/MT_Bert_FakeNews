@@ -36,14 +36,14 @@ def Pimodel(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_unlabe
 
     progbar = tf.keras.utils.Progbar ( len ( train_dataset ), stateful_metrics=['Accuracy', 'Overall_Loss','val_acc'] )
 
-    for epoch in range ( 1, args.epochs + 1 ) :
+    for epoch in range (args.epochs) :
         tf.print ( 'epoch: %d' % (epoch,) )
         # rampdown_value = ramp_down_function(epoch, args.epochs)
-        # rampup_value = ramp_up_function(epoch)
-        # if epoch == 0 :
-        #     unsupervised_weight = 0
-        # else :
-        #     unsupervised_weight = max_unsupervised_weight * rampup_value
+        rampup_value = ramp_up_function(epoch)
+        if epoch == 0 :
+            unsupervised_weight = 0
+        else :
+            unsupervised_weight = max_unsupervised_weight * rampup_value
         # learning_rate.assign(rampup_value * rampdown_value * max_learning_rate )
         # print(f'Learning rate: {learning_rate}')
         # beta_1.assign(rampdown_value * initial_beta1 + (1.0 - rampdown_value) * final_beta1 )
