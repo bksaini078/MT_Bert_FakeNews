@@ -4,8 +4,8 @@ import tensorflow as tf
 from  tensorflow.keras.layers  import *
 
 # Edited files with weight normalization and mean only batch normalization
-from PI_model.weight_norm_layers.Conv2D import Conv2D
-from PI_model.weight_norm_layers.Dense import Dense
+from PI_model.weight_norm_layers import Conv2D
+from PI_model.weight_norm_layers import Dense
 
 def create_embedding(x):
     # x = tf.make_ndarray(x)
