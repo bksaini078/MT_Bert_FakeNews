@@ -13,14 +13,16 @@ def pi_model_loss(args,X_train_labeled, y_train_labeled, X_train_unlabeled,pi_mo
     Returns:
         {tensor} -- loss value
     """
-    z_labeled, z_labeled_i = pi_model(X_train_labeled)
+    z_labeled = pi_model ( X_train_labeled )
+    z_labeled_i = pi_model ( X_train_labeled )
 
 
     # print('unlabel_size:', np.shape(X_train_unlabeled))
     p = np.random.permutation(args.batch_size)
 
     X_train_unlabeled=X_train_unlabeled[p]
-    z_unlabeled, z_unlabeled_i = pi_model ( X_train_unlabeled )
+    z_unlabeled = pi_model ( X_train_unlabeled )
+    z_unlabeled_i = pi_model ( X_train_unlabeled )
 
     # Loss = supervised loss + unsup loss of labeled sample + unsup loss unlabeled sample
     return tf.compat.v1.losses.softmax_cross_entropy(
