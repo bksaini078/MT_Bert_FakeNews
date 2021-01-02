@@ -9,7 +9,7 @@ from Mean_Teacher.evaluation import prec_rec_f1score
 from PI_model.pi_costfunction import pi_model_loss,ramp_down_function,ramp_up_function
 from PI_model.pi_model import PiModel
 
-def train_Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar,vocab_size) :
+def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_tar,vocab_size) :
     x_unlabel_tar = x_unlabel_tar[:len ( x_train )]
     NUM_TRAIN_SAMPLES = len(x_train)+len(x_unlabel_tar)
     NUM_TEST_SAMPLES = np.shape(x_test)[0]

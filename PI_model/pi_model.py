@@ -34,7 +34,7 @@ class PiModel(tf.keras.Model):
         super(PiModel, self).__init__()
         self._emb= Embedding(vocab_size, 128, input_length=None)
 
-        self._conv1a = Conv2D.Conv2D ( filters=128, kernel_size=[3, 3],
+        self._conv1a =Conv2D.Conv2D(filters=128, kernel_size=[3, 3],
                                        padding="same", activation=tf.keras.layers.LeakyReLU ( alpha=0.1 ),
                                        kernel_initializer=tf.keras.initializers.he_uniform (),
                                        bias_initializer=tf.keras.initializers.constant (
