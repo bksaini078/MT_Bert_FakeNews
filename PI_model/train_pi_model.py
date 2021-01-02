@@ -13,10 +13,11 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
     x_unlabel_tar = x_unlabel_tar[0][:len ( x_train )]
     NUM_TRAIN_SAMPLES = len(x_train)+len(x_unlabel_tar)
     NUM_TEST_SAMPLES = np.shape(x_test)[0]
+    x_val= x_val[0]
 
     # Editable variables
     num_labeled_samples = int(len(x_train))
-    num_validation_samples = np.shape(x_val[0] )[0]
+    num_validation_samples = np.shape(x_val )[0]
     max_learning_rate = 0.003
     initial_beta1 = 0.9
     final_beta1 = 0.5
@@ -60,14 +61,14 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
             logits= (logits_su+logits_usu)/2
             train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
             loss = tf.keras.losses.categorical_crossentropy(y_batch_train, logits)
-            progbar.add ( args.batch_size, values=[('Accuracy', train_acc), ('Overall_Loss', loss_value)] )
+            progbar.add(args.batch_size, values=[('Accuracy', train_acc), ('Overall_Loss', loss_value)] )
             p = np.random.permutation ( args.batch_size)
-            x_val_t= x_val[0][p]
+            x_val_t= x_val[p]
             y_val_t=y_val[p]
             y_v_p1,y_v_p2= pi_model(x_val_t)
             y_v_p= (y_v_p1+y_v_p2)/2
             val_acc = val_metrics ( tf.argmax ( y_val_t, 1 ), tf.argmax ( y_v_p.numpy (), 1 ) )
-            progbar.update ( step, values=[('val_acc', val_acc)] )
+            progbar.update(step,values=[('val_acc', val_acc)])
 
 
     print ( '---------------------------Pi Model TEST--------------------------' )
