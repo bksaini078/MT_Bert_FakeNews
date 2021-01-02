@@ -16,7 +16,7 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
 
     # Editable variables
     num_labeled_samples = int(len(x_train))
-    num_validation_samples = np.shape(x_val )[0]
+    num_validation_samples = np.shape(x_val[0] )[0]
     max_learning_rate = 0.003
     initial_beta1 = 0.9
     final_beta1 = 0.5
@@ -62,7 +62,7 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
             loss = tf.keras.losses.categorical_crossentropy(y_batch_train, logits)
             progbar.add ( args.batch_size, values=[('Accuracy', train_acc), ('Overall_Loss', loss_value)] )
             p = np.random.permutation ( args.batch_size)
-            x_val_t= x_val[p]
+            x_val_t= x_val[0][p]
             y_val_t=y_val[p]
             y_v_p1,y_v_p2= pi_model(x_val_t)
             y_v_p= (y_v_p1+y_v_p2)/2
