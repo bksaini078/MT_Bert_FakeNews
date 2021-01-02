@@ -34,10 +34,10 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
 
     tf.print(num_labeled_samples, NUM_TRAIN_SAMPLES )
     max_unsupervised_weight = 100 * num_labeled_samples * (NUM_TRAIN_SAMPLES)
-    progbar = tf.keras.utils.Progbar ( len ( train_dataset ), stateful_metrics=['Accuracy', 'Overall_Loss', 'val_acc'] )
+    progbar = tf.keras.utils.Progbar ( len ( train_dataset ), stateful_metrics=['Accuracy', 'Overall_Loss','categorical_ce', 'val_acc'] )
 
     for epoch in range( 1, args.epochs + 1 ) :
-        tf.print ( 'epoch %d' % (epoch,) )
+        tf.print( "\n epoch %d" % (epoch,) )
 
         rampdown_value = ramp_down_function(epoch, args.epochs)
         rampup_value = ramp_up_function(epoch)
@@ -47,9 +47,9 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
             unsupervised_weight = max_unsupervised_weight * rampup_value
 
         learning_rate.assign(rampup_value * rampdown_value * max_learning_rate )
-        tf.print(f'Learning rate: {learning_rate}')
+        # tf.print(f'Learning rate: {learning_rate}')
         beta_1.assign(rampdown_value * initial_beta1 + (1.0 - rampdown_value) * final_beta1 )
-
+        i=0
         for step, (x_batch_train, y_batch_train) in enumerate( train_dataset ):
             with tf.GradientTape () as tape :
                 # x_batch_unlabel = iterator_unlabel.get_next()
@@ -61,14 +61,15 @@ def Pimodel(args,fold, x_train, y_train, x_val, y_val, x_test, y_test,x_unlabel_
             logits= (logits_su+logits_usu)/2
             train_acc = train_metrics ( tf.argmax ( y_batch_train, 1 ), tf.argmax ( logits, 1 ) )
             loss = tf.keras.losses.categorical_crossentropy(y_batch_train, logits)
-            progbar.add(args.batch_size, values=[('Accuracy', train_acc), ('Overall_Loss', loss_value)] )
+            progbar.add(args.batch_size, values=[('Accuracy', train_acc), ('Overall_Loss', loss_value),('categorical_ce',loss)] )
             p = np.random.permutation ( args.batch_size)
             x_val_t= x_val[p]
             y_val_t=y_val[p]
             y_v_p1,y_v_p2= pi_model(x_val_t)
             y_v_p= (y_v_p1+y_v_p2)/2
             val_acc = val_metrics ( tf.argmax ( y_val_t, 1 ), tf.argmax ( y_v_p.numpy (), 1 ) )
-            progbar.update(step,values=[('val_acc', val_acc)])
+            i+=args.batch_size
+            progbar.update(i,values=[('val_acc', val_acc)])
 
 
     print ( '---------------------------Pi Model TEST--------------------------' )
