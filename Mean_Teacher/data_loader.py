@@ -27,8 +27,13 @@ def data_load(args,fold, path):
     return x_train, y_train, x_val, y_val, x_test, y_test, x_unlabel, vocab_size
 
 def data_slices(args, x_train,y_train):
-    train_dataset = tf.data.Dataset.from_tensor_slices ( (x_train[0], x_train[1], x_train[2], y_train) )
-    train_dataset = train_dataset.shuffle ( buffer_size=1024 ).batch ( args.batch_size )
+    if args.model=='PI':
+        train_dataset = tf.data.Dataset.from_tensor_slices ( (x_train[0], y_train) )
+        train_dataset = train_dataset.shuffle ( buffer_size=1024 ).batch ( args.batch_size )
+
+    else:
+        train_dataset = tf.data.Dataset.from_tensor_slices ( (x_train[0], x_train[1], x_train[2], y_train) )
+        train_dataset = train_dataset.shuffle ( buffer_size=1024 ).batch ( args.batch_size )
 
     return train_dataset
 
