@@ -16,6 +16,7 @@ For our paper, we use the following datasets:
 
 Run the [bash code](scripts/data_processing.sh) in order to get experiment folds.
 
+
 You are supposed to see the processed files in `Data` folder
 ![ddata_directory](images/folder_dir.png)
 ## The Data\Input2 is the dataset on which overall comparision have been done and it is default dataset for model.The reports also generated from dataset2
@@ -27,8 +28,106 @@ Install libraries in requirements.txt:
 pip3 install -r requirements.txt
 ```
 
+| Parameter | Description | Default value|
+|-----------|-------------|--------------|
+|--lr | learning rate| 0.0001|
+|--epochs | epochs| 1|
+|--batch_size | Batch size | 1|
+|--maxlen | Lenght of article for tokens | 512|
+|--model | Meanteacher(MT) or Bert or PI |MT| 
+|--data | fakehealth or politifact or gossipcop |fakehealth|
+|--pretrained_model|'bert-base-uncased', 'bert-base-cased'|bert-base-uncased|
+|--ratio | Used in overall cost for mean teacher | 0.5|
+|--alpha | EMA alpha value for mean teacher| 0.99|
+|--noise_ratio |unlabel data noise ratio for Mean teacher|0.2|
+|--dropout|drop out value |0.2|
+|--data_folder|folder location of data| |
+|--model_output_folder| model saving location| |
+|--do_train| only for BERT model |'store_true'|
+|--seed| | |
+
+## Data Augmentation as Unlabeled News
+To augment the data sets, we leverage the [Grover](https://github.com/rowanz/grover.git). Grover supports `jsonl` objects. So we transform the train sets into this format.
+This process is implemented in `/src/utils/news_generator.py`. The script has a method that is called `generate_grover_jsonl` for generating jsonl and it has also a method for converting and saving groover outputs to `unlabeled.tsv` file.  
+
+Command to generate groover files from the fake news samples of `Data/ExperimentFolds/3/train.tsv` and save to `Data/fakehealth_3.jsonl`:
+```console
+python3 -m src.utils.news_generator \
+--data_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--data_type fake \
+--output_folder Data/fakehealth_3.jsonl \
+--generate
+```
+
+Command to transform groover outputs that is located in `Data/fakehealth_3_processed.jsonl` and save to `Data/ExperimentFolds/3` as `unlabeled.tsv` file:
+```console
+python3 -m src.utils.news_generator \
+--output_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--data_folder Data/fakehealth_3_processed.jsonl \
+--transform
+```
+
+Warning: This process takes time, e.g 3 hours for 480 samples.
+
+Command for preprocessing the data:
+```console
+--data_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--processed_output_folder Data/Processed/3
+```
+
+Example command to run only BERT model:
+```console
+python -m BERT.main \
+--model bert \
+--data_folder 'Data/ExperimentFolds/3' \
+--data politifact \
+--model_output_folder trained_models \
+--pretrained_model bert-base-cased \
+--max_len 512 \
+--dropout 0.1 \
+--epochs 1 \
+--batch_size 1 \
+--lr 2e-5 \
+--seed 42 \
+--do_train
+```
+
+Command to run Mean teacher with BERT:
+```console
+python3 -m main \
+--model MT \
+--data_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--model_output_folder trained_models \
+--epochs 3 \
+--lr 0.0001 \
+--batch_size 1 \
+--dropout 0.1 \
+--max_len 512 \
+--alpha 0.99 \
+--ratio 0.5 \
+--noise_ratio 0.9
+```
+Command to run Pi model with BERT:
+```console
+python3 -m main \
+--model PI \
+--data_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--model_output_folder trained_models \
+--epochs 3 \
+--dropout 0.1 \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+```
+
+
 ## Contributors
-Ipek Baris
+Ipek Baris 
 
 Bhupender kumar Saini
 
