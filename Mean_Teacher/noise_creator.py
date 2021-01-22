@@ -19,8 +19,8 @@ def instant_noise_bert(x_train,y_train,x_unlabel, args):
     shuffled_attn = tf.gather ( x_unlabel[1], shuffled_indices )
 
     y_train_n = np.full((len(x_unlabel[0]),2), -1)
-    input_id= np.append(x_train[0],x_unlabel[0],axis=0)
-    atten_id= np.append(x_train[1],x_unlabel[1],axis=0)
+    input_id= np.append(x_train[0],shuffled_inp,axis=0)
+    atten_id= np.append(x_train[1],shuffled_attn,axis=0)
     y = np.append(y_train, y_train_n,axis=0)
 
     #not performing random permutation, effecting the result
