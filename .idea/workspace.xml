@@ -2,9 +2,92 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="192e3eac-cdca-4d73-80c4-e99d9a89bdd0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/3/fakehealth" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/3/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/3/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/3/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/covid/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/covid/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/covid/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/fakehealth/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/fakehealth/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/fakehealth/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/fakes/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/fakes/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/fakes/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/gossipcop/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/gossipcop/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/nela/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/nela/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/politifact/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/3/politifact/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/4/fakehealth/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/4/fakehealth/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/4/fakehealth/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/4/gossipcop/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/4/gossipcop/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/4/politifact/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/4/politifact/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/5/fakehealth/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/5/fakehealth/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/5/fakehealth/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/5/gossipcop/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/5/gossipcop/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/5/politifact/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/5/politifact/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/6/fakehealth/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/6/fakehealth/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/6/fakehealth/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/6/gossipcop/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/6/gossipcop/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/6/politifact/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/6/politifact/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/7/fakehealth/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/7/fakehealth/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/7/fakehealth/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/7/gossipcop/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/7/gossipcop/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/7/politifact/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/7/politifact/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/8/fakehealth/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/8/fakehealth/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/8/fakehealth/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/8/gossipcop/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/8/gossipcop/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/8/politifact/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/8/politifact/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/9/fakehealth/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/9/fakehealth/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/9/fakehealth/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/9/gossipcop/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/9/gossipcop/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/9/politifact/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/9/politifact/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/covid/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/covid/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/covid/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/fakehealth/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/fakehealth/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/fakehealth/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/fakes/noise.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/fakes/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/fakes/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/gossipcop/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/gossipcop/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/nela/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/nela/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/politifact/test.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/ExperimentFolds/3/politifact/train.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/Processed/fakehealth/test.rtf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/Processed/gossipcop/test.rtf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/ExperimentFolds/Data/Processed/politifact/test.rtf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/bhupender.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/MT_Bert_FakeNews.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MT_Bert_FakeNews.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Mean_Teacher/data_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/data_loader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Mean_Teacher/noise_creator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/noise_creator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/train_MeanTeacher.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/train_MeanTeacher.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +97,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="59b86161-b265-41c1-b6d1-f9438ee30afd" />
   <component name="ProjectId" id="1nOyFEJBPXgpSMxcKNNfwBdDIxm" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -26,6 +110,8 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -36,10 +122,29 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1611275325883</updated>
+      <workItem from="1611304274348" duration="493000" />
+      <workItem from="1611306799150" duration="10673000" />
     </task>
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="459" y="-1011" key="RollbackChangesDialog" timestamp="1611322268318">
+      <screen x="-577" y="-1440" width="2560" height="1440" />
+    </state>
+    <state x="459" y="-1011" key="RollbackChangesDialog/0.0.1280.800/-577.-1440.2560.1440@-577.-1440.2560.1440" timestamp="1611322268318" />
+    <state width="500" height="445" key="SwitcherDM" timestamp="1611307780084">
+      <screen x="-577" y="-1440" width="2560" height="1440" />
+    </state>
+    <state width="500" height="445" key="SwitcherDM/0.0.1280.800/-577.-1440.2560.1440@-577.-1440.2560.1440" timestamp="1611307780084" />
+    <state x="542" y="-927" key="refactoring.ChangeSignatureDialog" timestamp="1611321874241">
+      <screen x="-577" y="-1440" width="2560" height="1440" />
+    </state>
+    <state x="542" y="-927" key="refactoring.ChangeSignatureDialog/0.0.1280.800/-577.-1440.2560.1440@-577.-1440.2560.1440" timestamp="1611321874241" />
   </component>
 </project>
