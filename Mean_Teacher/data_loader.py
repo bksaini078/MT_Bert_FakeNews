@@ -48,6 +48,9 @@ def data_slices(args, x_train,y_train,x_unlabel):
     else:
         #TODO:here need to include the ratio of amount of unlabel per batch
         train_dataset = tf.data.Dataset.from_tensor_slices((x_train[0], x_train[1], y_train) ).batch(args.batch_size)
+
+        #QUESTION: Here I couldn't understand the logic noise data will always same size with labeled batch
+        # Also you are not handling unlabeled dataset where we will mask the train set, I have done all those stuff see on my code for the reference
         unlabel_dataset= tf.data.Dataset.from_tensor_slices((x_unlabel[0],x_unlabel[1])).batch(args.batch_size)
 
         #in case we have less unlabel data
