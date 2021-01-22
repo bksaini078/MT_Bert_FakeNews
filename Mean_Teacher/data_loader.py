@@ -2,12 +2,14 @@ from sklearn.model_selection import train_test_split
 from BERT.bert import *
 from transformers import AutoTokenizer
 import pandas as pd
+import numpy as np 
 
 
 def data_load(args,fold, path):
     #will change after some time
     # path='Data/ExperimentsFolds/fakehealth/'
     train_data = pd.read_csv ( path + 'train.tsv', sep='\t')#,nrows=100 )
+
 
     # tried experimenting equalt labels , TODO: Will be removed in future
     # but true news parameter are decreasing
@@ -33,7 +35,7 @@ def data_load(args,fold, path):
     x_unlabel, _ = create_inputs_targets ( x_unlabel )
 
     print('train size:',np.shape(x_train[0]))
-    print('val size:',np.shape(x_val[0]))
+ 
     print('test size:', np.shape(x_test[0]))
    
     return x_train, y_train, x_test, y_test, x_unlabel
