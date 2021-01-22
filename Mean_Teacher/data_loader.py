@@ -2,7 +2,7 @@ from sklearn.model_selection import train_test_split
 from BERT.bert import *
 from transformers import AutoTokenizer
 import pandas as pd
-import numpy as np 
+import numpy as np
 
 
 def data_load(args,fold, path):

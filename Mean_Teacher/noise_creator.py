@@ -1,4 +1,5 @@
 import numpy as np
+import tensorflow as tf
 
 def unison_shuffled(x1,x2,y, args):
     '''Shuffling data , but i guess it is not required and will be remove in future '''
@@ -11,6 +12,11 @@ def unison_shuffled(x1,x2,y, args):
 def instant_noise_bert(x_train,y_train,x_unlabel, args):
     '''Adding unlabel data to train data'''
     # need to include noise parameter to control to maintain unlabel ratio
+    indices = tf.range ( start=0, limit=len ( x_unlabel[0] ), dtype=tf.int32 )
+    shuffled_indices = tf.random.shuffle ( indices )
+
+    shuffled_inp = tf.gather ( x_unlabel[0], shuffled_indices )
+    shuffled_attn = tf.gather ( x_unlabel[1], shuffled_indices )
 
     y_train_n = np.full((len(x_unlabel[0]),2), -1)
     input_id= np.append(x_train[0],x_unlabel[0],axis=0)
