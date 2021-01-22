@@ -1,10 +1,8 @@
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.metrics import f1_score
-
 from sklearn.metrics import accuracy_score
 from sklearn import metrics
 import tensorflow as tf
-
 
 def prec_rec_f1score(args,y_true,x_test,model):
     if args.model =='PI':
@@ -14,9 +12,7 @@ def prec_rec_f1score(args,y_true,x_test,model):
     else:
         y_hat= model.predict(x_test)
         y_pred=tf.argmax(y_hat,1)
-
     y_true=tf.argmax(y_true,1)
-
     pr_re_f1score_perclass= precision_recall_fscore_support(y_true, y_pred, average=None)
     accuracy= accuracy_score(y_true,y_pred)
     #per class

@@ -25,4 +25,3 @@ precision_true,precision_fake,recall_true,recall_fake,f1score_true,f1score_fake,
     return 
 
 
-# report_writing('Supervised-BiLstm', 124,10,34, 0.5, 0.99,0.90,0.90,0.90)

@@ -9,7 +9,8 @@ from BERT.train_BERT import train_bert
 if __name__ == '__main__':
     # parameters from arugument parser 
     parser = argparse.ArgumentParser()
-    # k fold function calling 
+
+    #parser argument with default values
     parser.add_argument('--lr', default=2e-5, type=float)
     parser.add_argument('--epochs', default=3, type=int)
     parser.add_argument('--batch_size', default=8, type=int)
@@ -36,19 +37,20 @@ if __name__ == '__main__':
     path_report.mkdir(parents=True, exist_ok=True)
 
     print(args)
-    print ( path )
+    print(path)
     num_gpu = len ( tf.config.experimental.list_physical_devices('GPU'))
     if num_gpu > 0 :
         logger.info("GPU is found")
     else :
         logger.info("Training with CPU")
-    
-    for fold in range(1):       
 
-        x_train, y_train, x_val, y_val, x_test, y_test, x_unlabel,vocab_size = data_load(args, fold, path)
+
+    #need to change in future, for loop is for experiment
+    for fold in range(1):
+        x_train, y_train, x_test, y_test, x_unlabel = data_load(args, fold, path)
         if (args.model=='MT'):
             print(args.alpha)
-            MeanTeacher(args, fold,x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel, vocab_size)
+            MeanTeacher(args, fold,x_train, y_train, x_test, y_test,x_unlabel)
             args.alpha =  args.alpha+0.01
         elif (args.model=='PI') :
             Pimodel(args, fold, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel,vocab_size)

@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="192e3eac-cdca-4d73-80c4-e99d9a89bdd0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/costfunction.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/costfunction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/data_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/data_loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/noise_creator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/noise_creator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/report_writing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/report_writing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mean_Teacher/train_MeanTeacher.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mean_Teacher/train_MeanTeacher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1nOyFEJBPXgpSMxcKNNfwBdDIxm" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="192e3eac-cdca-4d73-80c4-e99d9a89bdd0" name="Default Changelist" comment="" />
+      <created>1611275325883</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1611275325883</updated>
+    </task>
+    <servers />
   </component>
 </project>
