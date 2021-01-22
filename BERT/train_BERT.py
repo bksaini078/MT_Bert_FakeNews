@@ -33,8 +33,10 @@ def train_bert(args):
     if args.do_train:
         train_fname = data_dir / 'train.tsv'
         train_data = pd.read_csv(train_fname, sep='\t')
+        train_data = train_data.sample(frac=1, random_state=args.seed).reset_index(drop=True)
+
         # train_data= train_data[:200]
-        model.train(train_data=train_data, test_data=test_data)
+        model.train(train_data=train_data)
         model.save_weights(model_name)
         logger.info(f"Model saved to {model_name}")
     model.load_weights(model_name)

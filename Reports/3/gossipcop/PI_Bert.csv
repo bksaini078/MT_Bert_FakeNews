@@ -1,0 +1,3 @@
+Date,Model,Learning Rate,Batch_Size,Epoch,Alpha,Ratio,Train_Accuracy,Test_Accuracy,Precision_True,Precision_Fake,Recall_True,Recall_Fake,F1_Score_True,F1_Score_Fake,AUC,Fold
+Mon Dec 28 00:10:02 2020,PI_Bert,0.0001,1,5,0.99,0.5,0.800000011920929,0.6666666666666666,0.6666666666666666,0.0,1.0,0.0,0.8,0.0,0.5,0
+Mon Dec 28 09:46:17 2020,PI_Bert,2e-05,1,15,0.99,0.5,0.800000011920929,0.6666666666666666,0.6666666666666666,0.0,1.0,0.0,0.8,0.0,0.5,0

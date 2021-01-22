@@ -1,0 +1,2 @@
+Date,Model,Learning Rate,Batch_Size,Epoch,Alpha,Ratio,Train_Accuracy,Test_Accuracy,Precision_True,Precision_Fake,Recall_True,Recall_Fake,F1_Score_True,F1_Score_Fake,AUC,Fold
+Sun Dec 27 23:52:14 2020,MT_Bert_Teacher,0.0001,1,5,0.99,0.5,0.8125,0.6666666666666666,0.6666666666666666,0.0,1.0,0.0,0.8,0.0,0.5,0

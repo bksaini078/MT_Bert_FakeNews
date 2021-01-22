@@ -1,97 +1,293 @@
-python -m src.main \
---pretrained_model distilbert-base-uncased \
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/3' \
+#--data fakehealth \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 1 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/4' \
+#--data fakehealth \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/5' \
+#--data fakehealth \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/6' \
+#--data fakehealth \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/7' \
+#--data fakehealth \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/8' \
+#--data fakehealth \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/9' \
+#--data fakehealth \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/3' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 1 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/4' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/5' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/6' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/7' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/8' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+#
+#python -m Mean_Teacher.BERT.BERT.main \
+#--model bert \
+#--data_folder 'Data/ExperimentFolds/9' \
+#--data gossipcop \
+#--model_output_folder trained_models \
+#--pretrained_model bert-base-cased \
+#--max_len 512 \
+#--dropout 0.1 \
+#--epochs 100 \
+#--batch_size 1 \
+#--lr 2e-5 \
+#--seed 42 \
+#--do_train
+
+python -m BERT.main \
+--model bert \
 --data_folder 'Data/ExperimentFolds/3' \
---data fakehealth \
+--data politifact \
 --model_output_folder trained_models \
---model bert \
---max_len 300 \
+--pretrained_model bert-base-cased \
+--max_len 512 \
 --dropout 0.1 \
---batch_size 8 \
+--epochs 1 \
+--batch_size 1 \
 --lr 2e-5 \
 --seed 42 \
---do_train \
---epochs 3
+--do_train
 
-python -m src.main \
---pretrained_model distilbert-base-uncased \
+python -m BERT.main \
+--model bert \
 --data_folder 'Data/ExperimentFolds/4' \
---data fakehealth \
+--data politifact \
 --model_output_folder trained_models \
---model bert \
---max_len 300 \
+--pretrained_model bert-base-cased \
+--max_len 512 \
 --dropout 0.1 \
---batch_size 8 \
+--epochs 100 \
+--batch_size 1 \
 --lr 2e-5 \
 --seed 42 \
---do_train \
---epochs 3
+--do_train
 
-python -m src.main \
---pretrained_model distilbert-base-uncased \
+python -m BERT.main \
+--model bert \
 --data_folder 'Data/ExperimentFolds/5' \
---data fakehealth \
+--data politifact \
 --model_output_folder trained_models \
---model bert \
---max_len 300 \
+--pretrained_model bert-base-cased \
+--max_len 512 \
 --dropout 0.1 \
---batch_size 8 \
+--epochs 100 \
+--batch_size 1 \
 --lr 2e-5 \
 --seed 42 \
---do_train \
---epochs 3
+--do_train
 
-python -m src.main \
---pretrained_model distilbert-base-uncased \
+python -m BERT.main \
+--model bert \
 --data_folder 'Data/ExperimentFolds/6' \
---data fakehealth \
+--data politifact \
 --model_output_folder trained_models \
---model bert \
---max_len 300 \
+--pretrained_model bert-base-cased \
+--max_len 512 \
 --dropout 0.1 \
---batch_size 8 \
+--epochs 100 \
+--batch_size 1 \
 --lr 2e-5 \
 --seed 42 \
---do_train \
---epochs 3
+--do_train
 
-python -m src.main \
---pretrained_model distilbert-base-uncased \
+python -m BERT.main \
+--model bert \
 --data_folder 'Data/ExperimentFolds/7' \
---data fakehealth \
+--data politifact \
 --model_output_folder trained_models \
---model bert \
---max_len 300 \
+--pretrained_model bert-base-cased \
+--max_len 512 \
 --dropout 0.1 \
---batch_size 8 \
+--epochs 100 \
+--batch_size 1 \
 --lr 2e-5 \
 --seed 42 \
---do_train \
---epochs 3
+--do_train
 
-python -m src.main \
---pretrained_model distilbert-base-uncased \
+python -m BERT.main \
+--model bert \
 --data_folder 'Data/ExperimentFolds/8' \
---data fakehealth \
+--data politifact \
 --model_output_folder trained_models \
---model bert \
---max_len 300 \
+--pretrained_model bert-base-cased \
+--max_len 512 \
 --dropout 0.1 \
---batch_size 8 \
+--epochs 100 \
+--batch_size 1 \
 --lr 2e-5 \
 --seed 42 \
---do_train \
---epochs 3
+--do_train
 
-python -m src.main \
---pretrained_model distilbert-base-uncased \
---data_folder 'Data/ExperimentFolds/9' \
---data fakehealth \
---model_output_folder trained_models \
+python -m BERT.main \
 --model bert \
---max_len 300 \
+--data_folder 'Data/ExperimentFolds/9' \
+--data politifact \
+--model_output_folder trained_models \
+--pretrained_model bert-base-cased \
+--max_len 512 \
 --dropout 0.1 \
---batch_size 8 \
+--epochs 100 \
+--batch_size 1 \
 --lr 2e-5 \
 --seed 42 \
---do_train \
---epochs 3
+--do_train

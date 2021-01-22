@@ -1,140 +1,87 @@
-python -m src.main \
---model mean_bert \
---data_folder 'Data/ExperimentFolds/3' \
---data fakehealth \
+# bert
+python3 -m main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentFolds/3 \
+--data politifact \
 --model_output_folder trained_models \
---pretrained_model distilbert-base-uncased \
---max_len 300 \
---dropout 0.1 \
---batch_size 8 \
---lr 2e-5 \
---do_train \
---seed 42 \
 --epochs 3 \
---unlabel_batch 8 \
---loss_weight 0.5 \
---decay 0.99 \
---model_option teacher \
---use_unlabel_data \
---loss_type mse
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--alpha 0.99 \
+--ratio 0.5 \
+--noise_ratio 0.9
 
-python -m src.main \
---model mean_bert \
---data_folder 'Data/ExperimentFolds/4' \
---data fakehealth \
+python3 -m main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentFolds/4 \
+--data politifact \
 --model_output_folder trained_models \
---pretrained_model distilbert-base-uncased \
---max_len 300 \
---dropout 0.1 \
---batch_size 8 \
---lr 2e-5 \
---do_train \
---seed 42 \
 --epochs 3 \
---unlabel_batch 8 \
---loss_weight 0.5 \
---decay 0.99 \
---model_option teacher \
---use_unlabel_data \
---loss_type mse
-#
-python -m src.main \
---model mean_bert \
---data_folder 'Data/ExperimentFolds/5' \
---data fakehealth \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--alpha 0.99 \
+--ratio 0.5 \
+--noise_ratio 0.9
+
+python3 -m main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentFolds/6 \
+--data politifact \
 --model_output_folder trained_models \
---pretrained_model distilbert-base-uncased \
---max_len 300 \
---dropout 0.1 \
---batch_size 8 \
---lr 2e-5 \
---do_train \
---seed 42 \
 --epochs 3 \
---unlabel_batch 8 \
---loss_weight 0.5 \
---decay 0.99 \
---model_option teacher \
---use_unlabel_data \
---loss_type mse
-#
-python -m src.main \
---model mean_bert \
---data_folder 'Data/ExperimentFolds/6' \
---data fakehealth \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--alpha 0.99 \
+--ratio 0.5 \
+--noise_ratio 0.9
+
+python3 -m main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentFolds/7 \
+--data politifact \
 --model_output_folder trained_models \
---pretrained_model distilbert-base-uncased \
---max_len 300 \
---dropout 0.1 \
---batch_size 8 \
---lr 2e-5 \
---do_train \
---seed 42 \
 --epochs 3 \
---unlabel_batch 8 \
---loss_weight 0.5 \
---decay 0.99 \
---model_option teacher \
---use_unlabel_data \
---loss_type mse
-#
-#
-python -m src.main \
---model mean_bert \
---data_folder 'Data/ExperimentFolds/7' \
---data fakehealth \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--alpha 0.99 \
+--ratio 0.5 \
+--noise_ratio 0.9
+
+python3 -m main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentFolds/8 \
+--data politifact \
 --model_output_folder trained_models \
---pretrained_model distilbert-base-uncased \
---max_len 300 \
---dropout 0.1 \
---batch_size 8 \
---lr 2e-5 \
---do_train \
---seed 42 \
 --epochs 3 \
---unlabel_batch 8 \
---loss_weight 0.5 \
---decay 0.99 \
---model_option teacher \
---use_unlabel_data \
---loss_type mse
-#
-python -m src.main \
---model mean_bert \
---data_folder 'Data/ExperimentFolds/8' \
---data fakehealth \
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--alpha 0.99 \
+--ratio 0.5 \
+--noise_ratio 0.9
+
+python3 -m main \
+--model MT \
+--method Bert \
+--data_folder Data/ExperimentFolds/9 \
+--data politifact \
 --model_output_folder trained_models \
---pretrained_model distilbert-base-uncased \
---max_len 300 \
---dropout 0.1 \
---batch_size 8 \
---lr 2e-5 \
---do_train \
---seed 42 \
 --epochs 3 \
---unlabel_batch 8 \
---loss_weight 0.5 \
---decay 0.99 \
---model_option teacher \
---use_unlabel_data \
---loss_type mse
-#
-python -m src.main \
---model mean_bert \
---data_folder 'Data/ExperimentFolds/9' \
---data fakehealth \
---model_output_folder trained_models \
---pretrained_model distilbert-base-uncased \
---max_len 300 \
---dropout 0.1 \
---batch_size 8 \
---lr 2e-5 \
---do_train \
---seed 42 \
---epochs 3 \
---unlabel_batch 8 \
---loss_weight 0.5 \
---decay 0.99 \
---model_option teacher \
---use_unlabel_data \
---loss_type mse
+--lr 0.0001 \
+--batch_size 1 \
+--max_len 512 \
+--alpha 0.99 \
+--ratio 0.5 \
+--noise_ratio 0.9
+
+# Fake health
+
