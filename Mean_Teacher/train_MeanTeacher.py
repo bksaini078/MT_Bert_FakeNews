@@ -30,8 +30,9 @@ def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_noise_tar):
     # TODO: There is a problem here, it does not loop 3 epochs, it only loop once.
     for epoch in range(args.epochs):
         tf.print(f'\nepoch {epoch + 1}')
+        iterator_noise = iter ( noise_dataset )
         for step, (inputs, attention, y_batch_train) in enumerate(train_dataset):
-            iterator_noise = iter ( noise_dataset )
+
             with tf.GradientTape() as tape:
                 # TODO please rename noise as noise, it is confusing
                 # QUESTION: Here I couldn't understand the logic of reading noise data, you only read one batch by doing iter and next. Are we sure that we get user defined batch size inputs?
