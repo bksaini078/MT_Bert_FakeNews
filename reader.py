@@ -103,6 +103,22 @@ def process_fakehealth(path: str):
     logger.info(f"Merged data is saved to {processed_dir}")
 
 
+def process_fakes(path: str):
+    data_path = Path(path)
+    data = pd.read_csv(data_path, delimiter=",", encoding='latin1')
+    data.rename(
+        columns={"article_content": "content", "article_title": "title", "labels": "label",
+                 "date": "publish_date", "unit_id": "news_id"},
+        errors="raise", inplace=True)
+    data["label"] = data.label.map(lambda x: "fake" if x == 0 else "true")
+    data['publish_date'] = pd.to_datetime(data.publish_date)
+
+    Path('Data/Processed').mkdir(parents=True, exist_ok=True)
+    processed_dir = Path('Data/Processed') / 'FaKES.tsv'
+    data.to_csv(processed_dir, sep='\t', index=False)
+    logger.info(f"Processed data is saved to {processed_dir}")
+
+
 def extract_content(dir, news_source, news_ids, label):
     processed_data = []
     for news_id in news_ids:
@@ -146,12 +162,18 @@ def create_experiment_data(experimentfolds, ratio):
     '''
     experimentfolds = Path(experimentfolds)
     experimentfolds.mkdir(parents=True, exist_ok=True)
+    logger.info("Processing fakes")
+    split_train_test(experimentfolds, 'fakes', 'Data/Processed/FaKES.tsv', ratio)
     logger.info("Processing fakehealth")
     split_train_test(experimentfolds, 'fakehealth', 'Data/Processed/FakeHealth.tsv', ratio)
     logger.info("Processing politifact")
     split_train_test(experimentfolds, 'politifact', 'Data/Processed/FakeNewsNet_Politifact.tsv', ratio)
     logger.info("Processing gossipcop")
     split_train_test(experimentfolds, 'gossipcop', 'Data/Processed/FakeNewsNet_Gossipcop.tsv', ratio)
+    logger.info("Processing nela")
+    split_train_test(experimentfolds, 'nela', 'Data/Processed/nela.tsv', ratio)
+    logger.info("Processing covid")
+    split_train_test(experimentfolds, 'covid', 'Data/Processed/covid.tsv', ratio)
 
 
 def split_train_test(experimentfolds, experiment_folder, datapath, ratio):
@@ -169,46 +191,18 @@ def split_train_test(experimentfolds, experiment_folder, datapath, ratio):
     test.to_csv(output_path / 'test.tsv', sep="\t", index=False)
     train.to_csv(output_path / 'train.tsv', sep="\t", index=False)
 
-    # kf = KFold(n_splits=5, random_state=42, shuffle=True)
-    # kf.get_n_splits(train)
-    #
-    # unlabeled_all = pd.read_csv("Data/Processed/Reddit_All.tsv", sep="\t")
-    # # unlabeled_mix = pd.read_csv("Data/Processed/Nela_Mix.tsv", sep="\t")
-    #
-    # date_threshold = min(test["publish_date"])
-    # logger.info(date_threshold)
-    # _unlabeled_all = unlabeled_all[unlabeled_all["publish_date"] < date_threshold]
-    # # _unlabeled_mix = unlabeled_mix[unlabeled_mix["publish_date"] < date_threshold]
-    #
-    # logger.info(max(_unlabeled_all["publish_date"]))
-    # assert max(_unlabeled_all["publish_date"]) < date_threshold
-    # # assert max(_unlabeled_mix["publish_date"]) < date_threshold
-    #
-    # train_remove = train[train["publish_date"] == date_threshold]
-    # train = train[train["publish_date"] < date_threshold]
-    #
-    # test = pd.concat([train_remove, test])
-    #
-    # assert max(train["publish_date"]) < date_threshold
-    #
-    # _unlabeled_all.to_csv(output_path / 'unlabeled_all.tsv', sep="\t", index=False)
-    # # _unlabeled_mix.to_csv(output_path / 'unlabeled_mix.tsv', sep="\t", index=False)
-    # logger.info(f"Unlabeled data samples {len(_unlabeled_all)}")
-    # train_fname = 'train_{}.tsv'
-    # dev_fname = 'dev_{}.tsv'
-    # train.reset_index(inplace=True)
-    # print(f"Test len {len(test)}")
-    # print(test.groupby(["label"])["content"].count())
-    # for idx, (train_index, test_index) in enumerate(kf.split(train.label)):
-    #     print(f"Fold {idx}")
-    #     _train, _dev = train.loc[train_index], train.loc[test_index]
-    #     print(f"Train len {len(_train)}")
-    #     print(_train.groupby(["label"])["content"].count())
-    #     print(f"Dev len {len(_dev)}")
-    #     print(_dev.groupby(["label"])["content"].count())
-    #     _train.to_csv(output_path / train_fname.format(idx), sep="\t", index=False)
-    #     _train.to_csv(output_path / train_fname.format(idx), sep="\t", index=False)
-    #     _dev.to_csv(output_path / dev_fname.format(idx), sep="\t", index=False)
+
+def mask_labels(data, ratio_label):
+    logger.info(data.groupby(["label"])["content"].count())
+    if ratio_label == 1.0:
+        return data
+    data = data.sort_values(by='publish_date', ascending=True)
+    labeled_len = round(len(data) * ratio_label)
+    logger.info(labeled_len)
+    unlabeled_len = len(data) - labeled_len
+    data.loc[:unlabeled_len, "label"] = -1
+    logger.info(data.groupby(["label"])["content"].count())
+    return data
 
 
 def normalize_source(source):
@@ -230,10 +224,8 @@ def process_reddit_news(reddit_path, nela_path):
     reddit = pd.read_csv(reddit_path, sep="\t")
     reddit["source"] = reddit.source.map(lambda x: normalize_source(x))
 
-    print(reddit.source.unique())
     reddit.rename(
-        columns={"content": "text", "publishedDate": "publish_date"},
-        errors="raise", inplace=True)
+        columns={"content": "text", "publishedDate": "publish_date"}, inplace=True)
 
     reliable = reddit[reddit.source.isin(reliable_sources)]
     unreliable = reddit[reddit.source.isin(unreliable_sources)]
@@ -254,86 +246,121 @@ def process_reddit_news(reddit_path, nela_path):
     logger.info(f"Reddit data is saved to {processed_dir}")
 
 
+def assign_label(source, ref_labels):
+    if not ref_labels[ref_labels['source'] == source]['our_aggregation'].values:
+        raise ValueError(f'Requesting source {source} not available in labels')
+    label = ref_labels[ref_labels['source'] == source]['our_aggregation'].values[0]
+    return label
+
+
 def process_nela(nela_path):
     nela_dir = Path(nela_path)
     labels = pd.read_csv(nela_dir / 'labels.csv')
-    reliable_sources = labels[labels['aggregated_label'] == 0.0]['source'].unique()
-    unreliable_sources = labels[labels['aggregated_label'] == 2.0]['source'].unique()
-    satire_sources = labels[labels['Media Bias / Fact Check, label'] == 'satire']['source'].unique()
+    reliable_sources = labels[labels['aggregated_label'] == 0.0]
+    reliable_sources['our_aggregation'] = 'true'
+    unreliable_sources = labels[labels['aggregated_label'] == 2.0]
+    unreliable_sources['our_aggregation'] = 'fake'
+    satire_sources = labels[labels['Media Bias / Fact Check, label'] == 'satire']
+    satire_sources['our_aggregation'] = 'fake'
+    new_labels = pd.concat([reliable_sources, unreliable_sources, satire_sources])
 
-    nela_2018_dir = nela_dir / 'NELA-2018/articles.db'
-    nela_2018_cnx = sqlite3.connect(nela_2018_dir)
-    nela_2018 = pd.read_sql_query("SELECT * FROM articles", nela_2018_cnx)
-
-    nela_2018["normalized_source"] = nela_2018.source.map(lambda x: normalize_source(x))
-    nela_2018 = nela_2018[["normalized_source", "name", "content", "date"]]
-    nela_2018.rename(
-        columns={"normalized_source": "source", "name": "title", "content": "text", "date": "publish_date"},
-        errors="raise", inplace=True)
-
-    reliable_nela_2018 = nela_2018[nela_2018.source.isin(reliable_sources)]
-    unreliable_nela_2018 = nela_2018[nela_2018.source.isin(unreliable_sources)]
-    satire_nela_2018 = nela_2018[nela_2018.source.isin(satire_sources)]
-
-    logger.info(f"Reliable news in NELA 2018 {len(reliable_nela_2018)}")
-    logger.info(f"Unreliable news in NELA 2018 {len(unreliable_nela_2018)}")
-    logger.info(f"Satire news in NELA 2018 {len(satire_nela_2018)}")
-
-    nela_2017_dir = nela_dir / 'NELA-2017'
     nela_2017 = []
-    for file_path in nela_2017_dir.glob('**/*.txt'):
+    for file_path in nela_dir.glob('**/*.txt'):
         with open(file_path) as f:
             json_txt = f.read()
             try:
                 article_dict = json.loads(json_txt)
-            except json.decoder.JSONDecodeError:
+                normalized_source = normalize_source(article_dict["source"])
+                label = assign_label(normalized_source, new_labels)
+            except json.decoder.JSONDecodeError and ValueError:
                 continue
-
-            normalized_source = normalize_source(article_dict["source"])
             nela_2017.append({
                 "title": article_dict["title"],
-                "text": article_dict["content"],
+                "content": article_dict["content"],
                 "source": normalized_source,
-                "publish_date": str(file_path.absolute()).split("/")[10]
+                "publish_date": str(file_path.absolute()).split("/")[-2],
+                "label": label
             })
 
     nela_2017 = pd.DataFrame(nela_2017)
-    logger.info(f"Before NELA 2017 {len(nela_2017)}")
     nela_2017.dropna(subset=['publish_date'], inplace=True)  # remove nan values
-    logger.info(f"After removing articles without dates {len(nela_2017)}")
+    nela_2017.dropna(subset=['label'], inplace=True)  # remove nan values
+    logger.info(f"Number of samples {len(nela_2017)}")
+    processed_dir = Path('Data/Processed') / 'nela.tsv'
+    nela_2017.to_csv(processed_dir, sep='\t', index=False)
+    logger.info(f"NELA is saved to {processed_dir}")
 
-    logger.info(f"Before NELA 2018 {len(nela_2018)}")
-    nela_2018.dropna(subset=['publish_date'], inplace=True)  # remove nan values
-    logger.info(f"After removing articles without dates {len(nela_2018)}")
 
-    reliable_nela_2017 = nela_2017[nela_2017.source.isin(reliable_sources)]
-    reliable_nela_2017["label"] = "reliable"
-    unreliable_nela_2017 = nela_2017[nela_2017.source.isin(unreliable_sources)]
-    unreliable_nela_2017["label"] = "unreliable"
-    satire_nela_2017 = nela_2017[nela_2017.source.isin(satire_sources)]
-    satire_nela_2017["label"] = "satire"
-    nela_all = pd.concat([nela_2017, nela_2018])
-    logger.info(f"Number of samples {len(nela_all)}")
+def handle_date(date):
+    date = pd.to_datetime(date, errors='coerce')
+    if type(date) == pd.NaT:
+        return None
+    else:
+        return f"{date.year}-{date.month}-{date.day}"
+
+
+def process_covid(covid_path):
+    data_dir = Path(covid_path)
+
+    logger.info("Processing Recovery News Dataset")
+    recovery_dir = data_dir / 'recovery-news-data.csv'
+    recovery_data = pd.read_csv(recovery_dir, sep=',')
+    recovery_data = recovery_data[['url', 'title', 'publisher', 'publish_date', 'body_text', 'reliability']]
+    recovery_data.loc[recovery_data.reliability == 0, 'reliability'] = 'fake'
+    recovery_data.loc[recovery_data.reliability == 1, 'reliability'] = 'true'
+    recovery_data.rename(columns={"body_text": "content", "reliability": "label", "publisher": "source"}, inplace=True)
+    recovery_data = recovery_data[['url', 'title', 'content', 'publish_date', 'label']]
+    logger.info("Recovery News Stats")
+    logger.info(recovery_data.groupby(['label'])['content'].count())
+
+    logger.info("Processing CoAID Dataset")
+    coaid_dir = data_dir / 'CoAID'
+
+    coaid_all = []
+    for filepath in coaid_dir.rglob("NewsFakeCOVID-19.csv"):
+        data = pd.read_csv(filepath, sep=',')
+        data = data[data['type'] == 'article']
+        data['publish_date'] = data.publish_date.apply(
+            lambda x: handle_date(x))
+        data["label"] = "fake"
+        data.rename(columns={"news_url": "url"},
+                    inplace=True)
+        coaid_all.append(data)
+
+    for filepath in coaid_dir.rglob("NewsRealCOVID-19.csv"):
+        data = pd.read_csv(filepath, sep=',')
+        data = data[data['type'] == 'article']
+        data['publish_date'] = data.publish_date.apply(
+            lambda x: handle_date(x))
+        data["label"] = "true"
+        data.rename(columns={"news_url": "url"},
+                    inplace=True)
+        coaid_all.append(data)
+
+    coaid_all = pd.concat(coaid_all)
+    coaid_all = coaid_all[['url', 'title', 'content', 'publish_date', 'label']]
+    logger.info("COAID Stats")
+    logger.info(coaid_all.groupby(['label'])['content'].count())
+
+    covid = pd.concat([recovery_data, coaid_all])
+    covid.drop_duplicates(subset=['content'], inplace=True)
+
     Path('Data/Processed').mkdir(parents=True, exist_ok=True)
-    processed_dir = Path('Data/Processed') / 'Nela_All.tsv'
-    nela_all.to_csv(processed_dir, sep='\t', index=False)
-    logger.info(f"NELA all is saved to {processed_dir}")
-
-    nela_mix = pd.concat(
-        [reliable_nela_2017, reliable_nela_2018, unreliable_nela_2017, unreliable_nela_2018, satire_nela_2017,
-         satire_nela_2018])
-    logger.info(f"Number of samples {len(nela_mix)}")
-    processed_dir = Path('Data/Processed') / 'Nela_Mix.tsv'
-    nela_mix.to_csv(processed_dir, sep='\t', index=False)
-    logger.info(f"NELA mix is saved to {processed_dir}")
+    processed_dir = Path('Data/Processed') / 'covid.tsv'
+    covid.to_csv(processed_dir, sep='\t', index=False)
+    logger.info(f"Processed data stats")
+    logger.info(covid.groupby(['label'])['content'].count())
+    logger.info(f"Processed data is saved to {processed_dir}")
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--fakehealth', type=str, help="Directory path of FakeHealth")
     parser.add_argument('--fakenewsnet', type=str, help="Directory path of FakeNewsNet")
+    parser.add_argument('--fakes', type=str, help="Directory path of FakeNewsNet")
     parser.add_argument('--experimentfolds', type=str, help="Directory path of FakeNewsNet")
     parser.add_argument('--nela', type=str, help="Directory path of NELA datasets")
+    parser.add_argument('--covid', type=str, help="Directory path of COVID datasets")
     parser.add_argument('--reddit', type=str, help="Directory path of Reddit dataset")
     parser.add_argument('--ratio', type=float, help="Ratio")
     args = parser.parse_args()
@@ -344,11 +371,15 @@ if __name__ == '__main__':
     if args.fakenewsnet:
         process_fakenewsnet(args.fakenewsnet)
 
+    if args.fakes:
+        process_fakes(args.fakes)
+
     if args.experimentfolds:
         logger.info("Choosing experiment folder creation")
         create_experiment_data(args.experimentfolds, args.ratio)
 
     if args.nela:
-        logger.info("Choosing processing NELA")
-        # process_nela(args.nela)
-        process_reddit_news(args.reddit, args.nela)
+        process_nela(args.nela)
+
+    if args.covid:
+        process_covid(args.covid)
