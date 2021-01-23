@@ -9,7 +9,7 @@ def unison_shuffled(x1,x2,y, args):
     
     return [x1[p],x2[p]], y[p]
 
-def instant_noise_bert(x_train,y_train,x_unlabel, args):
+def augment_data(x_train, y_train, x_unlabel, args):
     '''Adding unlabel data to train data'''
     # need to include noise parameter to control to maintain unlabel ratio
     indices = tf.range(start=0, limit=len(x_unlabel[0]), dtype=tf.int32)

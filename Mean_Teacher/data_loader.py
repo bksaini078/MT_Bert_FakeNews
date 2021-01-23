@@ -20,7 +20,7 @@ def data_load(args,fold, path):
 
     print(train_data.groupby('label').count())
     test_data= pd.read_csv(path+'test.tsv',sep='\t')#,nrows=40)
-    unlabel = pd.read_csv(path + 'noise.tsv', sep='\t')#,nrows=100 )
+    noise = pd.read_csv(path + 'noise.tsv', sep='\t')#,nrows=100 )
     
     tokenizer = AutoTokenizer.from_pretrained(args.pretrained_model)
 
@@ -31,32 +31,34 @@ def data_load(args,fold, path):
     test_data,_ = create_news_examples(test_data, args.max_len, tokenizer)
     x_test, y_test = create_inputs_targets(test_data )
 
-    x_unlabel,_ = create_news_examples (unlabel, args.max_len, tokenizer )
-    x_unlabel, _ = create_inputs_targets ( x_unlabel )
+    x_noise,_ = create_news_examples (noise, args.max_len, tokenizer )
+    x_noise, _ = create_inputs_targets ( x_noise )
 
     print('train size:',np.shape(x_train[0]))
  
     print('test size:', np.shape(x_test[0]))
    
-    return x_train, y_train, x_test, y_test, x_unlabel
+    return x_train, y_train, x_test, y_test, x_noise
 
-def data_slices(args, x_train,y_train,x_unlabel):
+def data_slices(args, x_train,y_train,x_noise):
+    #this PI model will be removed in the future
     if args.model=='PI':
         train_dataset = tf.data.Dataset.from_tensor_slices ( (x_train[0], y_train) )
         train_dataset = train_dataset.shuffle( buffer_size=1024 ).batch( args.batch_size)
 
     else:
-        #TODO:here need to include the ratio of amount of unlabel per batch
+        #TODO:here need to include the ratio of amount of noise per batch
         train_dataset = tf.data.Dataset.from_tensor_slices((x_train[0], x_train[1], y_train) ).batch(args.batch_size)
 
         #QUESTION: Here I couldn't understand the logic noise data will always same size with labeled batch
-        # Also you are not handling unlabeled dataset where we will mask the train set, I have done all those stuff see on my code for the reference
-        unlabel_dataset= tf.data.Dataset.from_tensor_slices((x_unlabel[0],x_unlabel[1])).batch(args.batch_size)
+        # Also you are not handling noiseed dataset where we will mask the train set, I have done all those stuff see on my code for the reference
+        noise_batch = int(args.batch_size * args.noise_ratio)
+        noise_dataset= tf.data.Dataset.from_tensor_slices((x_noise[0],x_noise[1])).batch(noise_batch)
 
-        #in case we have less unlabel data
-        unlabel_dataset=unlabel_dataset.repeat(3)
+        #in case we have less noise data
+        noise_dataset=noise_dataset.repeat(args.batch_size)
 
-    return train_dataset, unlabel_dataset
+    return train_dataset, noise_dataset
 
 
 

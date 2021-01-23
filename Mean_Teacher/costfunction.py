@@ -1,7 +1,7 @@
 # declaring loss function
 import tensorflow as tf
 import numpy as np
-from Mean_Teacher.noise_creator import instant_noise_bert
+from Mean_Teacher.augmentation import augment_data
 
 
 # ref:https://github.com/CuriousAI/mean-teacher/tree/master/tensorflow/mean_teacher  updated according to our need .
@@ -32,13 +32,13 @@ def Consistency_Cost(student_output, teacher_output) :
 def Overall_Cost(args, x_train, y_train, x_unlabel_tar, student, teacher) :
     '''Calculating overall cost using classification cost and consistency cost'''
     # including noise data in train data
-    x_train_n, y_train_n = instant_noise_bert ( x_train, y_train, x_unlabel_tar, args )
+    x_train_n, y_train_n = augment_data ( x_train, y_train, x_unlabel_tar, args )
 
     # student prediction
     logit_student = student ( x_train_n )
 
     # including different noise data in train data
-    x_train_n1, _ = instant_noise_bert ( x_train, y_train, x_unlabel_tar, args )
+    x_train_n1, _ = augment_data ( x_train, y_train, x_unlabel_tar, args )
 
     # calculating classification cost
     classification_cost = Classification_costs ( logit_student, y_train_n )

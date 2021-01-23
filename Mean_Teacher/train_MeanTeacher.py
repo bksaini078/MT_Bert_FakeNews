@@ -9,9 +9,9 @@ from Mean_Teacher.data_loader import data_slices
 from src.clf.bert import BERT
 
 
-def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_unlabel_tar):
+def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_noise_tar):
     # preparing the training dataset
-    train_dataset, unlabel_dataset = data_slices(args, x_train, y_train, x_unlabel_tar)
+    train_dataset, noise_dataset = data_slices(args, x_train, y_train, x_noise_tar)
 
     # declaring optimiser
     optimizer = tf.keras.optimizers.Adam(learning_rate=args.lr)
@@ -31,14 +31,15 @@ def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_unlabel_tar):
     for epoch in range(args.epochs):
         tf.print(f'\nepoch {epoch + 1}')
         for step, (inputs, attention, y_batch_train) in enumerate(train_dataset):
+            iterator_noise = iter ( noise_dataset )
             with tf.GradientTape() as tape:
-                # TODO please rename unlabel as noise, it is confusing
+                # TODO please rename noise as noise, it is confusing
                 # QUESTION: Here I couldn't understand the logic of reading noise data, you only read one batch by doing iter and next. Are we sure that we get user defined batch size inputs?
-                iterator_unlabel = iter(unlabel_dataset)
-                x_batch_unlabel = iterator_unlabel.get_next()
+
+                x_batch_noise = iterator_noise.get_next()
 
                 # TODO Please split to overall cost of sub methods, here it is very confusing. Do how I did 1) agumentation, 2) student cost 3) augmentation and then overall cost
-                overall_cost = Overall_Cost(args, [inputs, attention], y_batch_train, x_batch_unlabel,
+                overall_cost = Overall_Cost(args, [inputs, attention], y_batch_train, x_batch_noise,
                                             student, teacher)
 
             grads = tape.gradient(overall_cost, student.trainable_weights)
