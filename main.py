@@ -28,6 +28,8 @@ if __name__ == '__main__':
     parser.add_argument ('--seed', type=int )
     parser.add_argument('--model_option', type=str, choices=['student', 'teacher'], default='teacher')
     parser.add_argument('--unlabel_ratio', type=int, default=1)
+    parser.add_argument ('--ratio_label', type=float, default=1 )
+    parser.add_argument ('--attn_noise', type=float, default=0.2 )
 
     args = parser.parse_args()
     data_folder = Path(args.data_folder)
