@@ -13,6 +13,7 @@ def unison_shuffled(x1, x2, y, args) :
 
 def augment_data(x_train, y_train, x_unlabel, args) :
     '''Adding unlabel data to train data'''
+    #@TODO i couldn't get this function
     # need to include noise parameter to control to maintain unlabel ratio
     # indices = tf.range(start=0, limit=len(x_unlabel[0]), dtype=tf.int32)
     # shuffled_indices = tf.random.shuffle(indices)

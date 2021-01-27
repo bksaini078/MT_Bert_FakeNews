@@ -11,8 +11,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     #parser argument with default values
+    #TODO don't use default values
     parser.add_argument('--lr', default=2e-5, type=float)
-    parser.add_argument('--epochs', default=3, type=int)
+    parser.add_argument('--epochs', type=int)
     parser.add_argument('--batch_size', default=8, type=int)
     parser.add_argument('--max_len', default=300, type=int)
     parser.add_argument('--model', default='MT', type=str, choices=['MT','PI','bert'])
@@ -30,6 +31,7 @@ if __name__ == '__main__':
     parser.add_argument('--unlabel_ratio', type=int, default=1)
     parser.add_argument ('--ratio_label', type=float, default=1 )
     parser.add_argument ('--attn_noise', type=float, default=0.2 )
+    parser.add_argument("--loss_fn", choices=["mse", "kl_divergence"])
 
     args = parser.parse_args()
     data_folder = Path(args.data_folder)

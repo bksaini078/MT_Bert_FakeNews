@@ -6,8 +6,13 @@ from Mean_Teacher.report_writing import report_writing
 from Mean_Teacher.evaluation import prec_rec_f1score
 from Mean_Teacher.data_loader import data_slices
 # from BERT.bert import BERT
+from logger import logger
 from src.clf.bert import BERT
 
+CONSISTENCY_LOSS_FN = {
+    "mse": tf.keras.losses.MSE,
+    "kl_divergence": tf.keras.losses.kl_divergence
+}
 
 def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_noise_tar):
     # preparing the training dataset
@@ -25,11 +30,14 @@ def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_noise_tar):
     # declaring metrics
     train_metrics = tf.keras.metrics.BinaryAccuracy(name='Binary_Accuracy')
     progbar = tf.keras.utils.Progbar(len(train_dataset), stateful_metrics=['Accuracy', 'Overall_Loss'])
-    # TODO: There is a problem here, it does not loop 3 epochs, it only loop once.
-    #Question: How? In my end, it is running for three epoch.
-    for epoch in range(args.epochs):
+
+    epochs = args.epochs
+    logger.info(f"Number of epochs {epochs}")
+    step_counter = 0
+
+    for epoch in range(epochs):
         tf.print(f'\nepoch {epoch + 1}')
-        iterator_noise = iter ( noise_dataset )
+        iterator_noise = iter(noise_dataset)
         for step, (inputs, attention, y_batch_train) in enumerate(train_dataset):
             with tf.GradientTape() as tape:
                 # TODO please rename noise as noise, it is confusing
@@ -38,17 +46,21 @@ def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_noise_tar):
                 x_batch_noise = iterator_noise.get_next()
 
                 # TODO Please split to overall cost of sub methods, here it is very confusing. Do how I did 1)
-                #agumentation, 2) student cost 3) augmentation and then overall cost
+                # agumentation, 2) student cost 3) augmentation and then overall cost
                 # Please check cost_function.py
+
+
+                #TODO please lower the function name and instead of using args parameter, use the real params. it would be very confusing to find the bugs if "args" is seen.
                 overall_cost = Overall_Cost(args, [inputs, attention], y_batch_train, x_batch_noise,
-                                            student, teacher)
+                                            student, teacher, CONSISTENCY_LOSS_FN[args.loss_fn])
 
             grads = tape.gradient(overall_cost, student.trainable_weights)
             optimizer.apply_gradients(
                 (grad, var) for (grad, var) in zip(grads, student.trainable_weights) if grad is not None)
 
             # applying student weights to teacher
-            teacher = EMA(student, teacher, alpha=args.alpha)
+            step_counter += 1
+            teacher = EMA(student, teacher, alpha=args.alpha, global_step=step_counter)
 
             # calculating training accuracy
             logits_t = teacher([inputs, attention])
