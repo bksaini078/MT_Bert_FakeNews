@@ -3,7 +3,7 @@ python -m main \
 --data fakehealth \
 --model MT \
 --alpha 0.753 \
---batch_size 8 \
+--batch_size 4 \
 --epochs 3 \
 --max_len 300 \
 --ratio 0.5 \
