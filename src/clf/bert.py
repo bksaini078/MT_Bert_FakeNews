@@ -134,7 +134,7 @@ class BERT:
         self.model = None
         self.model_option = args.model_option
         self.softmax_layer = tf.keras.layers.Softmax()
-        self.unlabel_ratio= args.unlabel_ratio
+        self.ratio_label = args.ratio_label
 
     def create_model(self, training=False):
         encoder = TFAutoModel.from_pretrained(self.pretrained_model)
