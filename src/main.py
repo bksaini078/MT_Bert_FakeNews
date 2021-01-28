@@ -1,7 +1,6 @@
 from argparse import ArgumentParser
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import tensorflow as tf
 from numpy.random import seed
@@ -11,32 +10,17 @@ from sklearn.metrics import f1_score
 from logger import logger
 from reader import mask_labels
 from src.clf.bert import BERT
-from src.clf.mt_bert import MTBERT
 
 MODELS = {
     'bert': BERT,
     'pi_bert': NotImplemented,
-    'mean_bert': MTBERT
+    # 'mean_bert': MTBERT
 }
 
 
 def ensure_reproducibility(random_seed):
     seed(random_seed)
     tf.random.set_seed(random_seed)
-
-
-def train_unlabel_split(train_data, ratio):
-    '''This part we are doing because of having balanced train data during training '''
-    data_n_unlabel = round(ratio * len(train_data))
-    data_n_train = len(train_data) - data_n_unlabel
-    train_data_sort = train_data.sort_values(by=['label']).reset_index(drop=True)
-    train = train_data_sort.head(round(data_n_train / 2))
-    train = train.append(train_data_sort.tail(round(data_n_train / 2)))
-    unlabel_data = train_data_sort[round(data_n_train / 2) + 1:data_n_unlabel + round(data_n_train / 2) + 1]
-    train = train.sample(frac=1, random_state=42).reset_index(drop=True)
-    unlabel_data = unlabel_data.sample(frac=1, random_state=42).reset_index(drop=True)
-    unlabel_data['label'] = np.full((len(unlabel_data), 1), -1)
-    return train, unlabel_data
 
 
 def run(args):
