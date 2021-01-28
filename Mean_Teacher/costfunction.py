@@ -38,19 +38,19 @@ def Overall_Cost(args, x_train, y_train, x_unlabel_tar, student, teacher, loss_f
     # including noise data in train data
 
     #TODO when I checked the code, it seems that you are always using same data distribution, you are not in fact different data distribution
-    x_train_n, y_train_n = augment_data(x_train, y_train, x_unlabel_tar, args)
+    # x_train_n, y_train_n = augment_data(x_train, y_train, x_unlabel_tar, args)
 
     # student prediction
-    logit_student = student(x_train_n)
+    logit_student = student(x_train)
 
     # including different noise data in train data
-    x_train_n1, _ = augment_data(x_train, y_train, x_unlabel_tar, args)
+    # x_train_n1, _ = augment_data(x_train, y_train, x_unlabel_tar, args)
 
     # calculating classification cost
-    classification_cost = compute_clf_loss(logit_student, y_train_n)
+    classification_cost = compute_clf_loss(logit_student, y_train)
 
     # teacher prediction
-    logit_teacher = teacher(x_train_n1)
+    logit_teacher = teacher(x_train)
 
     # calculating consistency cost
     consistency_cost = compute_consistency_loss(logit_student, logit_teacher, loss_fn)

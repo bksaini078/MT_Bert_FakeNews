@@ -5,7 +5,7 @@ from keras.utils import to_categorical
 from tensorflow import keras
 from tensorflow.keras import layers
 from tqdm import tqdm
-from transformers import AutoTokenizer, TFAutoModel
+from transformers import AutoTokenizer, TFAutoModel, AutoConfig
 from transformers.modeling_tf_utils import get_initializer
 from logger import logger
 
@@ -122,11 +122,13 @@ def unlabel_mix(batch_size,train_data,labels,unlabel_train_m, ratio):
 
 
 class BERT:
-    def __init__(self, args):
+    def __init__(self, args, dropout=None):
         self.pretrained_model = args.pretrained_model
+        self.config = AutoConfig.from_pretrained(self.pretrained_model)
+        self.config.attention_probs_dropout_prob = dropout
         self.max_len = args.max_len
         self.tokenizer = AutoTokenizer.from_pretrained(self.pretrained_model)
-        self.dropout = tf.keras.layers.Dropout(args.dropout)
+        self.dropout = tf.keras.layers.Dropout(0.1)
         self.lr = args.lr
         self.classifier = tf.keras.layers.Dense(2, name="classifier", activation='softmax')  # 2 labels classifier
         self.epochs = args.epochs
@@ -137,7 +139,7 @@ class BERT:
         self.ratio_label = args.ratio_label
 
     def create_model(self, training=False):
-        encoder = TFAutoModel.from_pretrained(self.pretrained_model)
+        encoder = TFAutoModel.from_pretrained(self.pretrained_model, config=self.config)
 
         input_ids = layers.Input(shape=(self.max_len,), dtype=tf.int32)
         attention_mask = layers.Input(shape=(self.max_len,), dtype=tf.int32)

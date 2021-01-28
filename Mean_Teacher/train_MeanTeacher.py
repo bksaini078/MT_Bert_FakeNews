@@ -14,6 +14,7 @@ CONSISTENCY_LOSS_FN = {
     "kl_divergence": tf.keras.losses.kl_divergence
 }
 
+
 def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_noise_tar):
     # preparing the training dataset
     train_dataset, noise_dataset = data_slices(args, x_train, y_train, x_noise_tar)
@@ -24,8 +25,8 @@ def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_noise_tar):
     # Ipek- I changed with the BERT under the src/clf teacher model should not be fine tuned during the training, otherwise it will not be mean teacher.
     # This makes fake news results worse, but we should do like this based on original paper
     # creating model
-    student = BERT(args).create_model(training=True)
-    teacher = BERT(args).create_model(training=False)
+    student = BERT(args, dropout=args.student_dropout).create_model(training=True)
+    teacher = BERT(args, dropout=args.teacher_dropout).create_model(training=False)
 
     # declaring metrics
     train_metrics = tf.keras.metrics.BinaryAccuracy(name='Binary_Accuracy')
@@ -49,8 +50,7 @@ def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_noise_tar):
                 # agumentation, 2) student cost 3) augmentation and then overall cost
                 # Please check cost_function.py
 
-
-                #TODO please lower the function name and instead of using args parameter, use the real params. it would be very confusing to find the bugs if "args" is seen.
+                # TODO please lower the function name and instead of using args parameter, use the real params. it would be very confusing to find the bugs if "args" is seen.
                 overall_cost = Overall_Cost(args, [inputs, attention], y_batch_train, x_batch_noise,
                                             student, teacher, CONSISTENCY_LOSS_FN[args.loss_fn])
 

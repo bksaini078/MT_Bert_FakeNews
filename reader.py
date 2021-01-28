@@ -1,6 +1,5 @@
 import argparse
 import json
-import sqlite3
 from datetime import datetime
 from pathlib import Path
 
@@ -196,11 +195,13 @@ def mask_labels(data, ratio_label):
     logger.info(data.groupby(["label"])["content"].count())
     if ratio_label == 1.0:
         return data
-    data = data.sort_values(by='publish_date', ascending=True)
+    data = data.sort_values(by='publish_date', ascending=False)
     labeled_len = round(len(data) * ratio_label)
-    logger.info(labeled_len)
-    unlabeled_len = len(data) - labeled_len
-    data.loc[:unlabeled_len, "label"] = -1
+    data.loc[:labeled_len, "label"] = -1
+
+    assert data[data["publish_date"] == min(data.publish_date)]['label'].values[0] != -1 and \
+           data[data["publish_date"] == max(data.publish_date)]['label'].values[0] == -1
+
     logger.info(data.groupby(["label"])["content"].count())
     return data
 
