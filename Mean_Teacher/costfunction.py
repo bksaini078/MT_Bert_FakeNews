@@ -33,7 +33,7 @@ def compute_consistency_loss(student_output, teacher_output, loss_fn):
     return tf.reduce_mean(loss_fn(student_output, teacher_output))
 
 
-def Overall_Cost(args, x_train, y_train, x_unlabel_tar, student, teacher, loss_fn):
+def Overall_Cost(args, x_train, y_train,student, teacher, loss_fn):
     '''Calculating overall cost using classification cost and consistency cost'''
     # including noise data in train data
 

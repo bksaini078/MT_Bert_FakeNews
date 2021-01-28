@@ -15,9 +15,9 @@ CONSISTENCY_LOSS_FN = {
 }
 
 
-def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_noise_tar):
+def MeanTeacher(args, fold, x_train, y_train, x_test, y_test):
     # preparing the training dataset
-    train_dataset, noise_dataset = data_slices(args, x_train, y_train, x_noise_tar)
+    train_dataset = data_slices(args, x_train, y_train)
 
     # declaring optimiser
     optimizer = tf.keras.optimizers.Adam(learning_rate=args.lr)
@@ -38,20 +38,20 @@ def MeanTeacher(args, fold, x_train, y_train, x_test, y_test, x_noise_tar):
 
     for epoch in range(epochs):
         tf.print(f'\nepoch {epoch + 1}')
-        iterator_noise = iter(noise_dataset)
+        # iterator_noise = iter(noise_dataset)
         for step, (inputs, attention, y_batch_train) in enumerate(train_dataset):
             with tf.GradientTape() as tape:
                 # TODO please rename noise as noise, it is confusing
                 # QUESTION: Here I couldn't understand the logic of reading noise data, you only read one batch by doing iter and next. Are we sure that we get user defined batch size inputs?
 
-                x_batch_noise = iterator_noise.get_next()
+                # x_batch_noise = iterator_noise.get_next()
 
                 # TODO Please split to overall cost of sub methods, here it is very confusing. Do how I did 1)
                 # agumentation, 2) student cost 3) augmentation and then overall cost
                 # Please check cost_function.py
 
                 # TODO please lower the function name and instead of using args parameter, use the real params. it would be very confusing to find the bugs if "args" is seen.
-                overall_cost = Overall_Cost(args, [inputs, attention], y_batch_train, x_batch_noise,
+                overall_cost = Overall_Cost(args, [inputs, attention], y_batch_train,
                                             student, teacher, CONSISTENCY_LOSS_FN[args.loss_fn])
 
             grads = tape.gradient(overall_cost, student.trainable_weights)

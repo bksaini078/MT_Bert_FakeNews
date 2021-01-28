@@ -52,10 +52,10 @@ if __name__ == '__main__':
 
     #need to change in future, for loop is for experiment
     for fold in range(1):
-        x_train, y_train, x_test, y_test, x_unlabel = data_load(args, fold, path)
+        x_train, y_train, x_test, y_test = data_load(args, fold, path)
         if (args.model=='MT'):
             print(args.alpha)
-            MeanTeacher(args, fold,x_train, y_train, x_test, y_test,x_unlabel)
+            MeanTeacher(args, fold,x_train, y_train, x_test, y_test)
             args.alpha =  args.alpha+0.01
         elif (args.model=='PI') :
             Pimodel(args, fold, x_train, y_train,x_val, y_val, x_test, y_test,x_unlabel,vocab_size)

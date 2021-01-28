@@ -29,7 +29,7 @@ def run(args):
     model_output_dir = Path(args.model_output_folder)
     model_output_dir.mkdir(parents=True, exist_ok=True)
     ensure_reproducibility(args.seed)
-    model = MODELS[args.model](args)
+    model = MODELS[args.model](args, args.dropout)
 
     test_fname = data_dir / 'test.tsv'
     test_data = pd.read_csv(test_fname, sep='\t')
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     parser.add_argument('--model', type=str, choices=['bert', 'mean_bert'], default='bert')
     parser.add_argument('--pretrained_model', type=str, choices=['distilbert-base-uncased', 'bert-base-uncased'],
                         default='distilbert-base-uncased')
-    parser.add_argument('--data', type=str, choices=['fakehealth'], default='fakehealth')
+    parser.add_argument('--data', default='covid', type=str)
     parser.add_argument('--data_folder', type=str, default='Data/ExperimentFolds/3')
     parser.add_argument('--model_output_folder', type=str, default='trained_models')
     parser.add_argument('--max_len', type=int, default=512)

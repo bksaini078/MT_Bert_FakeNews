@@ -22,7 +22,7 @@ def data_load(args,fold, path):
     # print(train_data.groupby('label').count())
 
     test_data= pd.read_csv(path+'test.tsv',sep='\t')#,nrows=30)
-    noise = pd.read_csv(path + 'noise.tsv', sep='\t')#,nrows=40 )
+    # noise = pd.read_csv(path + 'noise.tsv', sep='\t')#,nrows=40 )
     
     tokenizer = AutoTokenizer.from_pretrained(args.pretrained_model)
 
@@ -33,16 +33,15 @@ def data_load(args,fold, path):
     test_data,_ = create_news_examples(test_data, args.max_len, tokenizer)
     x_test, y_test = create_inputs_targets(test_data )
 
-    x_noise,_ = create_news_examples (noise, args.max_len, tokenizer )
-    x_noise, _ = create_inputs_targets ( x_noise )
+    # x_noise,_ = create_news_examples (noise, args.max_len, tokenizer )
+    # x_noise, _ = create_inputs_targets ( x_noise )
 
     print('train size:',np.shape(x_train[0]))
  
     print('test size:', np.shape(x_test[0]))
    
-    return x_train, y_train, x_test, y_test, x_noise
-
-def data_slices(args, x_train,y_train,x_noise):
+    return x_train, y_train, x_test, y_test
+def data_slices(args, x_train,y_train):
     #this PI model will be removed in the future
     if args.model=='PI':
         train_dataset = tf.data.Dataset.from_tensor_slices ( (x_train[0], y_train) )
@@ -54,14 +53,14 @@ def data_slices(args, x_train,y_train,x_noise):
 
         #QUESTION: Here I couldn't understand the logic noise data will always same size with labeled batch
         # Also you are not handling noiseed dataset where we will mask the train set, I have done all those stuff see on my code for the reference
-        noise_batch = int(args.batch_size * args.noise_ratio)
-        print(noise_batch)
-        noise_dataset= tf.data.Dataset.from_tensor_slices((x_noise[0],x_noise[1])).batch(noise_batch)
+        # noise_batch = int(args.batch_size * args.noise_ratio)
+        # print(noise_batch)
+        # noise_dataset= tf.data.Dataset.from_tensor_slices((x_noise[0],x_noise[1])).batch(noise_batch)
 
         #in case we have less noise data
-        noise_dataset=noise_dataset.repeat(args.batch_size)
+        # noise_dataset=noise_dataset.repeat(args.batch_size)
 
-    return train_dataset, noise_dataset
+    return train_dataset
 
 
 
