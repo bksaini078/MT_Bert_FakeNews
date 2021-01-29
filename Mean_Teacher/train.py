@@ -15,6 +15,14 @@ CONSISTENCY_LOSS_FN = {
 }
 
 
+class MeanTeacherTrainer:
+    def __init__(self):
+        pass
+
+    def run(self):
+        pass
+
+
 def MeanTeacher(args, fold, x_train, y_train, x_test, y_test):
     # preparing the training dataset
     train_dataset = data_slices(args, x_train, y_train)
