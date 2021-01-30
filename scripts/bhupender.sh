@@ -1,53 +1,53 @@
-#echo Fakehealth Full Label Mean Teacher
-#python -m main \
-#--data_folder Data/ExperimentFolds/3 \
-#--data fakehealth \
-#--model MT \
-#--alpha 0.758 \
-#--batch_size 4 \
-#--epochs 3 \
-#--max_len 300 \
-#--ratio 0.5 \
-#--pretrained_model distilbert-base-uncased \
-#--lr 2e-5 \
-#--loss_fn kl_divergence \
-#--ratio_label 1.0 \
-#--student_dropout 0.1 \
-#--teacher_dropout 0.2
-#
-#echo Fakes Full Label Mean Teacher
-#python -m main \
-#--data_folder Data/ExperimentFolds/3 \
-#--data fakes \
-#--model MT \
-#--alpha 0.758 \
-#--batch_size 4 \
-#--epochs 3 \
-#--max_len 300 \
-#--ratio 0.5 \
-#--pretrained_model distilbert-base-uncased \
-#--lr 2e-5 \
-#--loss_fn kl_divergence \
-#--ratio_label 1.0 \
-#--student_dropout 0.1 \
-#--teacher_dropout 0.2
-#
-#echo Gossipcop Full Label Mean Teacher
-#python -m main \
-#--data_folder Data/ExperimentFolds/3 \
-#--data gossipcop \
-#--model MT \
-#--alpha 0.758 \
-#--batch_size 4 \
-#--epochs 3 \
-#--max_len 300 \
-#--ratio 0.5 \
-#--pretrained_model distilbert-base-uncased \
-#--lr 2e-5 \
-#--loss_fn kl_divergence \
-#--ratio_label 1.0 \
-#--student_dropout 0.1 \
-#--teacher_dropout 0.2
+echo Fakehealth Full Label Mean Teacher
+python -m main \
+--data_folder Data/ExperimentFolds/3 \
+--data fakehealth \
+--model MT \
+--alpha 0.758 \
+--batch_size 4 \
+--epochs 3 \
+--max_len 300 \
+--ratio 0.5 \
+--pretrained_model distilbert-base-uncased \
+--lr 2e-5 \
+--loss_fn kl_divergence \
+--ratio_label 1.0 \
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
+
+echo Fakes Full Label Mean Teacher
+python -m main \
+--data_folder Data/ExperimentFolds/3 \
+--data fakes \
+--model MT \
+--alpha 0.758 \
+--batch_size 4 \
+--epochs 3 \
+--max_len 300 \
+--ratio 0.5 \
+--pretrained_model distilbert-base-uncased \
+--lr 2e-5 \
+--loss_fn kl_divergence \
+--ratio_label 1.0 \
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
+
+echo Gossipcop Full Label Mean Teacher
+python -m main \
+--data_folder Data/ExperimentFolds/3 \
+--data gossipcop \
+--model MT \
+--alpha 0.758 \
+--batch_size 4 \
+--epochs 3 \
+--max_len 300 \
+--ratio 0.5 \
+--pretrained_model distilbert-base-uncased \
+--lr 2e-5 \
+--loss_fn kl_divergence \
+--ratio_label 1.0 \
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 #
 echo Nela Full Label Mean Teacher
 python -m main \
@@ -63,8 +63,8 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 1.0 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
 echo Covid Full Label Mean Teacher
 python -m main \
@@ -80,8 +80,8 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 1.0 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
 
 echo Fakehealth 0.5 Mean Teacher
@@ -98,8 +98,8 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 0.5 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
 echo Fakes 0.5 Mean Teacher
 python -m main \
@@ -115,8 +115,8 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 0.5 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
 echo Gossipcop 0.5 Mean Teacher
 python -m main \
@@ -132,8 +132,8 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 0.5 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
 echo Nela 0.5 Mean Teacher
 python -m main \
@@ -149,8 +149,8 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 0.5 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
 echo Covid 0.5 Mean Teacher
 python -m main \
@@ -166,11 +166,11 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 0.5 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
 
-echo Fakehealth Full Label Mean Teacher
+echo Fakehealth 0.1 Mean Teacher
 python -m main \
 --data_folder Data/ExperimentFolds/3 \
 --data fakehealth \
@@ -184,10 +184,10 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 0.1 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
-echo Fakes Full Label Mean Teacher
+echo Fakes 0.1 Mean Teacher
 python -m main \
 --data_folder Data/ExperimentFolds/3 \
 --data fakes \
@@ -201,10 +201,10 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 0.1 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
-echo Gossipcop Full Label Mean Teacher
+echo Gossipcop 0.1 Mean Teacher
 python -m main \
 --data_folder Data/ExperimentFolds/3 \
 --data gossipcop \
@@ -218,10 +218,10 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 0.1 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
-echo Nela Full Label Mean Teacher
+echo Nela 0.1 Mean Teacher
 python -m main \
 --data_folder Data/ExperimentFolds/3 \
 --data nela \
@@ -235,10 +235,10 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 0.1 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2
 
-echo Covid Full Label Mean Teacher
+echo Covid 0.1 Mean Teacher
 python -m main \
 --data_folder Data/ExperimentFolds/3 \
 --data covid \
@@ -252,5 +252,5 @@ python -m main \
 --lr 2e-5 \
 --loss_fn kl_divergence \
 --ratio_label 0.1 \
---student_dropout 0.1 \
---teacher_dropout 0.2
+--student_hidden_dropout_prob 0.1 \
+--teacher_hidden_dropout_prob 0.2

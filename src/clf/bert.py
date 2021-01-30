@@ -6,7 +6,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tqdm import tqdm
 from transformers import AutoTokenizer, TFAutoModel, AutoConfig
-from transformers.modeling_tf_utils import get_initializer
+
 from logger import logger
 
 
@@ -35,7 +35,7 @@ class NewsExample:
         self.title = title
         self.content = content
         self.tokenizer = tokenizer
-        self.max_len = max_len       
+        self.max_len = max_len
         self.label = label
         self.skip = False
         self.label2id = {'fake': 0, 'true': 1}
@@ -96,36 +96,37 @@ def create_inputs_targets(news_exps):
 
     labels = dataset_dict["label"]
     if np.max(labels) == -1:
-        y = np.full((len(dataset_dict['label']),2),-1)
+        y = np.full((len(dataset_dict['label']), 2), -1)
     else:
         y = to_categorical(labels)
     return x, y
-def unlabel_mix(batch_size,train_data,labels,unlabel_train_m, ratio):
+
+
+def unlabel_mix(batch_size, train_data, labels, unlabel_train_m, ratio):
     '''if the user indicates the ratio will %50 and the batch size is 4. 
     One batch will contain 2 labeled and 2 unlabeled samples'''
     # incase we dont want to mix
-    if ratio !=0:
-        unlabel_size= round(ratio/100*batch_size)
-        label_size= batch_size- unlabel_size
-        
+    if ratio != 0:
+        unlabel_size = round(ratio / 100 * batch_size)
+        label_size = batch_size - unlabel_size
+
         input_ids, attention_ids, labels = train_data[0][label_size], train_data[1][label_size], labels[label_size]
-        input_ids_u, attention_ids_u, labels_u = unlabel_train_m[0][unlabel_size], unlabel_train_m[1][unlabel_size], 
-        np.full((unlabel_size,2), -1)
-        input_ids= tf.concat((input_ids, input_ids_u), axis=0)
-        attention_ids = tf.concat((attention_ids, attention_ids_u), axis=0 )
-        labels = tf.concat((labels, labels_u), axis=0 )
+        input_ids_u, attention_ids_u, labels_u = unlabel_train_m[0][unlabel_size], unlabel_train_m[1][unlabel_size],
+        np.full((unlabel_size, 2), -1)
+        input_ids = tf.concat((input_ids, input_ids_u), axis=0)
+        attention_ids = tf.concat((attention_ids, attention_ids_u), axis=0)
+        labels = tf.concat((labels, labels_u), axis=0)
         return input_ids, attention_ids, labels
     else:
         return train_data[0], train_data[1], labels
-    
-    
 
 
 class BERT:
-    def __init__(self, args, dropout=None):
+    def __init__(self, args, hidden_dropout_prob=0.1, attention_prob_drop=0.1):
         self.pretrained_model = args.pretrained_model
         self.config = AutoConfig.from_pretrained(self.pretrained_model)
-        self.config.attention_probs_dropout_prob = dropout
+        self.config.attention_probs_dropout_prob = attention_prob_drop
+        self.config.hidden_dropout_prob = hidden_dropout_prob
         self.max_len = args.max_len
         self.tokenizer = AutoTokenizer.from_pretrained(self.pretrained_model)
         self.dropout = tf.keras.layers.Dropout(0.1)

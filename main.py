@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 
 from Mean_Teacher.data_loader import *
-from Mean_Teacher.train import MeanTeacherTrainer
+from Mean_Teacher.train import MeanTeacher
 from PI_model.train_pi_model import Pimodel
 
 if __name__ == '__main__':
@@ -22,8 +22,10 @@ if __name__ == '__main__':
     parser.add_argument('--pretrained_model', default='distilbert-base-uncased', type=str,
                         choices=['bert-base-uncased', 'distilbert-base-uncased'])
     parser.add_argument('--data', default='covid', type=str)
-    parser.add_argument('--student_dropout', type=float)
-    parser.add_argument('--teacher_dropout', type=float)
+    parser.add_argument('--student_attention_prob_dropout', type=float, default=0.1)
+    parser.add_argument('--teacher_attention_prob_dropout', type=float, default=0.1)
+    parser.add_argument('--student_hidden_dropout_prob', type=float, default=0.1)
+    parser.add_argument('--teacher_hidden_dropout_prob', type=float, default=0.1)
     parser.add_argument('--data_folder', default='Data/ExperimentFolds/3', type=str)
     parser.add_argument('--model_output_folder', default='trained_models', type=str)
     parser.add_argument('--do_train', action='store_true')
@@ -53,11 +55,9 @@ if __name__ == '__main__':
     for fold in range(1):
         X_train, y_train, X_test, y_test = data_load(args, fold, path)
         if (args.model == 'MT'):
-            print(args.alpha)
-            trainer = MeanTeacherTrainer(args)
-            trainer.fit(train=X_train, y_train)
-            # MeanTeacher(args, fold,x_train, y_train, x_test, y_test)
-            # args.alpha =  args.alpha+0.01
+            trainer = MeanTeacher(args)
+            trainer.fit(X_train, y_train)
+            trainer.eval(X_test, y_test)
         elif (args.model == 'PI'):
             Pimodel(args, fold, x_train, y_train, x_val, y_val, x_test, y_test, x_unlabel, vocab_size)
 

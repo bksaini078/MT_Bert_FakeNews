@@ -59,7 +59,7 @@ def Overall_Cost(args, x_train, y_train,student, teacher, loss_fn):
 
 
 # function for consistency cost
-def EMA(student_model, teacher_model, alpha, global_step):
+def EMA(student_model, teacher_model, alpha):
     # alpha = min(1 - 1 / (global_step + 1), alpha)
     # taking weights
     student_weights = student_model.get_weights()

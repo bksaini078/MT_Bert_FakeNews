@@ -2,12 +2,9 @@ import tensorflow as tf
 
 tf.compat.v1.enable_eager_execution()
 from Mean_Teacher.costfunction import Overall_Cost, EMA
-from Mean_Teacher.report_writing import report_writing
-from Mean_Teacher.evaluation import prec_rec_f1score
-from Mean_Teacher.data_loader import data_slices
-# from BERT.bert import BERT
 from logger import logger
 from src.clf.bert import BERT
+from sklearn.metrics import classification_report, roc_curve, auc
 
 CONSISTENCY_LOSS_FN = {
     "mse": tf.keras.losses.MSE,
@@ -15,79 +12,97 @@ CONSISTENCY_LOSS_FN = {
 }
 
 
-class MeanTeacherTrainer:
-    def __init__(self):
-        pass
+class MeanTeacher:
+    def __init__(self, args):
+        self.student = None
+        self.teacher = None
+        self.args = args
+        self.epochs = args.epochs
+        self.loss_fn = CONSISTENCY_LOSS_FN[self.args.loss_fn]
+        self.model_output_folder = args.model_output_folder
+        self.student_model_name = f"{self.model_output_folder}/{self.args.pretrained_model}_{self.args.model}_seed_{self.args.seed}_portion_{self.args.data}_alpha_{self.args.alpha}_{self.args.ratio_label}_student"
+        self.student_results_name = f"{self.model_output_folder}/{self.args.pretrained_model}_{self.args.model}_seed_{self.args.seed}_portion_{self.args.data}_{self.args.alpha}_{self.args.ratio_label}_student_results.tsv"
+        self.teacher_model_name = f"{self.model_output_folder}/{self.args.pretrained_model}_{self.args.model}_seed_{self.args.seed}_portion_{self.args.data}_{self.args.alpha}_{self.args.ratio_label}_teacher"
+        self.teacher_results_name = f"{self.model_output_folder}/{self.args.pretrained_model}_{self.args.model}_seed_{self.args.seed}_portion_{self.args.data}_{self.args.alpha}_{self.args.ratio_label}_teacher_results.tsv"
 
-    def run(self):
-        pass
+    def fit(self, X_train, y_train):
+        train_dataset = tf.data.Dataset.from_tensor_slices((X_train[0], X_train[1], y_train)).batch(
+            self.args.batch_size)
 
+        optimizer = tf.keras.optimizers.Adam(learning_rate=self.args.lr)
 
-def MeanTeacher(args, fold, x_train, y_train, x_test, y_test):
-    # preparing the training dataset
-    train_dataset = data_slices(args, x_train, y_train)
+        logger.info("Initializing Student Model")
+        self.student = BERT(args=self.args, hidden_dropout_prob=self.args.student_hidden_dropout_prob,
+                            attention_prob_drop=self.args.student_attention_prob_dropout).create_model(
+            training=True)
 
-    # declaring optimiser
-    optimizer = tf.keras.optimizers.Adam(learning_rate=args.lr)
+        logger.info("Initializing Teacher Model")
+        self.teacher = BERT(args=self.args, hidden_dropout_prob=self.args.teacher_hidden_dropout_prob,
+                            attention_prob_drop=self.args.teacher_attention_prob_dropout).create_model(
+            training=False)
 
-    # Ipek- I changed with the BERT under the src/clf teacher model should not be fine tuned during the training, otherwise it will not be mean teacher.
-    # This makes fake news results worse, but we should do like this based on original paper
-    # creating model
-    student = BERT(args, dropout=args.student_dropout).create_model(training=True)
-    teacher = BERT(args, dropout=args.teacher_dropout).create_model(training=False)
+        # declaring metrics
+        train_metrics = tf.keras.metrics.BinaryAccuracy(name='Binary_Accuracy')
+        progbar = tf.keras.utils.Progbar(len(train_dataset), stateful_metrics=['Accuracy', 'Overall_Loss'])
 
-    # declaring metrics
-    train_metrics = tf.keras.metrics.BinaryAccuracy(name='Binary_Accuracy')
-    progbar = tf.keras.utils.Progbar(len(train_dataset), stateful_metrics=['Accuracy', 'Overall_Loss'])
+        for epoch in range(self.epochs):
+            for step, (inputs, attention, y_batch_train) in enumerate(train_dataset):
+                with tf.GradientTape() as tape:
+                    # TODO please lower the function name and instead of using args parameter, use the real params. it would be very confusing to find the bugs if "args" is seen.
+                    overall_cost = Overall_Cost(self.args, [inputs, attention], y_batch_train,
+                                                self.student, self.teacher, self.loss_fn)
 
-    epochs = args.epochs
-    logger.info(f"Number of epochs {epochs}")
-    step_counter = 0
+                grads = tape.gradient(overall_cost, self.student.trainable_weights)
+                optimizer.apply_gradients(
+                    (grad, var) for (grad, var) in zip(grads, self.student.trainable_weights) if grad is not None)
 
-    for epoch in range(epochs):
-        tf.print(f'\nepoch {epoch + 1}')
-        # iterator_noise = iter(noise_dataset)
-        for step, (inputs, attention, y_batch_train) in enumerate(train_dataset):
-            with tf.GradientTape() as tape:
-                # TODO please rename noise as noise, it is confusing
-                # QUESTION: Here I couldn't understand the logic of reading noise data, you only read one batch by doing iter and next. Are we sure that we get user defined batch size inputs?
+                # applying student weights to teacher
+                teacher = EMA(self.student, self.teacher, alpha=self.args.alpha)
 
-                # x_batch_noise = iterator_noise.get_next()
+                # calculating training accuracy
+                logits_t = teacher([inputs, attention])
+                train_acc = train_metrics(tf.argmax(y_batch_train, 1), tf.argmax(logits_t, 1))
 
-                # TODO Please split to overall cost of sub methods, here it is very confusing. Do how I did 1)
-                # agumentation, 2) student cost 3) augmentation and then overall cost
-                # Please check cost_function.py
+                # TODO: Overall cost gives always NaN
+                progbar.update(step, values=[('Accuracy', train_acc), ('Overall_Loss', overall_cost)])
 
-                # TODO please lower the function name and instead of using args parameter, use the real params. it would be very confusing to find the bugs if "args" is seen.
-                overall_cost = Overall_Cost(args, [inputs, attention], y_batch_train,
-                                            student, teacher, CONSISTENCY_LOSS_FN[args.loss_fn])
+        self.save_weights()
 
-            grads = tape.gradient(overall_cost, student.trainable_weights)
-            optimizer.apply_gradients(
-                (grad, var) for (grad, var) in zip(grads, student.trainable_weights) if grad is not None)
+        tf.keras.backend.clear_session()
 
-            # applying student weights to teacher
-            step_counter += 1
-            teacher = EMA(student, teacher, alpha=args.alpha, global_step=step_counter)
+    def eval(self, X_test, y_test):
+        self.load_weights()
 
-            # calculating training accuracy
-            logits_t = teacher([inputs, attention])
-            train_acc = train_metrics(tf.argmax(y_batch_train, 1), tf.argmax(logits_t, 1))
+        logger.info("Student Evaluation")
+        y_hat = self.student.predict(X_test)
+        y_pred = tf.argmax(y_hat, 1)
+        y_true = tf.argmax(y_test, 1)
 
-            # TODO: Overall cost gives always NaN
-            progbar.update(step, values=[('Accuracy', train_acc), ('Overall_Loss', overall_cost)])
+        fpr, tpr, thresholds = roc_curve(y_true, y_pred, pos_label=None)
+        logger.info(classification_report(y_true=y_true, y_pred=y_pred, digits=4))
+        logger.info(f"AUC {auc(fpr, tpr)}")
 
-    # Evaluation of the model
-    tf.print("\nStudent Testing data evaluation:")
-    test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, f1_macro, f1_micro, f1_weighted, AUC = prec_rec_f1score(
-        args, y_test, x_test, student)
+        logger.info("Teacher Evaluation")
+        y_hat = self.teacher.predict(X_test)
+        y_pred = tf.argmax(y_hat, 1)
+        y_true = tf.argmax(y_test, 1)
 
-    tf.print("\nTeacher Testing data evaluation:")
-    test_accuracy, precision_true, precision_fake, recall_true, recall_fake, f1score_true, f1score_fake, f1_macro, f1_micro, f1_weighted, AUC = prec_rec_f1score(
-        args, y_test, x_test, teacher)
-    # teacher.save(f'{args.model_output_folder}/{args.data}/{args.model}_BERT_{args.alpha}_{args.pretrained_model}_fold-{fold}')
+        fpr, tpr, thresholds = roc_curve(y_true, y_pred, pos_label=None)
+        logger.info(classification_report(y_true=y_true, y_pred=y_pred, digits=4))
+        logger.info(f"AUC {auc(fpr, tpr)}")
 
-    # reporting in report file 
-    report_writing(args, train_acc.numpy(), test_accuracy, precision_true, precision_fake, recall_true, recall_fake,
-                   f1score_true, f1score_fake, f1_macro, f1_micro, f1_weighted, AUC)
-    tf.keras.backend.clear_session()
+    def save_weights(self):
+        self.student.save_weights(self.student_model_name)
+        del self.student
+        self.teacher.save_weights(self.teacher_model_name)
+        del self.teacher
+
+    def load_weights(self):
+        self.student = BERT(args=self.args, hidden_dropout_prob=self.args.student_hidden_dropout_prob,
+                            attention_prob_drop=self.args.student_attention_prob_dropout).create_model(
+            training=False)
+        self.student.load_weights(self.student_model_name)
+        self.teacher = BERT(args=self.args, hidden_dropout_prob=self.args.teacher_hidden_dropout_prob,
+                            attention_prob_drop=self.args.teacher_attention_prob_dropout).create_model(
+            training=False)
+        self.teacher.load_weights(self.teacher_model_name)
